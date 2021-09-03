@@ -1,0 +1,9 @@
+{
+    "id": 1,
+    "type": "TIME_TICKER",
+    "data": {
+        "label": "Início",
+        "description": "Aqui é o início do fluxo",
+        "icon": "play_arrow"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "id": 1123,
+    "type": "REMINDER",
+    "data": {
+        "label": "Lembrete",
+        "description": "Aqui é o início do fluxo",
+        "icon": "message-text-clock"
+    }
+}

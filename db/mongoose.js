@@ -24,7 +24,6 @@ mongoose.connect(`${process.env.MONGODB_URI}`, options, (err) => {
   if (err) {
     logger.error('Unable to connect to the server. Please start the server. Error:', err)
   } else {
-
     logger.debug('Connected to DB Server successfully! ' + process.env.MONGODB_URI)
   }
 })

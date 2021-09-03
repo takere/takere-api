@@ -3,12 +3,13 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const morgan = require('morgan');
-const passport = require('passport')
-const {mongoose} = require('./db/mongoose')
+const passport = require('passport');
 const winston = require('./helpers/logger');
+const {mongoose} = require('./db/mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const jQueue = require('./helpers/jobQueue');
 require('./helpers/passport')(passport);
 
 const app = express();
@@ -28,7 +29,7 @@ app.use(morgan(function (tokens, req, res) {
 }))
 app.use(cors({
   credentials: true,
-  origin: ['*', 'http://localhost:4200']
+  origin: ['*', 'http://localhost:3001']
 }))
 app.options('*', cors())
 app.use(bodyParser.json());
@@ -39,6 +40,8 @@ app.use(passport.initialize())
 
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users/users'));
+app.use('/tasks', require('./routes/tasks/tasks'));
+app.use('/nodes', require('./routes/nodes/nodes'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,6 +52,8 @@ app.use(function(req, res, next) {
 
 //Start cron jobs;
 // crons.cronJobs();
+jQueue.jobQueue();
+
 
 // error handler
 app.use(function(err, req, res, next) {
