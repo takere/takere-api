@@ -1,7 +1,6 @@
 const Edge = require('../models/Edge');
 const Node = require('../models/Node');
 const jobs = require('../jobs/handleJobs');
-const mongoose = require('mongoose');
 
 
 const process = async (node) => {
@@ -11,7 +10,7 @@ const process = async (node) => {
 const handleRecursiveTreeEdges = async (nodeId) => {
     const sourceNode = await Node.findOne({_id: nodeId });
     const edges = await Edge.find({ source: sourceNode._id });
-    jobs.handleJob(sourceNode.type, sourceNode.data);
+    await jobs.handleJob(sourceNode.data.type, sourceNode._id, sourceNode.data, sourceNode.flow);
     for(e of edges){
         await handleRecursiveTreeEdges(e.target._id);
     }

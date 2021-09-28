@@ -1,12 +1,23 @@
 const Agenda = require("agenda");
 const ag = new Agenda({ db: { address: process.env.MONGODB_URI, collection: 'jobs' } });
 const nodeProcess = require('../core/nodeProcessCore');
+const isBefore = require('date-fns/isBefore')
 
 const jobQueue = () => {
     ag.start();
 
     ag.define("TIME_TICKER", async (job) => {
-        await nodeProcess.process(job.attrs.data);
+        try{
+            const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
+            if(finishDateIsBeforeToday) {
+                await nodeProcess.process(job.attrs.data);
+            } else {
+                await job.disable();
+                console.log("Successfully removed job from collection");
+            }
+        } catch (e) {
+            console.log(e)
+        }
     });
 
     ag.on("start", (job) => {

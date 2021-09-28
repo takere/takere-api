@@ -1,0 +1,68 @@
+{
+    "id": 3,
+    "type": "GENERIC_NODE",
+    "data": {
+        "type": "MOTIVATIONAL",
+        "label": "Motivacional",
+        "description": "Selecione um texto motivacional",
+        "icon": "format_quote",
+        "style": {
+            "backgroundColor": "#feebe7",
+            "borderColor": "#491204"
+        },
+        "inputFields": [
+            {
+                "slug": "boardName",
+                "name": "[BOARD] - Nome Motivacional",
+                "description": "Do que se trata o motivacional?",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "boardDescription",
+                "name": "[BOARD] - Descrição Motivacional",
+                "description": "Adicione uma descrição do motivacional",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "motivational_phrase",
+                "name": "frases motivacionais",
+                "description": "Selecione aqui as frases motivacionais",
+                "type": "MULTISELECT",
+                "options": [
+                    {
+                        "value": "fumante",
+                        "label": "frases para fumantes"
+                    },
+                    {
+                        "value": "diabete",
+                        "label": "frases para diabetes"
+                    }
+                ]
+            }
+        ],
+        "handles": [
+            {
+                "type": "target",
+                "position": "top",
+                "id": "a_top",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "source",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            }
+        ]
+    }
+}

@@ -1,23 +1,28 @@
-const disease = require('./sendDiseaseInformation');
-const motivational = require('./sendMotivacional');
-const rem = require('./reminder');
+const externalLink = require('./externalLink');
+const dataInput = require('./dataInput');
+const motivational = require('./motivacional');
+const reminder = require('./reminder');
 
 const JOB_TYPES = {
-    DISEASE_INFO: "DISEASE_INFO",
+    DATA_INPUT: "DATA_INPUT",
+    EXTERNAL_LINK: "EXTERNAL_LINK",
     MOTIVATIONAL: "MOTIVATIONAL",
     REMINDER: "REMINDER"
 }
 
-const handleJob = (jobName, data) => {
+const handleJob = async (jobName, jobId, data, flowId) => {
     switch (jobName) {
-        case JOB_TYPES.DISEASE_INFO:
-            disease.sendDiseaseInfo(data);
+        case JOB_TYPES.EXTERNAL_LINK:
+            await externalLink.handler(data, jobId, flowId)
+            break;
+        case JOB_TYPES.DATA_INPUT:
+            await dataInput.handler(data, jobId, flowId)
             break;
         case JOB_TYPES.MOTIVATIONAL:
-            motivational.sendMotivational(data);
+            await motivational.handler(data, jobId, flowId);
             break;
         case JOB_TYPES.REMINDER:
-            rem.reminder(data);
+            await reminder.handler(data, jobId, flowId);
             break;
     }
 }

@@ -5,7 +5,7 @@ const Executed = require('../models/Executed')
 const handler = async (data, jobId, flowId) => {
     const flow = await Flow.findById(flowId);
     const executed = await Executed.create(
-        data.results.reminder_phrase,
+        data.results.link,
         jobId
     );
 
@@ -16,7 +16,7 @@ const handler = async (data, jobId, flowId) => {
         flow.userEmail,
         flow._id,
         jobId,
-        executed._id
+        executed
     );
 }
 

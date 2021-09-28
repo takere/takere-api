@@ -6,7 +6,7 @@ const Flow = require('../../models/Flow');
 const ag =  require('./../../helpers/jobQueue');
 
 router.post('/', async function(req, res, next) {
-    const {data, name, description, id} = req.body
+    const {data, name, description, userEmail, id} = req.body
     const user = await req.user;
 
     let timeTickers = [];
@@ -16,11 +16,10 @@ router.post('/', async function(req, res, next) {
     const flow = new Flow({
         user: user._id,
         name: name,
+        userEmail: userEmail,
         description: description
     });
     await flow.save();
-
-    console.log(flow)
 
     for (n of nodes){
         const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id });
@@ -36,6 +35,7 @@ router.post('/', async function(req, res, next) {
         if(dbNode.type === 'TIME_TICKER'){
             timeTickers.push(dbNode);
         }
+
         dbNode.save();
     }
 
@@ -45,13 +45,14 @@ router.post('/', async function(req, res, next) {
     }
 
     for(t of timeTickers){
-        const agendaData = t.data.agenda;
+        const agendaData = t.data.results;
         const job = ag.ag.create("TIME_TICKER", t);
+
         job.repeatEvery(agendaData.repeatInterval, {
-            endDate: agendaData.endDate,
+            endDate: new Date(agendaData.endDate),
             skipDays: agendaData.skipDays,
             skipImmediate: agendaData.skipImmediate,
-            startDate: agendaData.startDate,
+            startDate: new Date(agendaData.startDate),
         });
         job.save();
     }

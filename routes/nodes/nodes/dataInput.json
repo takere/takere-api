@@ -1,32 +1,38 @@
 {
-    "id": 2,
+    "id": 4,
     "type": "GENERIC_NODE",
     "data": {
-        "type": "REMINDER",
-        "label": "Lembrete",
-        "description": "Aqui é o início do fluxo",
-        "icon": "textsms",
+        "type": "DATA_INPUT",
+        "label": "Entrada de texto",
+        "description": "Entrada de qualquer tipo de texto",
+        "icon": "post_add",
         "style": {
-            "backgroundColor": "#fcf6e9",
-            "borderColor": "#433109"
+            "backgroundColor": "#f2ecf9",
+            "borderColor": "#25123a"
         },
         "inputFields": [
             {
                 "slug": "boardName",
-                "name": "[BOARD] - Nome",
-                "description": "Do que se trata o lembrete?",
+                "name": "[BOARD] - Nome entrada",
+                "description": "Do que se trata a entrada?",
                 "type": "RAW_TEXT_INPUT"
             },
             {
                 "slug": "boardDescription",
-                "name": "[BOARD] - Descrição",
-                "description": "Adicione a descrição do lembrete",
+                "name": "[BOARD] - Descrição entrada",
+                "description": "Adicione uma descrição da entrada",
                 "type": "RAW_TEXT_INPUT"
             },
             {
-                "slug": "reminder_phrase",
-                "name": "lembrete",
-                "description": "escreva aqui seu lembrete",
+                "slug": "text_name",
+                "name": "nome do campo",
+                "description": "digite aqui o nome do campo",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "text_description",
+                "name": "descrição do campo",
+                "description": "digite aqui a descrição campo",
                 "type": "RAW_TEXT_INPUT"
             }
         ],

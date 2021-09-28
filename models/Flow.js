@@ -16,6 +16,10 @@ const FlowSchema = new mongoose.Schema({
      type: String,
      trim: true
     },
+    userEmail: {
+     type: String,
+     trim: true
+    },
   },
   {
     usePushEach: true,
@@ -29,6 +33,15 @@ FlowSchema.pre("save", function(next) {
   }
   next();
 });
+
+FlowSchema.statics.findById = async function (id) {
+    const Flow = this
+    return new Promise (async (resolve, reject) => {
+        let flow = await Flow.findOne({ _id: id })
+        if (!flow) reject(401)
+        resolve(flow)
+    })
+}
 
 const Flow = new mongoose.model('Flow', FlowSchema)
 module.exports = Flow

@@ -1,32 +1,32 @@
 {
-    "id": 2,
+    "id": 4,
     "type": "GENERIC_NODE",
     "data": {
-        "type": "REMINDER",
-        "label": "Lembrete",
-        "description": "Aqui é o início do fluxo",
-        "icon": "textsms",
+        "type": "EXTERNAL_LINK",
+        "label": "Link Externo",
+        "description": "Link da internet",
+        "icon": "link",
         "style": {
-            "backgroundColor": "#fcf6e9",
-            "borderColor": "#433109"
+            "backgroundColor": "#ffe9cc",
+            "borderColor": "#ff9000"
         },
         "inputFields": [
             {
                 "slug": "boardName",
-                "name": "[BOARD] - Nome",
-                "description": "Do que se trata o lembrete?",
+                "name": "[BOARD] - Nome Link",
+                "description": "Do que se trata o link?",
                 "type": "RAW_TEXT_INPUT"
             },
             {
                 "slug": "boardDescription",
-                "name": "[BOARD] - Descrição",
-                "description": "Adicione a descrição do lembrete",
+                "name": "[BOARD] - Descrição Link",
+                "description": "Adicione uma descrição do link",
                 "type": "RAW_TEXT_INPUT"
             },
             {
-                "slug": "reminder_phrase",
-                "name": "lembrete",
-                "description": "escreva aqui seu lembrete",
+                "slug": "link",
+                "name": "link",
+                "description": "link da internet",
                 "type": "RAW_TEXT_INPUT"
             }
         ],
