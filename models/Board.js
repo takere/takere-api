@@ -54,12 +54,21 @@ BoardSchema.statics.createBoard = async function (name, description, userEmail, 
 BoardSchema.statics.findByUserEmail = async function (userEmail) {
     const Board = this.model('Board')
     let boards = await Board
-        .find({userEmail: userEmail})
+        .find({userEmail: userEmail, completed: false})
         .populate('node')
         .populate('executed')
         .exec();
     if (!boards) throw new Error(`401`);
     return boards
+}
+
+BoardSchema.statics.findById = async function (id) {
+    const Board = this
+    return new Promise (async (resolve, reject) => {
+        let flow = await Board.findOne({ _id: id })
+        if (!flow) reject(401)
+        resolve(flow)
+    })
 }
 
 BoardSchema.pre("save", function(next) {
