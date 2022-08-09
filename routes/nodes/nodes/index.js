@@ -6,4 +6,4 @@ const nodes = [
   require('./old/timeTicker.json')
 ];
 
-export default nodes;
+module.exports = nodes;
