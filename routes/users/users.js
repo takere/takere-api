@@ -14,6 +14,7 @@ router.get('/logout', function(req, res) {
       res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
     } else {
       // handle error case...
+      console.log(res)
     }
 
   });

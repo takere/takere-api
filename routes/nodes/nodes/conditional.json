@@ -1,0 +1,64 @@
+{
+    "id": 2,
+    "type": "GENERIC_NODE",
+    "data": {
+        "label": "Conditional",
+        "description": "Chooses which flow will be executed based on some condition",
+        "icon": "schedule_send",
+        "inputFields": [
+            {
+                "slug": "left",
+                "name": "Left",
+                "description": "Left operand",
+                "type": "MULTI_SELECTION_INPUT"
+            },
+            {
+                "slug": "operator",
+                "name": "Operator",
+                "description": "Operator that will be applied in the left and right terms",
+                "type": "MULTI_SELECTION_INPUT"
+            },
+            {
+                "slug": "right",
+                "name": "Right",
+                "description": "Right operand.",
+                "type": "MULTI_SELECTION_INPUT"
+            }
+        ],
+        "handles": [
+            {
+                "type": "source",
+                "position": "top",
+                "id": "a",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "target",
+                "position": "left",
+                "id": "b",
+                "style": {
+                    "top": "50%",
+                    "borderRadius": 8,
+                    "width": 12,
+                    "height": 20
+                }
+            },
+            {
+                "type": "target",
+                "position": "right",
+                "id": "c",
+                "style": {
+                    "top": "50%",
+                    "borderRadius": 8,
+                    "width": 12,
+                    "height": 20
+                }
+            }
+        ]
+    }
+}

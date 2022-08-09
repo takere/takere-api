@@ -12,11 +12,11 @@ router.get('/:uid', async function(req, res, next) {
     const nodes = await Node.find({ flow: flow._id});
     const edges = await Edge.find({ flow: flow._id});
 
-
     res.send({
         flowId: flow._id,
         flowName: flow.name,
         flowDescription: flow.description,
+        flowEmail: flow.userEmail,
         data: [
             ...nodes,
             ...edges

@@ -1,5 +1,9 @@
 # Medup-bff
 
+## Iniciar node
+> sudo systemctl start mongod
+
+
 #### Para desenvolver, siga as seguintes etapas: ####
 * Instale o [Node.js](https://nodejs.org/en/download/).
 * Estamos usando banco de dados, mas não está sendo usado uma versão local, e sim conectando à um banco externo, logo não é necessário instalar o MongoDB em sua máquina. Variável MONGODB_URI define o endereço.

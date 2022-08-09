@@ -45,7 +45,17 @@ router.post('/', async function(req, res, next) {
     }
 
     for(t of timeTickers){
+        
+
+        if (t.data.results === undefined) {
+            t.data.results = {
+                repeatInterval: "0",
+                skipDays: "0"
+            };
+        }
+
         const agendaData = t.data.results;
+
         const job = ag.ag.create("TIME_TICKER", t);
 
         job.repeatEvery(agendaData.repeatInterval, {

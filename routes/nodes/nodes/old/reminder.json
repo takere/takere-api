@@ -1,0 +1,58 @@
+{
+    "id": 2,
+    "type": "GENERIC_NODE",
+    "data": {
+        "type": "REMINDER",
+        "label": "Lembrete",
+        "description": "Aqui é o início do fluxo",
+        "icon": "textsms",
+        "style": {
+            "backgroundColor": "#fcf6e9",
+            "borderColor": "#433109"
+        },
+        "inputFields": [
+            {
+                "slug": "boardName",
+                "name": "[BOARD] - Nome",
+                "description": "Do que se trata o lembrete?",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "boardDescription",
+                "name": "[BOARD] - Descrição",
+                "description": "Adicione a descrição do lembrete",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "reminder_phrase",
+                "name": "lembrete",
+                "description": "escreva aqui seu lembrete",
+                "type": "RAW_TEXT_INPUT"
+            }
+        ],
+        "handles": [
+            {
+                "type": "target",
+                "position": "top",
+                "id": "a_target",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "source",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            }
+        ]
+    }
+}
