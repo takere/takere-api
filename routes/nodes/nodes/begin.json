@@ -1,10 +1,11 @@
 {
     "id": 1,
-    "type": "GENERIC_NODE",
+    "type": "TIME_TICKER",
     "data": {
         "label": "Start",
         "description": "Every care plan must begin from this node",
         "icon": "schedule_send",
+        
         "inputFields": [
             {
                 "slug": "startDate",

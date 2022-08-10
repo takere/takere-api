@@ -1,10 +1,13 @@
 {
     "id": 2,
-    "type": "GENERIC_NODE",
+    "type": "CONDITIONAL_NODE",
     "data": {
         "label": "Conditional",
         "description": "Chooses which flow will be executed based on some condition",
-        "icon": "schedule_send",
+        "icon": "fork_left",
+        "style": {
+            "backgroundColor":"#dadada"
+        },
         "inputFields": [
             {
                 "slug": "left",
@@ -27,33 +30,36 @@
         ],
         "handles": [
             {
-                "type": "source",
+                "type": "target",
                 "position": "top",
                 "id": "a",
                 "style": {
-                    "left": "50%",
+                    "left": "-8%",
+                    "transform": "rotate(-45deg)",
                     "borderRadius": 8,
                     "width": 20,
                     "height": 12
                 }
             },
             {
-                "type": "target",
+                "type": "source",
                 "position": "left",
                 "id": "b",
                 "style": {
-                    "top": "50%",
+                    "top": "90%",
+                    "transform": "rotate(-45deg)",
                     "borderRadius": 8,
                     "width": 12,
                     "height": 20
                 }
             },
             {
-                "type": "target",
+                "type": "source",
                 "position": "right",
                 "id": "c",
                 "style": {
-                    "top": "50%",
+                    "top": "-8%",
+                    "transform": "rotate(-45deg)",
                     "borderRadius": 8,
                     "width": 12,
                     "height": 20
