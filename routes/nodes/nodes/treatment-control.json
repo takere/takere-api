@@ -103,7 +103,7 @@
         ],
         "handles": [
             {
-                "type": "source",
+                "type": "target",
                 "position": "top",
                 "id": "a_top",
                 "style": {
@@ -114,7 +114,7 @@
                 }
             },
             {
-                "type": "target",
+                "type": "source",
                 "position": "bottom",
                 "id": "a_bottom",
                 "style": {

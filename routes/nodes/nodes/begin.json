@@ -33,7 +33,7 @@
             },
             {
                 "slug": "skipDays",
-                "name": "After each run, it will ignore the duration. example: 2 days, 15 minutes...",
+                "name": "How often care plan should be executed? 2 days, 15 minutes...",
                 "description": "Spacing between executions",
                 "type": "RAW_TEXT_INPUT"
             },
