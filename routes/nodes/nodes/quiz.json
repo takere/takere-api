@@ -1,0 +1,99 @@
+{
+    "id": 5,
+    "type": "GENERIC_NODE",
+    "data": {
+        "label": "Quiz",
+        "description": "Some useful text",
+        "icon": "schedule_send",
+        "inputFields": [
+            {
+                "slug": "totalQuestions",
+                "name": "Total questions",
+                "description": "How many questions?",
+                "type": "NUMBER_INPUT"
+            },
+            {
+                "slug": "question",
+                "name": "Question",
+                "description": "What's the question?",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "answerType",
+                "name": "Answer type",
+                "description": "How do you expect the answer?",
+                "type": "MULTI_SELECTION_INPUT",
+                "options": [
+                    {
+                        "value": "number",
+                        "label": "Numeric"
+                    },
+                    {
+                        "value": "text",
+                        "label": "Single line text"
+                    },
+                    {
+                        "value": "checkbox",
+                        "label": "Checkbox"
+                    },
+                    {
+                        "value": "radio",
+                        "label": "Radio"
+                    },
+                    {
+                        "value": "text-area",
+                        "label": "Multiple line text"
+                    }
+                ]
+            },
+            {
+                "slug": "frequency",
+                "name": "Frequency",
+                "description": "How often this treatment should be performed?",
+                "type": "MULTI_SELECTION_INPUT",
+                "options": [
+                    {
+                        "value": "daily",
+                        "label": "Daily"
+                    },
+                    {
+                        "value": "everyHour",
+                        "label": "Every x hours"
+                    },
+                    {
+                        "value": "weekly",
+                        "label": "Weekly"
+                    },
+                    {
+                        "value": "everyDays",
+                        "label": "Every x days"
+                    }
+                ]
+            }
+        ],
+        "handles": [
+            {
+                "type": "source",
+                "position": "top",
+                "id": "a_top",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "target",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            }
+        ]
+    }
+}

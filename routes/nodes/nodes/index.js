@@ -6,6 +6,11 @@ const nodes = [
   // require('./old/timeTicker.json')
   require ('./begin.json'),
   require ('./conditional.json'),
+  require ('./explanation.json'),
+  require ('./information.json'),
+  require ('./quiz.json'),
+  require ('./reminder.json'),
+  require ('./treatment-control.json'),
 ];
 
 module.exports = nodes;

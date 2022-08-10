@@ -1,0 +1,129 @@
+{
+    "id": 7,
+    "type": "GENERIC_NODE",
+    "data": {
+        "label": "Treatment control",
+        "description": "Some useful text",
+        "icon": "schedule_send",
+        "inputFields": [
+            {
+                "slug": "title",
+                "name": "Title",
+                "description": "Treatment name",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "description",
+                "name": "Description",
+                "description": "This treatment is about...",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "why",
+                "name": "Why?",
+                "description": "This treatment is important because...",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "notes",
+                "name": "Notes",
+                "description": "Extra information",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "dosage",
+                "name": "Dosage",
+                "description": "Dosage along with its unit (ml, mg...)",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "endDate",
+                "name": "End date",
+                "description": "This treatment will last until...",
+                "type": "DATE_INPUT"
+            },
+            {
+                "slug": "undefinedEnd",
+                "name": "Is end undefined?",
+                "description": "Sets end date as undefined",
+                "type": "BOOLEAN_INPUT"
+            },
+            {
+                "slug": "frequency",
+                "name": "Frequency",
+                "description": "How often this treatment should be performed?",
+                "type": "MULTI_SELECTION_INPUT",
+                "options": [
+                    {
+                        "value": "daily",
+                        "label": "Daily"
+                    },
+                    {
+                        "value": "everyHour",
+                        "label": "Every x hours"
+                    },
+                    {
+                        "value": "weekly",
+                        "label": "Weekly"
+                    },
+                    {
+                        "value": "everyDays",
+                        "label": "Every x days"
+                    }
+                ]
+            },
+            {
+                "slug": "treatmentSeverity",
+                "name": "Severity",
+                "description": "How critical is this reminder?",
+                "type": "MULTI_SELECTION_INPUT",
+                "options": [
+                    {
+                        "value": "1",
+                        "label": "Very low"
+                    },
+                    {
+                        "value": "2",
+                        "label": "Low"
+                    },
+                    {
+                        "value": "3",
+                        "label": "Medium"
+                    },
+                    {
+                        "value": "4",
+                        "label": "Critical"
+                    },
+                    {
+                        "value": "5",
+                        "label": "Very critical"
+                    }
+                ]
+            }
+        ],
+        "handles": [
+            {
+                "type": "source",
+                "position": "top",
+                "id": "a_top",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "target",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "id": 4,
+    "type": "GENERIC_NODE",
+    "data": {
+        "label": "Information",
+        "description": "Some useful text",
+        "icon": "schedule_send",
+        "inputFields": [
+            {
+                "slug": "title",
+                "name": "Title",
+                "description": "What's the subject?",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "description",
+                "name": "Description",
+                "description": "Information summary",
+                "type": "RAW_TEXT_INPUT"
+            },
+            {
+                "slug": "content",
+                "name": "Content",
+                "description": "Information content",
+                "type": "RAW_TEXT_INPUT"
+            }
+        ],
+        "handles": [
+            {
+                "type": "source",
+                "position": "top",
+                "id": "a_top",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            },
+            {
+                "type": "target",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
+            }
+        ]
+    }
+}
