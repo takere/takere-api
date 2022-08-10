@@ -1,6 +1,6 @@
 {
     "id": 3,
-    "type": "GENERIC_NODE",
+    "type": "EXPLANATION_NODE",
     "data": {
         "label": "Explanation",
         "description": "Guide / e-book for explaining something",
@@ -13,34 +13,16 @@
                 "type": "NUMBER_INPUT"
             },
             {
-                "slug": "endDate",
-                "name": "End date",
-                "description": "Type care plan end",
-                "type": "DATE_INPUT"
-            },
-            {
-                "slug": "undefinedEnd",
-                "name": "Is end undefined?",
-                "description": "Sets end date as undefined",
-                "type": "BOOLEAN_INPUT"
-            },
-            {
-                "slug": "repeatInterval",
-                "name": "Repeat interval",
-                "description": "How often should it repeat?",
+                "slug": "currentPage",
+                "name": "Current page",
+                "description": "Page to be edited",
                 "type": "NUMBER_INPUT"
             },
             {
-                "slug": "skipDays",
-                "name": "After each run, it will ignore the duration. example: 2 days, 15 minutes...",
-                "description": "Spacing between executions",
+                "slug": "content",
+                "name": "Content",
+                "description": "Page content",
                 "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "skipImmediate",
-                "name": "Ignore immediate execution?",
-                "description": "Setting this option to true will bypass immediate execution. The first run will only take place at the configured interval.",
-                "type": "BOOLEAN_INPUT"
             }
         ],
         "handles": [
