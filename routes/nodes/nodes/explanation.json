@@ -22,7 +22,7 @@
                 "slug": "content",
                 "name": "Content",
                 "description": "Page content",
-                "type": "RAW_TEXT_INPUT"
+                "type": "RICH_TEXT_INPUT"
             }
         ],
         "handles": [
