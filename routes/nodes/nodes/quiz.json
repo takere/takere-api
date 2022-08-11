@@ -1,6 +1,6 @@
 {
     "id": 5,
-    "type": "GENERIC_NODE",
+    "type": "QUIZ_NODE",
     "data": {
         "label": "Quiz",
         "description": "Some useful text",

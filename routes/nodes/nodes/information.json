@@ -1,6 +1,6 @@
 {
     "id": 4,
-    "type": "GENERIC_NODE",
+    "type": "INFORMATION_NODE",
     "data": {
         "label": "Information",
         "description": "Some useful text",

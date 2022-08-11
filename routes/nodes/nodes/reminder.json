@@ -1,6 +1,6 @@
 {
     "id": 6,
-    "type": "GENERIC_NODE",
+    "type": "REMINDER_NODE",
     "data": {
         "type": "REMINDER",
         "label": "Reminder",

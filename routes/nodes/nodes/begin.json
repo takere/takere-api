@@ -1,6 +1,6 @@
 {
     "id": 1,
-    "type": "TIME_TICKER",
+    "type": "BEGIN_NODE",
     "data": {
         "label": "Start",
         "description": "Every care plan must begin from this node",
