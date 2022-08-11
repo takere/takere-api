@@ -10,7 +10,7 @@ const nodes = [
   require ('./information.json'),
   require ('./quiz.json'),
   require ('./reminder.json'),
-  require ('./treatment-control.json'),
+  require ('./medication-control.json'),
 ];
 
 module.exports = nodes;

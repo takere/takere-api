@@ -2,26 +2,26 @@
     "id": 7,
     "type": "GENERIC_NODE",
     "data": {
-        "label": "Treatment control",
+        "label": "Medication control",
         "description": "Some useful text",
         "icon": "schedule_send",
         "inputFields": [
             {
-                "slug": "title",
-                "name": "Title",
-                "description": "Treatment name",
+                "slug": "name",
+                "name": "Name",
+                "description": "Medication name",
                 "type": "RAW_TEXT_INPUT"
             },
             {
                 "slug": "description",
                 "name": "Description",
-                "description": "This treatment is about...",
+                "description": "This medication is about...",
                 "type": "RAW_TEXT_INPUT"
             },
             {
                 "slug": "why",
                 "name": "Why?",
-                "description": "This treatment is important because...",
+                "description": "This medication is important because...",
                 "type": "RAW_TEXT_INPUT"
             },
             {
@@ -73,9 +73,9 @@
                 ]
             },
             {
-                "slug": "treatmentSeverity",
+                "slug": "medicineSeverity",
                 "name": "Severity",
-                "description": "How critical is this reminder?",
+                "description": "How critical is to intake this medicine?",
                 "type": "MULTI_SELECTION_INPUT",
                 "options": [
                     {
