@@ -6,10 +6,7 @@
         "label": "Reminder",
         "description": "Generates reminders about something",
         "icon": "textsms",
-        "style": {
-            "backgroundColor": "#fcf6e9",
-            "borderColor": "#433109"
-        },
+        "bgColor": "#f974bc",
         "inputFields": [
             {
                 "slug": "reminderName",

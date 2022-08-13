@@ -5,9 +5,7 @@
         "label": "Conditional",
         "description": "Chooses which flow will be executed based on some condition",
         "icon": "fork_left",
-        "style": {
-            "backgroundColor":"#dadada"
-        },
+        "bgColor": "#fbbc04",
         "inputFields": [
             {
                 "slug": "left",

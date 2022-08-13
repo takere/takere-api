@@ -4,7 +4,8 @@
     "data": {
         "label": "Quiz",
         "description": "Some useful text",
-        "icon": "schedule_send",
+        "icon": "quiz",
+        "bgColor": "#be96fb",
         "inputFields": [
             {
                 "slug": "totalQuestions",

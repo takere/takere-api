@@ -4,7 +4,8 @@
     "data": {
         "label": "Explanation",
         "description": "Guide / e-book for explaining something",
-        "icon": "schedule_send",
+        "icon": "school",
+        "bgColor": "#46bdc6",
         "inputFields": [
             {
                 "slug": "totalPages",

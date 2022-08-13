@@ -4,7 +4,8 @@
     "data": {
         "label": "Information",
         "description": "Some useful text",
-        "icon": "schedule_send",
+        "icon": "info",
+        "bgColor": "#49a9ff",
         "inputFields": [
             {
                 "slug": "title",

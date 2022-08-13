@@ -4,7 +4,8 @@
     "data": {
         "label": "Medication control",
         "description": "Some useful text",
-        "icon": "schedule_send",
+        "icon": "healing",
+        "bgColor": "#db594f",
         "inputFields": [
             {
                 "slug": "name",

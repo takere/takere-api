@@ -5,7 +5,7 @@
         "label": "Start",
         "description": "Every care plan must begin from this node",
         "icon": "schedule_send",
-        
+        "bgColor": "#34a853",
         "inputFields": [
             {
                 "slug": "startDate",
