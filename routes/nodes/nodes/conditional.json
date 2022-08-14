@@ -6,52 +6,6 @@
         "description": "Chooses which flow will be executed based on some condition",
         "icon": "fork_left",
         "bgColor": "#fbbc04",
-        "inputFields": [
-            {
-                "slug": "left",
-                "name": "Left",
-                "description": "Left operand",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "operator",
-                "name": "Operator",
-                "description": "Operator that will be applied in the left and right terms",
-                "type": "MULTI_SELECTION_INPUT",
-                "options": [
-                    {
-                        "value": "==",
-                        "label": "Equals to"
-                    },
-                    {
-                        "value": "!=",
-                        "label": "Not equals to"
-                    },
-                    {
-                        "value": ">=",
-                        "label": "Greater or equal than"
-                    },
-                    {
-                        "value": ">",
-                        "label": "Greater than"
-                    },
-                    {
-                        "value": "<=",
-                        "label": "Less or equal than"
-                    },
-                    {
-                        "value": "<",
-                        "label": "Less than"
-                    }
-                ]
-            },
-            {
-                "slug": "right",
-                "name": "Right",
-                "description": "Right operand.",
-                "type": "RAW_TEXT_INPUT"
-            }
-        ],
         "handles": [
             {
                 "type": "target",

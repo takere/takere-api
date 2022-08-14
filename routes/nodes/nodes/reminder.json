@@ -7,54 +7,6 @@
         "description": "Generates reminders about something",
         "icon": "textsms",
         "bgColor": "#f974bc",
-        "inputFields": [
-            {
-                "slug": "reminderName",
-                "name": "Name",
-                "description": "What's the subject?",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "reminderDescription",
-                "name": "Description",
-                "description": "This reminder is about...",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "reminderContent",
-                "name": "Content",
-                "description": "Reminder content",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "reminderSeverity",
-                "name": "Severity",
-                "description": "How critical is this reminder?",
-                "type": "MULTI_SELECTION_INPUT",
-                "options": [
-                    {
-                        "value": "1",
-                        "label": "Very low"
-                    },
-                    {
-                        "value": "2",
-                        "label": "Low"
-                    },
-                    {
-                        "value": "3",
-                        "label": "Medium"
-                    },
-                    {
-                        "value": "4",
-                        "label": "Critical"
-                    },
-                    {
-                        "value": "5",
-                        "label": "Very critical"
-                    }
-                ]
-            }
-        ],
         "handles": [
             {
                 "type": "target",

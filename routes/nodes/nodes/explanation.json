@@ -6,26 +6,6 @@
         "description": "Guide / e-book for explaining something",
         "icon": "school",
         "bgColor": "#46bdc6",
-        "inputFields": [
-            {
-                "slug": "totalPages",
-                "name": "Total pages",
-                "description": "Explanation total pages",
-                "type": "NUMBER_INPUT"
-            },
-            {
-                "slug": "currentPage",
-                "name": "Current page",
-                "description": "Page to be edited",
-                "type": "NUMBER_INPUT"
-            },
-            {
-                "slug": "content",
-                "name": "Content",
-                "description": "Page content",
-                "type": "RICH_TEXT_INPUT"
-            }
-        ],
         "handles": [
             {
                 "type": "target",

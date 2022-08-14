@@ -6,44 +6,6 @@
         "description": "Every care plan must begin from this node",
         "icon": "schedule_send",
         "bgColor": "#34a853",
-        "inputFields": [
-            {
-                "slug": "startDate",
-                "name": "Start date",
-                "description": "Type care plan begin",
-                "type": "DATE_INPUT"
-            },
-            {
-                "slug": "endDate",
-                "name": "End date",
-                "description": "Type care plan end",
-                "type": "DATE_INPUT"
-            },
-            {
-                "slug": "undefinedEnd",
-                "name": "Is end undefined?",
-                "description": "Sets end date as undefined",
-                "type": "BOOLEAN_INPUT"
-            },
-            {
-                "slug": "repeatInterval",
-                "name": "Repeat interval",
-                "description": "How often should it repeat?",
-                "type": "NUMBER_INPUT"
-            },
-            {
-                "slug": "skipDays",
-                "name": "How often care plan should be executed? 2 days, 15 minutes...",
-                "description": "Spacing between executions",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "skipImmediate",
-                "name": "Ignore immediate execution?",
-                "description": "Setting this option to true will bypass immediate execution. The first run will only take place at the configured interval.",
-                "type": "BOOLEAN_INPUT"
-            }
-        ],
         "handles": [
             {
                 "type": "source",

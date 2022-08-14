@@ -6,26 +6,6 @@
         "description": "Some useful text",
         "icon": "info",
         "bgColor": "#49a9ff",
-        "inputFields": [
-            {
-                "slug": "title",
-                "name": "Title",
-                "description": "What's the subject?",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "description",
-                "name": "Description",
-                "description": "Information summary",
-                "type": "RAW_TEXT_INPUT"
-            },
-            {
-                "slug": "content",
-                "name": "Content",
-                "description": "Information content",
-                "type": "RAW_TEXT_INPUT"
-            }
-        ],
         "handles": [
             {
                 "type": "target",
