@@ -2,7 +2,8 @@ const job = require('../../jobs/handleJobs')
 
 const express = require('express');
 const router = express.Router();
-const Board = require('./../../models/Board');
+// const Board = require('../../repositories').boardCollection;
+const Board = require('../../models/Board');
 
 router.get('/', async function(req, res, next) {
     const searchEmail = await req?.query?.email;

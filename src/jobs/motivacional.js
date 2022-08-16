@@ -1,6 +1,6 @@
-const Board = require('../models/Board')
-const Flow = require('../models/Flow')
-const Executed = require('../models/Executed')
+const Board = require('../models/Board');
+const Executed = require('../models/Executed');
+const Flow = require('../models/Flow');
 
 const handler = async (data, jobId, flowId) => {
     const flow = await Flow.findById(flowId);

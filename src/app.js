@@ -1,11 +1,15 @@
-require('dotenv').config()
+const generalConfig = require('./config/general.config');
 const express = require('express');
 const path = require('path');
 const http = require('http');
 const morgan = require('morgan');
 const passport = require('passport');
 const winston = require('./helpers/logger');
-const {mongoose} = require('./db/mongoose');
+// const mongoose = require('./db/mongoose');
+const Repository = require('./repositories');
+
+Repository.connect();
+
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -13,7 +17,7 @@ const jQueue = require('./helpers/jobQueue');
 require('./helpers/passport')(passport);
 
 const app = express();
-const port = process.env.PORT || '3000'
+const port = generalConfig.port || '3000'
 app.set('port', port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -73,7 +77,9 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 
-module.exports = app;
+module.exports = {
+  run: () => app
+};
 
 
 function onError(error) {

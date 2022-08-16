@@ -3,10 +3,14 @@ const router = express.Router();
 const Node = require('../../models/Node');
 const Edge = require('../../models/Edge');
 const Flow = require('../../models/Flow');
+// const Node = require('../../repositories').nodeCollection;
+// const Edge = require('../../repositories').edgeCollection;
+// const Flow = require('../../repositories').flowCollection;
 const ag =  require('./../../helpers/jobQueue');
 
+
 router.post('/', async function(req, res, next) {
-    const {data, name, description, userEmail, id} = req.body
+    const { data, name, description, userEmail } = req.body
     const user = await req.user;
 
     let timeTickers = [];
@@ -22,7 +26,8 @@ router.post('/', async function(req, res, next) {
     await flow.save();
 
     for (n of nodes){
-        const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id });
+        console.log('STORING', n.id)
+        const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
         edges.map(e => {
             if(e?.target === n.id){
                 e.target = dbNode._id

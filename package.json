@@ -1,9 +1,9 @@
 {
-  "name": "da-canvas-api",
-  "version": "0.0.1",
+  "name": "takere-api",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "agenda": "^4.2.1",

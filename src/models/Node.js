@@ -2,6 +2,11 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 const NodeSchema = new mongoose.Schema({
+    id: {
+      type: String,
+      required: true,
+      trim: true
+    },
     type: {
       type: String,
       required: true,

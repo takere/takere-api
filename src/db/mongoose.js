@@ -28,6 +28,4 @@ mongoose.connect(`${process.env.MONGODB_URI}`, options, (err) => {
   }
 })
 
-module.exports = {
-  mongoose
-}
+module.exports = mongoose;
