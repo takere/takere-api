@@ -1,7 +1,4 @@
-// const Edge = require('../models/Edge');
-// const Node = require('../models/Node');
 const Edge = require('../models/Edge');
-// const Node = require('../models/Node');
 const nodeService = require('../services/node.service');
 const jobs = require('../jobs/handleJobs');
 
