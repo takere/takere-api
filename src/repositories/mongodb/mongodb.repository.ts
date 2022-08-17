@@ -1,3 +1,7 @@
+import Repository from "../repository";
+import userRepository from "../user.repository";
+
+const usersCollection = require('./collections/users.collection');
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
 const logger = require('../../helpers/logger');
@@ -29,12 +33,31 @@ const connect = () => {
       logger.error('Unable to connect to the server. Please start the server. Error:', err)
     } 
     else {
-      db = mongoose;
+      //db = mongoose;
       logger.debug('Connected to DB Server successfully! ')
     }
   });
 }
 
-module.exports = {
-  connect
-};
+class MongoDbRepository implements Repository {
+  userRepository: userRepository;
+  
+  constructor() {
+    this.userRepository = {
+    }
+  }
+
+  connect() {
+    mongoose.connect(`mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.database}?retryWrites=true&w=majority`, options, (err: any) => {
+      if (err) {
+        logger.error('Unable to connect to the server. Please start the server. Error:', err)
+      } 
+      else {
+        //db = mongoose;
+        logger.debug('Connected to DB Server successfully! ')
+      }
+    });
+  }
+}
+
+module.exports = MongoDbRepository;
