@@ -1,5 +1,6 @@
+import User from "../../domain/user.domain";
 import Repository from "../repository";
-import userRepository from "../user.repository";
+import UserRepository from "../user.repository";
 
 const usersCollection = require('./collections/users.collection');
 const mongoose = require('mongoose');
@@ -23,41 +24,34 @@ const options = {
   // family: 4 // Use IPv4, skip trying IPv6
 };
 
-/**
- * Opens the connection to database and saves the connection in 'db' variable.
- * @returns {Promise} A promise that will be resolved to the database connection if successful
- */
-const connect = () => {
-  mongoose.connect(`mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.database}?retryWrites=true&w=majority`, options, (err) => {
-    if (err) {
-      logger.error('Unable to connect to the server. Please start the server. Error:', err)
-    } 
-    else {
-      //db = mongoose;
-      logger.debug('Connected to DB Server successfully! ')
-    }
-  });
-}
-
 class MongoDbRepository implements Repository {
-  userRepository: userRepository;
+  _userRepository: UserRepository;
   
   constructor() {
-    this.userRepository = {
+    this._userRepository = {
+      findByEmail: (email: string) => usersCollection.findByEmail(email),
+      findById: (id: string) => usersCollection.findById(id),
+      save: (user: User) => usersCollection.save(user)
     }
   }
 
+  /**
+   * Opens the connection to database.
+   */
   connect() {
     mongoose.connect(`mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.database}?retryWrites=true&w=majority`, options, (err: any) => {
       if (err) {
         logger.error('Unable to connect to the server. Please start the server. Error:', err)
       } 
       else {
-        //db = mongoose;
         logger.debug('Connected to DB Server successfully! ')
       }
     });
   }
+
+  get userRepository(): UserRepository {
+    return this._userRepository;
+  }
 }
 
-module.exports = MongoDbRepository;
+module.exports = new MongoDbRepository();

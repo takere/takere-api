@@ -6,9 +6,9 @@ const morgan = require('morgan');
 const passport = require('passport');
 const winston = require('./helpers/logger');
 // const mongoose = require('./db/mongoose');
-const Repository = require('./repositories');
+const repository = require('./repositories');
 
-Repository.connect();
+repository.connect();
 
 const cors = require('cors');
 const cookieParser = require('cookie-parser');

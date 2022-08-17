@@ -1,15 +1,16 @@
 import User from "../domain/user.domain";
 import UserDTO from '../dto/user.dto';
+import Repository from "../repositories/repository";
 import UserRepository from "../repositories/user.repository";
+
 const bcrypt = require('bcrypt');
 const generalConfig = require('../config/general.config');
-const repositories = require('../repositories');
 
 export class UserService {
   userRepository: UserRepository; 
 
-  constructor() {
-    this.userRepository = ;
+  constructor(repository: Repository) {
+    this.userRepository = repository.userRepository;
   }
 
   findByEmail(email: string): Promise<User> {
