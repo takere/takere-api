@@ -1,24 +1,24 @@
 import User from "../domain/user.domain";
 import UserDTO from '../dto/user.dto';
-import Repository from "../repositories/repository";
 import UserRepository from "../repositories/user.repository";
 
 const bcrypt = require('bcrypt');
 const generalConfig = require('../config/general.config');
+const repository = require('../repositories');
 
-export class UserService {
-  userRepository: UserRepository; 
+class UserService {
+  private userRepository: UserRepository; 
 
-  constructor(repository: Repository) {
+  constructor() {
     this.userRepository = repository.userRepository;
   }
 
-  findByEmail(email: string): Promise<User> {
-
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ email });
   }
 
-  findById(id: string): Promise<User> {
-
+  async findById(id: string): Promise<User> {
+    return this.userRepository.findOne({ _id: id });
   }
 
   async createUser(user: UserDTO): Promise<User> {
@@ -29,3 +29,5 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 }
+
+module.exports = new UserService();

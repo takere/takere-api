@@ -2,7 +2,7 @@ import User from "../../domain/user.domain";
 import Repository from "../repository";
 import UserRepository from "../user.repository";
 
-const usersCollection = require('./collections/users.collection');
+const userCollection = require('./collections/user.collection');
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
 const logger = require('../../helpers/logger');
@@ -25,21 +25,13 @@ const options = {
 };
 
 class MongoDbRepository implements Repository {
-  _userRepository: UserRepository;
-  
-  constructor() {
-    this._userRepository = {
-      findByEmail: (email: string) => usersCollection.findByEmail(email),
-      findById: (id: string) => usersCollection.findById(id),
-      save: (user: User) => usersCollection.save(user)
-    }
-  }
+  private static _userRepository: UserRepository;
 
   /**
    * Opens the connection to database.
    */
-  connect() {
-    mongoose.connect(`mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.database}?retryWrites=true&w=majority`, options, (err: any) => {
+  public connect() {
+    mongoose.connect(this.buildUri(), options, (err: any) => {
       if (err) {
         logger.error('Unable to connect to the server. Please start the server. Error:', err)
       } 
@@ -49,8 +41,33 @@ class MongoDbRepository implements Repository {
     });
   }
 
-  get userRepository(): UserRepository {
-    return this._userRepository;
+  private buildUri(): string {
+    const uri: string[] = [];
+
+    uri.push('mongodb+srv://');
+    uri.push(dbConfig.user);
+    uri.push(':');
+    uri.push(dbConfig.password);
+    uri.push('@');
+    uri.push(dbConfig.host);
+    uri.push('/');
+    uri.push(dbConfig.database);
+    uri.push('?retryWrites=true&w=majority');
+
+    return uri.join('');
+  }
+
+  public get userRepository(): UserRepository {
+    if (MongoDbRepository._userRepository) {
+      return MongoDbRepository._userRepository;
+    }
+
+    MongoDbRepository._userRepository = {
+      findOne: (fields: object) => userCollection.findOne(fields),
+      save: (user: User) => userCollection.save(user)
+    }
+
+    return MongoDbRepository._userRepository;
   }
 }
 

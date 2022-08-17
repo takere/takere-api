@@ -1,3 +1,5 @@
-const repository = require('./mongodb/mongodb.repository');
+import Repository from "./repository";
+
+const repository: Repository = require('./mongodb/mongodb.repository');
 
 module.exports = repository;

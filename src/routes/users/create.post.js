@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/Users')
-// const User = require('../../repositories').usersCollection;
+const UserService = require('../../services/user.service');
 
 const logger = require('./../../helpers/logger');
 const jwt = require('jsonwebtoken');
@@ -14,7 +13,7 @@ router.post('/', async function(req, res, next) {
     if(password.length < 3) throw new Error('Password is too small')
     const profileUrl = `https://api.adorable.io/avatars/285/${email}`
 
-    const createdUser = await User.createUser(firstName, lastName, password, email, profileUrl)
+    const createdUser = await UserService.createUser(firstName, lastName, password, email, profileUrl)
     const token = jwt.sign({
       data: createdUser
     }, process.env.TOKEN_SECRET, {

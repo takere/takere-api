@@ -1,7 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
-//const User = require('./../models/Users')
-const User = require('../models/Users');
+const UserService = require('../services/user.service');
 const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -9,7 +8,7 @@ const JwtStrategy = passportJWT.Strategy;
 function initialize(passport) {
 
   const authenticateUser = async (email, password, done) => {
-    const user = await User.findByEmail(email)
+    const user = await UserService.findByEmail(email)
     if (user === null) {
       return done(null, false, { message: 'Usuário ou senha inválido' })
     }
@@ -28,7 +27,7 @@ function initialize(passport) {
   passport.use(new LocalStrategy({usernameField: 'email'}, authenticateUser))
   passport.serializeUser((user, done) => done(null, user._id))
   passport.deserializeUser((id, done) => {
-    return done(null, User.findById(id))
+    return done(null, UserService.findById(id))
   })
 
   passport.use(new JwtStrategy({
@@ -36,7 +35,7 @@ function initialize(passport) {
     secretOrKey: process.env.TOKEN_SECRET
   }, async function(jwt_payload, done) {
     try{
-      const user = await User.findById(jwt_payload.data._id)
+      const user = await UserService.findById(jwt_payload.data._id)
       return done(null, user);
     } catch (e){
       return done(e, false);
