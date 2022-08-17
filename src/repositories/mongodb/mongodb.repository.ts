@@ -1,8 +1,8 @@
-import User from "../../domain/user.domain";
+
+import NodeRepository from "../node.repository";
 import Repository from "../repository";
 import UserRepository from "../user.repository";
 
-const userCollection = require('./collections/user.collection');
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
 const logger = require('../../helpers/logger');
@@ -25,7 +25,31 @@ const options = {
 };
 
 class MongoDbRepository implements Repository {
-  private static _userRepository: UserRepository;
+  //private static _userRepository: UserRepository;
+  private static _instance: MongoDbRepository;
+  private repositories: any;
+
+  constructor() {
+    if (MongoDbRepository._instance) {
+      return MongoDbRepository._instance;
+    }
+
+    this.initializeRepositories();
+    MongoDbRepository._instance = this;
+  }
+
+  private initializeRepositories(): void {
+    this.repositories = {
+      userRepository: this.buildInstance('./collections/user.collection'),
+      nodeRepository: this.buildInstance('./collections/node.collection'),
+    }
+  }
+
+  private buildInstance(path: any): any {
+    const className = require(path);
+    
+    return new className();
+  }
 
   /**
    * Opens the connection to database.
@@ -58,16 +82,11 @@ class MongoDbRepository implements Repository {
   }
 
   public get userRepository(): UserRepository {
-    if (MongoDbRepository._userRepository) {
-      return MongoDbRepository._userRepository;
-    }
+    return this.repositories['userRepository'];
+  }
 
-    MongoDbRepository._userRepository = {
-      findOne: (fields: object) => userCollection.findOne(fields),
-      save: (user: User) => userCollection.save(user)
-    }
-
-    return MongoDbRepository._userRepository;
+  public get nodeRepository(): NodeRepository {
+    return this.repositories['nodeRepository'];
   }
 }
 

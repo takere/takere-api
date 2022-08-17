@@ -1,5 +1,5 @@
 export default interface Node {
-  _id: string | undefined,
+  id: string | undefined,
   type: string,
   data: object,
   position: object,

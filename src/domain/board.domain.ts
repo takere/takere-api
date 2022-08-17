@@ -1,5 +1,5 @@
 export default interface Board {
-  _id: string | undefined,
+  id: string | undefined,
   name: string,
   description: string,
   userEmail: string,

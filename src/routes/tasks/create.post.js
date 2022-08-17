@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Node = require('../../models/Node');
+// const Node = require('../../models/Node');
+const nodeService = require('../../services/node.service');
 const Edge = require('../../models/Edge');
 const Flow = require('../../models/Flow');
 // const Node = require('../../repositories').nodeCollection;
@@ -26,22 +27,24 @@ router.post('/', async function(req, res, next) {
     await flow.save();
 
     for (n of nodes){
+        n
         console.log('STORING', n.id)
-        const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
+        // const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
+        const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
         edges.map(e => {
             if(e?.target === n.id){
-                e.target = dbNode._id
+                e.target = storedNode._id
             }
             if(e.source === n.id){
-                e.source = dbNode._id
+                e.source = storedNode._id
             }
         });
 
-        if(dbNode.type === 'TIME_TICKER'){
-            timeTickers.push(dbNode);
+        if(storedNode.type === 'TIME_TICKER'){
+            timeTickers.push(storedNode);
         }
 
-        dbNode.save();
+        // dbNode.save();
     }
 
     for(e of edges){

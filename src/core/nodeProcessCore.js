@@ -1,7 +1,8 @@
 // const Edge = require('../models/Edge');
 // const Node = require('../models/Node');
 const Edge = require('../models/Edge');
-const Node = require('../models/Node');
+// const Node = require('../models/Node');
+const nodeService = require('../services/node.service');
 const jobs = require('../jobs/handleJobs');
 
 
@@ -10,7 +11,7 @@ const process = async (node) => {
 }
 
 const handleRecursiveTreeEdges = async (nodeId) => {
-    const sourceNode = await Node.findOne({_id: nodeId });
+    const sourceNode = await nodeService.findById(nodeId);
     const edges = await Edge.find({ source: sourceNode._id });
     await jobs.handleJob(sourceNode.data.type, sourceNode._id, sourceNode.data, sourceNode.flow);
     for(e of edges){
