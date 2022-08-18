@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 
 const ExecutedSchema = new mongoose.Schema({
@@ -31,5 +30,4 @@ ExecutedSchema.pre("save", function(next) {
   next();
 });
 
-const Executed = new mongoose.model('Executed', ExecutedSchema)
-module.exports = Executed
+module.exports = new mongoose.model('Executed', ExecutedSchema);

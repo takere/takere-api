@@ -11,8 +11,8 @@ class FlowService {
     this.flowRepository = repository.flowRepository;
   }
 
-  async find(fields: object): Promise<Flow[]> {
-    return this.flowRepository.find(fields);
+  async findByUserId(id: string): Promise<Flow[]> {
+    return this.flowRepository.find({ user: id });
   }
 
   async findById(id: string): Promise<Flow> {
@@ -23,8 +23,8 @@ class FlowService {
     return this.flowRepository.findOneAndRemove({user: userId, _id: flowId});
   }
 
-  async insert(node: Flow): Promise<Flow> {
-    return this.flowRepository.save(node);
+  async insert(flow: Flow): Promise<Flow> {
+    return this.flowRepository.save(flow);
   }
 }
 

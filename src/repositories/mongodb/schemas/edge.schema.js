@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 
 const EdgeSchema = new mongoose.Schema({
@@ -36,5 +35,5 @@ EdgeSchema.pre("save", function(next) {
   next();
 });
 
-const Edge = new mongoose.model('Edge', EdgeSchema)
-module.exports = Edge
+
+module.exports = new mongoose.model('Edge', EdgeSchema);

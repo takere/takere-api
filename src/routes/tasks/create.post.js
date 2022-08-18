@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const nodeService = require('../../services/node.service');
 const flowService = require('../../services/flow.service');
-const Edge = require('../../models/Edge');
+const edgeService = require('../../services/edge.service');
 const ag =  require('./../../helpers/jobQueue');
 
 
@@ -43,8 +43,9 @@ router.post('/', async function(req, res, next) {
     }
 
     for(e of edges){
-        const dbEdge = new Edge({source: e.source, target: e?.target, flow: flow._id, animated: e.animated});
-        dbEdge.save();
+        edgeService.insert({source: e.source, target: e?.target, flow: flow._id, animated: e.animated});
+
+        
     }
 
     for(t of timeTickers){

@@ -1,4 +1,6 @@
 
+import EdgeRepository from "../edge.repository";
+import ExecutedRepository from "../executed.repository";
 import FlowRepository from "../flow.repository";
 import NodeRepository from "../node.repository";
 import Repository from "../repository";
@@ -43,7 +45,9 @@ class MongoDbRepository implements Repository {
     this.repositories = {
       userRepository: this.buildInstance('./collections/user.collection'),
       nodeRepository: this.buildInstance('./collections/node.collection'),
-      flowRepository: this.buildInstance('./collections/flow.collection')
+      flowRepository: this.buildInstance('./collections/flow.collection'),
+      executedRepository: this.buildInstance('./collections/executed.collection'),
+      edgeRepository: this.buildInstance('./collections/edge.collection')
     }
   }
 
@@ -93,6 +97,14 @@ class MongoDbRepository implements Repository {
 
   public get flowRepository(): FlowRepository {
     return this.repositories['flowRepository'];
+  }
+
+  public get executedRepository(): ExecutedRepository {
+    return this.repositories['executedRepository'];
+  }
+
+  public get edgeRepository(): EdgeRepository {
+    return this.repositories['edgeRepository'];
   }
 }
 

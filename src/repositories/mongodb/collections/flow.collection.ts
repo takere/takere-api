@@ -21,9 +21,7 @@ class FlowCollection implements FlowRepository {
   }
 
   public async find(fields: object): Promise<Flow[]> {
-    const storedFlow = await this._schema.find(fields);
-
-    return storedFlow;
+    return this._schema.find(fields);
   }
 
   public async save(flow: Flow): Promise<Flow> {

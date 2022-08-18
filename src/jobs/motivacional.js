@@ -1,10 +1,10 @@
 const Board = require('../models/Board');
-const Executed = require('../models/Executed');
+const executedService = require('../services/executed.service');
 const flowService = require('../services/flow.service');
 
 const handler = async (data, jobId, flowId) => {
-    const flow = await flowService.findById(flowId);
-    const executed = await Executed.create(
+    const flow = await flowService.findByFlowId(flowId);
+    const executed = await executedService.insert(
         pickMotivational(data.results),
         jobId
     );
