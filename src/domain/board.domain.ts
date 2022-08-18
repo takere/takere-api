@@ -3,8 +3,8 @@ export default interface Board {
   name: string,
   description: string,
   userEmail: string,
-  flow: any,
-  node: any,
-  executed: any,
+  flow: string,
+  node: string,
+  executed: string | undefined,
   completed: boolean
 }

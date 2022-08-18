@@ -2,12 +2,11 @@ const job = require('../../jobs/handleJobs')
 
 const express = require('express');
 const router = express.Router();
-// const Board = require('../../repositories').boardCollection;
-const Board = require('../../models/Board');
+const boardService = require('../../services/board.service');
 
 router.get('/', async function(req, res, next) {
     const searchEmail = await req?.query?.email;
-    const boards = await Board.findByUserEmail(searchEmail);
+    const boards = await boardService.findByUserEmail(searchEmail);
     const data = [];
 
     for(const b of boards) {

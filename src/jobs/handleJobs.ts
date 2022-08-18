@@ -10,7 +10,7 @@ const JOB_TYPES = {
     REMINDER: "REMINDER"
 }
 
-const handleJob = async (jobName, jobId, data, flowId) => {
+const handleJob = async (jobName: string, jobId: string, data: any, flowId: string) => {
     switch (jobName) {
         case JOB_TYPES.EXTERNAL_LINK:
             await externalLink.handler(data, jobId, flowId)
