@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();
-// const Node = require('../../models/Node');
 const nodeService = require('../../services/node.service');
+const flowService = require('../../services/flow.service');
 const Edge = require('../../models/Edge');
-const Flow = require('../../models/Flow');
-// const Node = require('../../repositories').nodeCollection;
-// const Edge = require('../../repositories').edgeCollection;
-// const Flow = require('../../repositories').flowCollection;
 const ag =  require('./../../helpers/jobQueue');
 
 
@@ -17,14 +13,13 @@ router.post('/', async function(req, res, next) {
     let timeTickers = [];
     let nodes = data.filter(d => d.type);
     let edges = data.filter(d => d.source);
-
-    const flow = new Flow({
+    const flow = {
         user: user._id,
         name: name,
         userEmail: userEmail,
         description: description
-    });
-    await flow.save();
+    };
+    await flowService.save(flow);
 
     for (n of nodes){
         n

@@ -1,4 +1,5 @@
 
+import FlowRepository from "../flow.repository";
 import NodeRepository from "../node.repository";
 import Repository from "../repository";
 import UserRepository from "../user.repository";
@@ -42,6 +43,7 @@ class MongoDbRepository implements Repository {
     this.repositories = {
       userRepository: this.buildInstance('./collections/user.collection'),
       nodeRepository: this.buildInstance('./collections/node.collection'),
+      flowRepository: this.buildInstance('./collections/flow.collection')
     }
   }
 
@@ -87,6 +89,10 @@ class MongoDbRepository implements Repository {
 
   public get nodeRepository(): NodeRepository {
     return this.repositories['nodeRepository'];
+  }
+
+  public get flowRepository(): FlowRepository {
+    return this.repositories['flowRepository'];
   }
 }
 

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 
 const FlowSchema = new mongoose.Schema({
@@ -34,14 +33,4 @@ FlowSchema.pre("save", function(next) {
   next();
 });
 
-FlowSchema.statics.findById = async function (id) {
-    const Flow = this
-    return new Promise (async (resolve, reject) => {
-        let flow = await Flow.findOne({ _id: id })
-        if (!flow) reject(401)
-        resolve(flow)
-    })
-}
-
-const Flow = new mongoose.model('Flow', FlowSchema)
-module.exports = Flow
+module.exports = new mongoose.model('Flow', FlowSchema);

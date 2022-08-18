@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Flow = require('../../models/Flow');
+const flowService = require('../../services/flow.service');
 router.get('/', async function(req, res, next) {
     const user = await req.user;
-    const flows = await Flow.find({user: user._id});
+    const flows = await flowService.find({user: user._id});
 
     res.send(flows);
 });
