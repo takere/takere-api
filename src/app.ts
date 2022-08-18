@@ -1,3 +1,5 @@
+import Route from "./routes/route";
+
 const generalConfig = require('./config/general.config');
 const express = require('express');
 const path = require('path');
@@ -5,7 +7,7 @@ const http = require('http');
 const morgan = require('morgan');
 const passport = require('passport');
 const winston = require('./helpers/logger');
-// const mongoose = require('./db/mongoose');
+const routes: Route[] = require('./routes');
 const repository = require('./repositories');
 
 repository.connect();
@@ -22,7 +24,7 @@ app.set('port', port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(morgan(function (tokens, req, res) {
+app.use(morgan(function (tokens: any, req: any, res: any) {
   winston.info([
     tokens.method(req, res),
     tokens.url(req, res),
@@ -40,16 +42,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize())
 
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users/users'));
-app.use('/tasks', require('./routes/tasks/tasks'));
-app.use('/nodes', require('./routes/nodes/nodes'));
-app.use('/board', require('./routes/board/board'));
+for (let route of routes) {
+  app.use(route.path, route.module);
+}
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function(req: any, res: any, next: any) {
   const err = new Error('Not Found');
-  err.status = 404;
+  //err.status = 404;
+  err.message = '404'
   next(err);
 });
 
@@ -59,7 +60,7 @@ jQueue.jobQueue();
 
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err: any, req: any, res: any, next: any) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -82,7 +83,7 @@ module.exports = {
 };
 
 
-function onError(error) {
+function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }

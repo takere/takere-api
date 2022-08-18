@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const nodeService = require('../../services/node.service');
-const flowService = require('../../services/flow.service');
-const edgeService = require('../../services/edge.service');
+const nodeService = require('../../../services/node.service');
+const flowService = require('../../../services/flow.service');
+const edgeService = require('../../../services/edge.service');
 
 router.get('/:uid', async function(req, res, next) {
     const user = await req.user;

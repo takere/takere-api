@@ -1,9 +1,9 @@
-const job = require('../../jobs/handleJobs')
+const job = require('../../../jobs/handleJobs')
 
 const express = require('express');
 const router = express.Router();
-const executedService = require('../../services/executed.service');
-const boardService = require('../../services/board.service');
+const executedService = require('../../../services/executed.service');
+const boardService = require('../../../services/board.service');
 
 router.post('/', async function(req, res, next) {
     const {boardId, result} = req.body

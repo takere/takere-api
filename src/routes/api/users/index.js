@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const cors = require('cors');
-const auth = require('./../../helpers/auth')
+const auth = require('../../../helpers/auth')
 
 router.use('/create', require('./create.post'));
 router.use('/login', passport.authenticate('local') , require('./login.post'));

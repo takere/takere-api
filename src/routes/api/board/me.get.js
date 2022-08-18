@@ -1,8 +1,8 @@
-const job = require('../../jobs/handleJobs')
+const job = require('../../../jobs/handleJobs')
 
 const express = require('express');
 const router = express.Router();
-const boardService = require('../../services/board.service');
+const boardService = require('../../../services/board.service');
 
 router.get('/', async function(req, res, next) {
     const searchEmail = await req?.query?.email;
