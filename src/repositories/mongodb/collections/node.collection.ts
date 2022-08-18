@@ -25,7 +25,8 @@ class NodeCollection implements NodeRepository {
   }
 
   public async save(node: Node): Promise<Node> {
-    const storedNode = await this._schema.save({ ...node, _id: node.id });
+    const targetNode = new this._schema(node);
+    const storedNode = await targetNode.save();
 
     return { ...storedNode, id: storedNode._id };
   }

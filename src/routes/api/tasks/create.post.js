@@ -13,25 +13,25 @@ router.post('/', async function(req, res, next) {
     let timeTickers = [];
     let nodes = data.filter(d => d.type);
     let edges = data.filter(d => d.source);
-    const flow = {
-        user: user._id,
+
+    const flow = await flowService.insert({
+        user: user.id,
         name: name,
         userEmail: userEmail,
         description: description
-    };
-    await flowService.save(flow);
+    });
 
     for (n of nodes){
         n
         console.log('STORING', n.id)
-        // const dbNode = new Node({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
-        const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow._id, id: n.id });
+        const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id });
+        
         edges.map(e => {
             if(e?.target === n.id){
-                e.target = storedNode._id
+                e.target = storedNode.id
             }
             if(e.source === n.id){
-                e.source = storedNode._id
+                e.source = storedNode.id
             }
         });
 
@@ -41,12 +41,13 @@ router.post('/', async function(req, res, next) {
 
         // dbNode.save();
     }
-
+    console.log('inserting edges...');
     for(e of edges){
-        edgeService.insert({source: e.source, target: e?.target, flow: flow._id, animated: e.animated});
-
-        
+        edgeService.insert({source: e.source, target: e?.target, flow: flow.id, animated: e.animated});
     }
+
+    console.log('ok');
+
 
     for(t of timeTickers){
         

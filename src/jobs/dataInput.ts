@@ -11,7 +11,7 @@ const handler = async (data: any, jobId: string, flowId: string) => {
         name: data.results.boardName,
         description: data.results.boardDescription,
         userEmail: flow.userEmail,
-        flow: flow._id,
+        flow: flow.id,
         node: jobId,
         executed: undefined
     }

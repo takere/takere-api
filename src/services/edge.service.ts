@@ -28,7 +28,7 @@ class EdgeService {
   }
 
   async insert(edge: Edge): Promise<Edge> {
-    return this.edgeRepository.save(edge);
+    return this.edgeRepository.save({ ...edge, id: undefined });
   }
 }
 

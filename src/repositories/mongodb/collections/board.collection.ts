@@ -23,7 +23,8 @@ class BoardCollection implements BoardRepository {
   }
 
   public async save(board: Board): Promise<Board> {
-    const storedBoard = await this._schema.save({ ...board, _id: board.id });
+    const targetBoard = new this._schema(board);
+    const storedBoard = await targetBoard.save();
 
     return { ...storedBoard, id: storedBoard._id };
   }

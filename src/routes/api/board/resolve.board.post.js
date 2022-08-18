@@ -14,13 +14,12 @@ router.post('/', async function(req, res, next) {
     if(!board.executed) {
        const executed = await executedService.insert(
             result,
-            board._id
+            board.id
        );
-        board.executed = executed._id;
+        board.executed = executed.id;
     }
 
     boardService.update(board);
-    //board.save()
 
     res.send(board);
 });

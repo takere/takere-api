@@ -25,7 +25,8 @@ class FlowCollection implements FlowRepository {
   }
 
   public async save(flow: Flow): Promise<Flow> {
-    const storedFlow = await this._schema.save({ ...flow, _id: flow.id });
+    const targetFlow = new this._schema(flow);
+    const storedFlow = await targetFlow.save();
 
     return { ...storedFlow, id: storedFlow._id };
   }

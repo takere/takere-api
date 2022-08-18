@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/', async function(req, res, next) {
   let user = await req.user;
   res.send({status: 200, message: 'ok', data: {
-      _id: user._id,
+      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,

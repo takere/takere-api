@@ -9,7 +9,8 @@ class ExecutedCollection implements ExecutedRepository {
   }
 
   public async save(executed: Executed): Promise<Executed> {
-    const storedExecuted = await this._schema.save({ ...executed, _id: executed.id });
+    const targetExecuted = new this._schema(executed);
+    const storedExecuted = await targetExecuted.save();
 
     return { ...storedExecuted, id: storedExecuted._id };
   }

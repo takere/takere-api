@@ -24,7 +24,7 @@ class FlowService {
   }
 
   async insert(flow: Flow): Promise<Flow> {
-    return this.flowRepository.save(flow);
+    return this.flowRepository.save({ ...flow, id: undefined });
   }
 }
 

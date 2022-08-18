@@ -15,7 +15,8 @@ class UserCollection implements UserRepository {
   }
 
   public async save(user: User): Promise<User> {
-    const storedUser = await this._schema.save({ ...user, _id: user.id });
+    const targetUser = new this._schema(user);
+    const storedUser = await targetUser.save();
 
     return { ...storedUser, id: storedUser._id };
   }

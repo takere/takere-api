@@ -23,7 +23,8 @@ class EdgeCollection implements EdgeRepository {
   }
 
   public async save(edge: Edge): Promise<Edge> {
-    const storedEdge = await this._schema.save({ ...edge, _id: edge.id });
+    const targetEdge = new this._schema(edge);
+    const storedEdge = await targetEdge.save();
 
     return { ...storedEdge, id: storedEdge._id };
   }

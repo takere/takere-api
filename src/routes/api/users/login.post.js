@@ -7,7 +7,7 @@ router.post('/', async function(req, res, next) {
 
   const user = await req.user
   const userData = {
-    _id: user._id,
+    id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,

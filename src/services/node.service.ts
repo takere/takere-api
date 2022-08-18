@@ -20,7 +20,7 @@ class NodeService {
   }
 
   async insert(node: Node): Promise<Node> {
-    return this.nodeRepository.save(node);
+    return this.nodeRepository.save({ ...node, id: undefined });
   }
 
   async deleteMany(fields: object): Promise<void> {
