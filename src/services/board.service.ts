@@ -12,11 +12,11 @@ class BoardService {
     this.boardRepository = repository.flowRepository;
   }
 
-  async findByUserEmail(email: string): Promise<Board[]> {
+  async findAllByUserEmail(email: string): Promise<Board[]> {
     return this.boardRepository.findByUserEmail(email);
   }
 
-  async findByUserId(id: string): Promise<Board[]> {
+  async findAllByUserId(id: string): Promise<Board[]> {
     return this.boardRepository.find({ user: id });
   }
 

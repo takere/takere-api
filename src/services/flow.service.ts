@@ -11,7 +11,11 @@ class FlowService {
     this.flowRepository = repository.flowRepository;
   }
 
-  async findByUserId(id: string): Promise<Flow[]> {
+  async findAllByUserIdAndFlowId(userId: string, flowId: string): Promise<Flow[]> {
+    return this.flowRepository.find({ user: userId, _id: flowId });
+  }
+
+  async findAllByUserId(id: string): Promise<Flow[]> {
     return this.flowRepository.find({ user: id });
   }
 

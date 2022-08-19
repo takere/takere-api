@@ -22,10 +22,9 @@ router.post('/', async function(req, res, next) {
     });
 
     for (n of nodes){
-        n
         console.log('STORING', n.id)
-        const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id });
-        
+        const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
+
         edges.map(e => {
             if(e?.target === n.id){
                 e.target = storedNode.id
@@ -38,8 +37,6 @@ router.post('/', async function(req, res, next) {
         if(storedNode.type === 'TIME_TICKER'){
             timeTickers.push(storedNode);
         }
-
-        // dbNode.save();
     }
     console.log('inserting edges...');
     for(e of edges){

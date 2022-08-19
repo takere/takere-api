@@ -8,10 +8,9 @@ router.get('/:uid', async function(req, res, next) {
     const user = await req.user;
     const flowId = await req.params.uid;
 
-    const flow = await flowService.findOne({user: user.id, id: flowId});
-    // const nodes = await Node.find({ flow: flow.id});
-    const nodes = await nodeService.find({ flow: flow.id});
-    const edges = await edgeService.findByFlowId(flow.id);
+    const flow = await flowService.findAllByUserIdAndFlowId(user.id, flowId);
+    const nodes = await nodeService.findAllByFlowId(flowId);
+    const edges = await edgeService.findAllByFlowId(flowId);
 
     res.send({
         flowId: flow.id,
@@ -30,9 +29,8 @@ router.delete('/:uid', async function(req, res, next) {
     const flowId = await req.params.uid;
 
     const flow = await flowService.removeWithUserIdAndFlowId(user.id, flowId);
-    // const nodes = await Node.deleteMany({ flow: flow.id});
-    nodeService.deleteMany({ flow: flow.id});
-    const edges = await edgeService.deleteManyByFlowId(flow.id);
+    await nodeService.removeAllWithFlowId(flow.id);
+    await edgeService.removeAllWithFlowId(flow.id);
 
 
     res.send('success');

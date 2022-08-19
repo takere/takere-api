@@ -11,19 +11,19 @@ class EdgeService {
     this.edgeRepository = repository.edgeRepository;
   }
 
-  async findByUserId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.find({ user: id });
-  }
-
-  async findByFlowId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.find({ flow: id });
-  }
-
-  async findBySourceId(id: string): Promise<Edge[]> {
+  async findAllBySourceId(id: string): Promise<Edge[]> {
     return this.edgeRepository.find({ source: id });
   }
 
-  async deleteManyByFlowId(id: string): Promise<Edge[]> {
+  async findAllByUserId(id: string): Promise<Edge[]> {
+    return this.edgeRepository.find({ user: id });
+  }
+
+  async findAllByFlowId(id: string): Promise<Edge[]> {
+    return this.edgeRepository.find({ flow: id });
+  }
+
+  async removeAllWithFlowId(id: string): Promise<Edge[]> {
     return this.edgeRepository.deleteMany({ flow: id });
   }
 

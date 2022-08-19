@@ -9,7 +9,7 @@ const process = async (node) => {
 
 const handleRecursiveTreeEdges = async (nodeId) => {
     const sourceNode = await nodeService.findById(nodeId);
-    const edges = await edgeService.find(sourceNode._id);
+    const edges = await edgeService.findAllBySourceId(sourceNode._id);
     await jobs.handleJob(sourceNode.data.type, sourceNode._id, sourceNode.data, sourceNode.flow);
     for(e of edges){
         await handleRecursiveTreeEdges(e.target._id);

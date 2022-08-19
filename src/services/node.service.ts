@@ -19,12 +19,16 @@ class NodeService {
     return this.nodeRepository.findOne({ _id: id });
   }
 
-  async insert(node: Node): Promise<Node> {
-    return this.nodeRepository.save({ ...node, id: undefined });
+  async findAllByFlowId(flowId: string): Promise<Node[]> {
+    return this.nodeRepository.find({ flow: flowId });
   }
 
-  async deleteMany(fields: object): Promise<void> {
-    this.nodeRepository.deleteMany(fields);
+  async insert(node: Node): Promise<Node> {
+    return this.nodeRepository.save(node);
+  }
+
+  async removeAllWithFlowId(flowId: string): Promise<Node[]> {
+    return this.nodeRepository.deleteMany({ flow: flowId });
   }
 }
 

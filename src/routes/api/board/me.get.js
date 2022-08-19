@@ -6,7 +6,7 @@ const boardService = require('../../../services/board.service');
 
 router.get('/', async function(req, res, next) {
     const searchEmail = await req?.query?.email;
-    const boards = await boardService.findByUserEmail(searchEmail);
+    const boards = await boardService.findAllByUserEmail(searchEmail);
     const data = [];
 
     for(const b of boards) {

@@ -15,12 +15,10 @@ class NodeCollection implements NodeRepository {
   }
 
   public async find(fields: object): Promise<Node[]> {
-    const storedNode = await this._schema.find(fields);
-
-    return [ ...storedNode._doc ];
+    return this._schema.find(fields);
   }
 
-  public async deleteMany(fields: object): Promise<void> {
+  public async deleteMany(fields: object): Promise<Node[]> {
     return this._schema.deleteMany(fields);
   }
 
