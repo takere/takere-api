@@ -90,7 +90,6 @@ const logout = async(req: any, res: any, next: any) => {
 
   });
 }
-  
 
 module.exports = {
   login,

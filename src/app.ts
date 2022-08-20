@@ -1,4 +1,4 @@
-import Route from "./routes/route";
+import RouteList from "./routes/route-list";
 
 const generalConfig = require('./config/general.config');
 const express = require('express');
@@ -7,7 +7,7 @@ const http = require('http');
 const morgan = require('morgan');
 const passport = require('passport');
 const winston = require('./helpers/logger');
-const routes: Route[] = require('./routes');
+const routes: RouteList[] = require('./routes');
 const repository = require('./repositories');
 
 repository.connect();
@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize())
 
 for (let route of routes) {
-  app.use(route.path, route.module);
+  app.use(route.path, route.module.build());
 }
 
 // catch 404 and forward to error handler

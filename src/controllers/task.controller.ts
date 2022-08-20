@@ -1,18 +1,42 @@
-const express = require('express');
-const router = express.Router();
 const nodeService = require('../../../services/node.service');
 const flowService = require('../../../services/flow.service');
 const edgeService = require('../../../services/edge.service');
-const ag =  require('../../../helpers/jobQueue');
+const ag =  require('../../helpers/jobQueue');
 
+const getAll = async (req: any, res: any, next: any) => {
+    const user = await req.user;
+    const flows = await flowService.findAllByUserId(user.id);
 
-router.post('/', async function(req, res, next) {
+    res.send(flows);
+};
+
+const get = async (req: any, res: any, next: any) => {
+    const user = await req.user;
+    const flowId = await req.params.uid;
+
+    const flow = await flowService.findAllByUserIdAndFlowId(user.id, flowId);
+    const nodes = await nodeService.findAllByFlowId(flowId);
+    const edges = await edgeService.findAllByFlowId(flowId);
+
+    res.send({
+        flowId: flow.id,
+        flowName: flow.name,
+        flowDescription: flow.description,
+        flowEmail: flow.userEmail,
+        data: [
+            ...nodes,
+            ...edges
+        ]
+   });
+};
+
+const create = async (req: any, res: any, next: any) => {
     const { data, name, description, userEmail } = req.body
     const user = await req.user;
 
     let timeTickers = [];
-    let nodes = data.filter(d => d.type);
-    let edges = data.filter(d => d.source);
+    let nodes = data.filter((d: { type: any; }) => d.type);
+    let edges = data.filter((d: { source: any; }) => d.source);
 
     const flow = await flowService.insert({
         user: user.id,
@@ -21,11 +45,11 @@ router.post('/', async function(req, res, next) {
         description: description
     });
 
-    for (n of nodes){
+    for (let n of nodes){
         console.log('STORING', n.id)
         const storedNode = await nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
 
-        edges.map(e => {
+        edges.map((e: { target: any; source: any; }) => {
             if(e?.target === n.id){
                 e.target = storedNode.id
             }
@@ -39,14 +63,14 @@ router.post('/', async function(req, res, next) {
         }
     }
     console.log('inserting edges...');
-    for(e of edges){
+    for(let e of edges){
         edgeService.insert({source: e.source, target: e?.target, flow: flow.id, animated: e.animated});
     }
 
     console.log('ok');
 
 
-    for(t of timeTickers){
+    for(let t of timeTickers){
         
 
         if (t.data.results === undefined) {
@@ -70,6 +94,23 @@ router.post('/', async function(req, res, next) {
     }
 
     res.send('Success');
-});
+};
 
-module.exports = router;
+const remove = async (req: any, res: any, next: any) => {
+    const user = await req.user;
+    const flowId = await req.params.uid;
+
+    const flow = await flowService.removeWithUserIdAndFlowId(user.id, flowId);
+    await nodeService.removeAllWithFlowId(flow.id);
+    await edgeService.removeAllWithFlowId(flow.id);
+
+
+    res.send('success');
+};
+
+module.exports = {
+    getAll,
+    get,
+    remove,
+    create
+};
