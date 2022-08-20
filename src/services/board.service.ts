@@ -24,7 +24,7 @@ class BoardService extends Service {
   }
 
   async insert(board: BoardDTO): Promise<Board> {
-    return this.boardRepository.save({ ...board, id: undefined, completed: false });
+    return this.boardRepository.save(board);
   }
 
   async update(board: Board): Promise<Board> {

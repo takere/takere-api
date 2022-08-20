@@ -1,5 +1,5 @@
 interface Board {
-  id: string | undefined,
+  id: string,
   name: string,
   description: string,
   userEmail: string,

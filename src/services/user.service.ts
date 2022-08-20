@@ -26,7 +26,7 @@ class UserService extends Service {
   async createUser(user: UserDTO): Promise<User> {
     const salt = await this.bcrypt.genSaltSync(parseInt(this.generalConfig.BCRYPT_SALT));
     const hashedPassword = await this.bcrypt.hashSync(user.password, salt);
-    const newUser: User = { ...user, password: hashedPassword, role: 'user', id: '' };
+    const newUser: UserDTO = { ...user, password: hashedPassword, role: 'user' };
 
     return this.userRepository.save(newUser);
   }

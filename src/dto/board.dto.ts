@@ -3,8 +3,7 @@ interface BoardDTO {
   description: string,
   userEmail: string,
   flow: string,
-  node: string,
-  executed: string | undefined
+  node: string
 }
 
 export = BoardDTO;

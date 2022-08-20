@@ -1,5 +1,6 @@
 import BoardRepository = require('../../board.repository');
 import Board = require('../../../domain/board.domain');
+import BoardDTO = require('../../../dto/board.dto');
 
 class BoardCollection implements BoardRepository {
   private _schema: any;
@@ -22,12 +23,12 @@ class BoardCollection implements BoardRepository {
     return this._schema.findByUserEmail(email);
   }
 
-  public async save(board: Board): Promise<Board> {
-    const targetBoard = new this._schema(board);
+  public async save(board: BoardDTO): Promise<Board> {
+    const targetBoard = new this._schema({ ...board, completed: false, id: undefined });
     const storedBoard = await targetBoard.save();
 
     return { ...storedBoard, id: storedBoard._id };
   }
 }
 
-module.exports = BoardCollection;
+export = BoardCollection;

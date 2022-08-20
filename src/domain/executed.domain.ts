@@ -1,5 +1,5 @@
 interface Executed {
-  id: string | undefined,
+  id: string,
   result: string,
   node: any
 }

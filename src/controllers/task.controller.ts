@@ -3,9 +3,9 @@ import FlowService = require('../services/flow.service');
 import EdgeService = require('../services/edge.service');
 
 class TaskController {
-  nodeService: any;
-  flowService: any;
-  edgeService: any;
+  nodeService: NodeService;
+  flowService: FlowService;
+  edgeService: EdgeService;
   ag: any;
 
   constructor() {
@@ -25,7 +25,7 @@ class TaskController {
     const user = await req.user;
     const flowId = await req.params.uid;
 
-    const flow = await this.flowService.findAllByUserIdAndFlowId(user.id, flowId);
+    const flow = await this.flowService.findByUserIdAndFlowId(user.id, flowId);
     const nodes = await this.nodeService.findAllByFlowId(flowId);
     const edges = await this.edgeService.findAllByFlowId(flowId);
 

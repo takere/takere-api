@@ -1,5 +1,5 @@
 interface User {
-  id: string | undefined,
+  id: string,
   firstName: string,
   lastName: string,
   password: string,

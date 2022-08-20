@@ -1,9 +1,8 @@
-interface Flow {
-  id: string,
+interface FlowDTO {
   user: any,
   name: string,
   description: string,
   userEmail: string
 }
 
-export = Flow;
+export = FlowDTO;

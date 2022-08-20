@@ -5,6 +5,12 @@ import FlowRepository = require('../flow.repository');
 import ExecutedRepository = require('../executed.repository');
 import BoardRepository = require('../board.repository');
 import EdgeRepository = require('../edge.repository');
+import BoardCollection = require('./collections/board.collection');
+import EdgeCollection = require('./collections/edge.collection');
+import ExecutedCollection = require('./collections/executed.collection');
+import FlowCollection = require('./collections/flow.collection');
+import NodeCollection = require('./collections/node.collection');
+import UserCollection = require('./collections/user.collection');
 
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
@@ -28,35 +34,7 @@ const options = {
 };
 
 class MongoDbRepository implements Repository {
-  //private static _userRepository: UserRepository;
   private static _instance: MongoDbRepository;
-  private repositories: any;
-
-  constructor() {
-    if (MongoDbRepository._instance) {
-      return MongoDbRepository._instance;
-    }
-
-    this.initializeRepositories();
-    MongoDbRepository._instance = this;
-  }
-
-  private initializeRepositories(): void {
-    this.repositories = {
-      userRepository: this.buildInstance('./collections/user.collection'),
-      nodeRepository: this.buildInstance('./collections/node.collection'),
-      flowRepository: this.buildInstance('./collections/flow.collection'),
-      executedRepository: this.buildInstance('./collections/executed.collection'),
-      edgeRepository: this.buildInstance('./collections/edge.collection'),
-      boardRepository: this.buildInstance('./collections/board.collection'),
-    }
-  }
-
-  private buildInstance(path: any): any {
-    const className = require(path);
-    
-    return new className();
-  }
 
   /**
    * Opens the connection to database.
@@ -89,26 +67,26 @@ class MongoDbRepository implements Repository {
   }
 
   public get userRepository(): UserRepository {
-    return this.repositories['userRepository'];
+    return new UserCollection();
   }
 
   public get nodeRepository(): NodeRepository {
-    return this.repositories['nodeRepository'];
+    return new NodeCollection();
   }
 
   public get flowRepository(): FlowRepository {
-    return this.repositories['flowRepository'];
+    return new FlowCollection();
   }
 
   public get executedRepository(): ExecutedRepository {
-    return this.repositories['executedRepository'];
+    return new ExecutedCollection();
   }
 
   public get edgeRepository(): EdgeRepository {
-    return this.repositories['edgeRepository'];
+    return new EdgeCollection();
   }
   public get boardRepository(): BoardRepository {
-    return this.repositories['boardRepository'];
+    return new BoardCollection();
   }
 }
 

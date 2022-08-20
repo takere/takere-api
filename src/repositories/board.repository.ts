@@ -1,7 +1,8 @@
 import Board = require('../domain/board.domain');
+import BoardDTO = require('../dto/board.dto');
 
 interface BoardRepository {
-  save(board: Board): Promise<Board>;
+  save(board: BoardDTO): Promise<Board>;
   find(fields: object): Promise<Board[]>;
   findOne(fields: object): Promise<Board>;
   findByUserEmail(email: string): Promise<Board[]>;

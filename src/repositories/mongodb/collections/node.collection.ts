@@ -30,4 +30,4 @@ class NodeCollection implements NodeRepository {
   }
 }
 
-module.exports = NodeCollection;
+export = NodeCollection;

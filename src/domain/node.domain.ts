@@ -1,5 +1,5 @@
 interface Node {
-  id: string | undefined,
+  id: string,
   type: string,
   data: any,
   position: any,

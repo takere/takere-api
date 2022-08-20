@@ -1,5 +1,6 @@
 import EdgeRepository = require('../../edge.repository');
 import Edge = require('../../../domain/edge.domain');
+import EdgeDTO = require('../../../dto/edge.dto');
 
 class EdgeCollection implements EdgeRepository {
   private _schema: any;
@@ -22,12 +23,12 @@ class EdgeCollection implements EdgeRepository {
     return this._schema.find(fields);
   }
 
-  public async save(edge: Edge): Promise<Edge> {
-    const targetEdge = new this._schema(edge);
+  public async save(edge: EdgeDTO): Promise<Edge> {
+    const targetEdge = new this._schema({ ...edge, id: undefined });
     const storedEdge = await targetEdge.save();
 
     return { ...storedEdge, id: storedEdge._id };
   }
 }
 
-module.exports = EdgeCollection;
+export = EdgeCollection;

@@ -1,5 +1,6 @@
 import Service = require('./service');
 import Edge = require('../domain/edge.domain');
+import EdgeDTO = require('../dto/edge.dto');
 import EdgeRepository = require('../repositories/edge.repository');
 
 class EdgeService extends Service {
@@ -26,8 +27,8 @@ class EdgeService extends Service {
     return this.edgeRepository.deleteMany({ flow: id });
   }
 
-  async insert(edge: Edge): Promise<Edge> {
-    return this.edgeRepository.save({ ...edge, id: undefined });
+  async insert(edge: EdgeDTO): Promise<Edge> {
+    return this.edgeRepository.save(edge);
   }
 }
 

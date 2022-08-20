@@ -1,7 +1,8 @@
 import Executed = require('../domain/executed.domain');
+import ExecutedDTO = require('../dto/executed.dto');
 
 interface ExecutedRepository {
-  save(executed: Executed): Promise<Executed>;
+  save(executed: ExecutedDTO): Promise<Executed>;
 }
 
 export = ExecutedRepository;

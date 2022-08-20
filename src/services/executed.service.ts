@@ -1,5 +1,6 @@
 import Service = require('./service');
 import Executed = require('../domain/executed.domain');
+import ExecutedDTO = require('../dto/executed.dto');
 import ExecutedRepository = require('../repositories/executed.repository');
 
 class ExecutedService extends Service {
@@ -10,8 +11,8 @@ class ExecutedService extends Service {
     this.executedRepository = this.repository.executedRepository;
   }
 
-  async insert(phrase: string, jobId: string): Promise<Executed> {
-    return this.executedRepository.save({ result: phrase, node: jobId, id: undefined });
+  async insert(executed: ExecutedDTO): Promise<Executed> {
+    return this.executedRepository.save(executed);
   }
 }
 

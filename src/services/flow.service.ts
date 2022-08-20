@@ -1,5 +1,6 @@
 import Service = require('./service');
 import Flow = require('../domain/flow.domain');
+import FlowDTO = require('../dto/flow.dto');
 import FlowRepository = require('../repositories/flow.repository');
 
 class FlowService extends Service {
@@ -10,8 +11,8 @@ class FlowService extends Service {
     this.flowRepository = this.repository.flowRepository;
   }
 
-  async findAllByUserIdAndFlowId(userId: string, flowId: string): Promise<Flow[]> {
-    return this.flowRepository.find({ user: userId, _id: flowId });
+  async findByUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
+    return this.flowRepository.findOne({ user: userId, _id: flowId });
   }
 
   async findAllByUserId(id: string): Promise<Flow[]> {
@@ -26,8 +27,8 @@ class FlowService extends Service {
     return this.flowRepository.findOneAndRemove({user: userId, _id: flowId});
   }
 
-  async insert(flow: Flow): Promise<Flow> {
-    return this.flowRepository.save({ ...flow, id: undefined });
+  async insert(flow: FlowDTO): Promise<Flow> {
+    return this.flowRepository.save(flow);
   }
 }
 

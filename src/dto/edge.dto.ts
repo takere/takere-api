@@ -1,9 +1,8 @@
-interface Edge {
-  id: string,
+interface EdgeDTO {
   source: any,
   target: any,
   animated: boolean,
   flow: any
 }
 
-export = Edge;
+export = EdgeDTO;

@@ -1,5 +1,6 @@
 import FlowRepository = require('../../flow.repository');
 import Flow = require('../../../domain/flow.domain');
+import FlowDTO = require('../../../dto/flow.dto');
 
 class FlowCollection implements FlowRepository {
   private _schema: any;
@@ -24,12 +25,12 @@ class FlowCollection implements FlowRepository {
     return this._schema.find(fields);
   }
 
-  public async save(flow: Flow): Promise<Flow> {
-    const targetFlow = new this._schema(flow);
+  public async save(flow: FlowDTO): Promise<Flow> {
+    const targetFlow = new this._schema({ ...flow, id: undefined });
     const storedFlow = await targetFlow.save();
 
     return { ...storedFlow, id: storedFlow._id };
   }
 }
 
-module.exports = FlowCollection;
+export = FlowCollection;
