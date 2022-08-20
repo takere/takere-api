@@ -25,7 +25,7 @@ function initialize(passport) {
   }
 
   passport.use(new LocalStrategy({usernameField: 'email'}, authenticateUser))
-  passport.serializeUser((user, done) => done(null, user._id))
+  passport.serializeUser((user, done) => done(null, user.id))
   passport.deserializeUser((id, done) => {
     return done(null, UserService.findById(id))
   })
@@ -35,7 +35,7 @@ function initialize(passport) {
     secretOrKey: process.env.TOKEN_SECRET
   }, async function(jwt_payload, done) {
     try{
-      const user = await UserService.findById(jwt_payload.data._id)
+      const user = await UserService.findById(jwt_payload.data.id)
       return done(null, user);
     } catch (e){
       return done(e, false);
