@@ -1,4 +1,5 @@
-import RouteList from "./routes/route-list";
+import Repositories = require('./repositories');
+import Routes = require('./routes');
 
 const generalConfig = require('./config/general.config');
 const express = require('express');
@@ -7,8 +8,8 @@ const http = require('http');
 const morgan = require('morgan');
 const passport = require('passport');
 const winston = require('./helpers/logger');
-const routes: RouteList[] = require('./routes');
-const repository = require('./repositories');
+
+const repository = new Repositories();
 
 repository.connect();
 
@@ -42,7 +43,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize())
 
-for (let route of routes) {
+const route = new Routes();
+const routeList = route.routeList;
+
+for (let route of routeList) {
   app.use(route.path, route.module.build());
 }
 

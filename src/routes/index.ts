@@ -1,17 +1,38 @@
-import RouteList from "./route-list";
+import RouteList = require("./route-list");
 
-const TasksRoute = require("./api/tasks.route");
-const UsersRoute = require("./api/users.route");
+class Routes {
+  express: any;
+  cors: any;
+  passport: any;
+  _routeList: RouteList[];
 
-const express = require('express');
-const cors = require('cors');
-const passport = require('passport');
+  constructor() {
+    this.express = require('express');
+    this.cors = require('cors');
+    this.passport = require('passport');
+    this._routeList = [];
 
-const routes: RouteList[] = [
-  { path: '/users', module: new UsersRoute(express, cors, passport) },
-  { path: '/tasks', module: new TasksRoute(express, cors, passport) },
-  { path: '/nodes', module: require('./api/nodes') },
-  { path: '/board', module: require('./api/board') },
-];
+    this.buildRoutes();
+  }
 
-module.exports = routes;
+  private buildRoutes() {
+    this._routeList = [
+      { path: '/users', module: this.buildApiRoute('users') },
+      { path: '/tasks', module: this.buildApiRoute('tasks') },
+      { path: '/nodes', module: this.buildApiRoute('nodes') },
+      { path: '/board', module: this.buildApiRoute('board') },
+    ];
+  }
+
+  private buildApiRoute(name: string) {
+    const className = require(`./api/${name}.route`);
+
+    return new className(this.express, this.cors, this.passport);
+  }
+
+  get routeList(): RouteList[] {
+    return this._routeList;
+  }
+}
+
+export = Routes;

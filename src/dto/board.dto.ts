@@ -1,4 +1,4 @@
-export default interface BoardDTO {
+interface BoardDTO {
   name: string,
   description: string,
   userEmail: string,
@@ -6,3 +6,5 @@ export default interface BoardDTO {
   node: string,
   executed: string | undefined
 }
+
+export = BoardDTO;

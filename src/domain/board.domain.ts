@@ -1,4 +1,4 @@
-export default interface Board {
+interface Board {
   id: string | undefined,
   name: string,
   description: string,
@@ -8,3 +8,5 @@ export default interface Board {
   executed: any | undefined,
   completed: boolean
 }
+
+export = Board;

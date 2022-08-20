@@ -1,4 +1,4 @@
-export default interface User {
+interface User {
   id: string | undefined,
   firstName: string,
   lastName: string,
@@ -7,3 +7,5 @@ export default interface User {
   email: string,
   profileUrl: string
 }
+
+export = User;

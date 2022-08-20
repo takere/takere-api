@@ -1,17 +1,28 @@
-import Route from "../route";
-
-const boardController = require('../../controllers/board.controller');
+import BoardController = require('../../controllers/board.controller');
+import Route = require('../route');
 
 class BoardRoute extends Route {
+  boardController: any;
+
   constructor(express: any, cors: any, passport: any) {
     super(express, cors, passport);
+
+    this.boardController = new BoardController();
   }
 
   protected buildRoutes(router: any) {
-    router.get('/me', this.passport.authenticate('jwt'), boardController.get);
-    router.post('/resolve', this.passport.authenticate('jwt'), boardController.resolve);
+    router.get(
+      '/me', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.boardController.get(req, res, next)
+    );
+    router.post(
+      '/resolve', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.boardController.resolve(req, res, next)
+    );
     router.options('*', this.cors());
   }
 }
 
-module.exports = BoardRoute;
+export = BoardRoute;

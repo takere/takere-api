@@ -1,15 +1,14 @@
+import Service = require('./service');
+import Board = require('../domain/board.domain');
+import BoardDTO = require('../dto/board.dto');
+import BoardRepository = require('../repositories/board.repository');
 
-import Board from "../domain/board.domain";
-import BoardDTO from "../dto/board.dto";
-import BoardRepository from "../repositories/board.repository";
-
-const repository = require('../repositories');
-
-class BoardService {
+class BoardService extends Service {
   private boardRepository: BoardRepository; 
 
   constructor() {
-    this.boardRepository = repository.flowRepository;
+    super();
+    this.boardRepository = this.repository.boardRepository;
   }
 
   async findAllByUserEmail(email: string): Promise<Board[]> {
@@ -33,4 +32,4 @@ class BoardService {
   }
 }
 
-module.exports = new BoardService();
+export = BoardService;

@@ -1,5 +1,5 @@
-import EdgeRepository from "../../edge.repository";
-import Edge from "../../../domain/edge.domain";
+import EdgeRepository = require('../../edge.repository');
+import Edge = require('../../../domain/edge.domain');
 
 class EdgeCollection implements EdgeRepository {
   private _schema: any;

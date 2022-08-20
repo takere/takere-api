@@ -1,23 +1,30 @@
-import BoardDTO from "../dto/board.dto";
+// class DataInput {
+//   boardService: any;
+//   flowService: any;
 
-const boardService = require('../services/board.service');
-const flowService = require('../services/flow.service');
+//   constructor() {
+//     this.boardService = require('../services/board.service');
+//     this.flowService = require('../services/flow.service');
+//   }
 
-const handler = async (data: any, jobId: string, flowId: string) => {
-    const flow = await flowService.findByFlowId(flowId);
+//   public async handler(data: any, jobId: string, flowId: string) {
+//     const flow = await flowService.findByFlowId(flowId);
+  
+//     //name, description, userEmail, flow, node
+//     const board: BoardDTO = {
+//       name: data.results.boardName,
+//       description: data.results.boardDescription,
+//       userEmail: flow.userEmail,
+//       flow: flow.id,
+//       node: jobId,
+//       executed: undefined
+//     }
+//     await boardService.insert(board);
+//   }
+// }
 
-    //name, description, userEmail, flow, node
-    const board: BoardDTO = {
-        name: data.results.boardName,
-        description: data.results.boardDescription,
-        userEmail: flow.userEmail,
-        flow: flow.id,
-        node: jobId,
-        executed: undefined
-    }
-    await boardService.insert(board);
-}
+// const dataInput = new DataInput();
 
-module.exports = {
-    handler
-}
+// module.exports = {
+//   handler: dataInput.handler
+// }

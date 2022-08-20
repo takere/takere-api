@@ -1,14 +1,17 @@
+import Service = require('./service');
+import Node = require('../domain/node.domain');
+import NodeRepository = require('../repositories/node.repository');
 
-import Node from "../domain/node.domain";
-import NodeRepository from "../repositories/node.repository";
-
-const repository = require('../repositories');
-
-class NodeService {
+class NodeService extends Service {
   private nodeRepository: NodeRepository; 
 
   constructor() {
-    this.nodeRepository = repository.nodeRepository;
+    super();
+    this.nodeRepository = this.repository.nodeRepository;
+  }
+
+  getNodes(): Node[] {
+    return require('./nodes');
   }
 
   async find(fields: object): Promise<Node[]> {
@@ -32,4 +35,4 @@ class NodeService {
   }
 }
 
-module.exports = new NodeService();
+export = NodeService;

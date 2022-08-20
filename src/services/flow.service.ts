@@ -1,14 +1,13 @@
+import Service = require('./service');
+import Flow = require('../domain/flow.domain');
+import FlowRepository = require('../repositories/flow.repository');
 
-import Flow from "../domain/flow.domain";
-import FlowRepository from "../repositories/flow.repository";
-
-const repository = require('../repositories');
-
-class FlowService {
+class FlowService extends Service {
   private flowRepository: FlowRepository; 
 
   constructor() {
-    this.flowRepository = repository.flowRepository;
+    super();
+    this.flowRepository = this.repository.flowRepository;
   }
 
   async findAllByUserIdAndFlowId(userId: string, flowId: string): Promise<Flow[]> {
@@ -32,4 +31,4 @@ class FlowService {
   }
 }
 
-module.exports = new FlowService();
+export = FlowService;

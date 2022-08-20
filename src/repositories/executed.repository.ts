@@ -1,5 +1,7 @@
-import Executed from "../domain/executed.domain";
+import Executed = require('../domain/executed.domain');
 
-export default interface ExecutedRepository {
+interface ExecutedRepository {
   save(executed: Executed): Promise<Executed>;
 }
+
+export = ExecutedRepository;

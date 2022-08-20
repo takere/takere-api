@@ -1,6 +1,8 @@
-import Route from "./route";
+import Route = require('./route');
 
-export default interface RouteList {
+interface RouteList {
   path: string,
   module: Route
 }
+
+export = RouteList;

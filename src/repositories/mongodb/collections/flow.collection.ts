@@ -1,5 +1,5 @@
-import FlowRepository from "../../flow.repository";
-import Flow from "../../../domain/flow.domain";
+import FlowRepository = require('../../flow.repository');
+import Flow = require('../../../domain/flow.domain');
 
 class FlowCollection implements FlowRepository {
   private _schema: any;

@@ -1,5 +1,5 @@
-import NodeRepository from "../../node.repository";
-import Node from "../../../domain/node.domain";
+import NodeRepository = require('../../node.repository');
+import Node = require('../../../domain/node.domain');
 
 class NodeCollection implements NodeRepository {
   private _schema: any;

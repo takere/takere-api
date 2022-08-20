@@ -1,14 +1,13 @@
+import Service = require('./service');
+import Executed = require('../domain/executed.domain');
+import ExecutedRepository = require('../repositories/executed.repository');
 
-import Executed from "../domain/executed.domain";
-import ExecutedRepository from "../repositories/executed.repository";
-
-const repository = require('../repositories');
-
-class ExecutedService {
+class ExecutedService extends Service {
   private executedRepository: ExecutedRepository; 
 
   constructor() {
-    this.executedRepository = repository.executedRepository;
+    super();
+    this.executedRepository = this.repository.executedRepository;
   }
 
   async insert(phrase: string, jobId: string): Promise<Executed> {
@@ -16,4 +15,4 @@ class ExecutedService {
   }
 }
 
-module.exports = new ExecutedService();
+export = ExecutedService;

@@ -1,14 +1,13 @@
+import Service = require('./service');
+import Edge = require('../domain/edge.domain');
+import EdgeRepository = require('../repositories/edge.repository');
 
-import Edge from "../domain/edge.domain";
-import EdgeRepository from "../repositories/edge.repository";
-
-const repository = require('../repositories');
-
-class EdgeService {
+class EdgeService extends Service {
   private edgeRepository: EdgeRepository; 
 
   constructor() {
-    this.edgeRepository = repository.edgeRepository;
+    super();
+    this.edgeRepository = this.repository.edgeRepository;
   }
 
   async findAllBySourceId(id: string): Promise<Edge[]> {
@@ -32,4 +31,4 @@ class EdgeService {
   }
 }
 
-module.exports = new EdgeService();
+export = EdgeService;

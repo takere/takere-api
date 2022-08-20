@@ -1,5 +1,5 @@
-import ExecutedRepository from "../../executed.repository";
-import Executed from "../../../domain/executed.domain";
+import ExecutedRepository = require('../../executed.repository');
+import Executed = require('../../../domain/executed.domain');
 
 class ExecutedCollection implements ExecutedRepository {
   private _schema: any;

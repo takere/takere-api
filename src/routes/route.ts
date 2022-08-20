@@ -1,4 +1,4 @@
-export default abstract class Route {
+abstract class Route {
   express: any;
   cors: any;
   passport: any;
@@ -19,3 +19,5 @@ export default abstract class Route {
 
   protected abstract buildRoutes(router: any): void;
 }
+
+export = Route;

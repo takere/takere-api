@@ -1,6 +1,8 @@
-import User from "../domain/user.domain";
+import User = require('../domain/user.domain');
 
-export default interface UserRepository {
+interface UserRepository {
   save(user: User): Promise<User>;
   findOne(fields: object): Promise<User>;
 }
+
+export = UserRepository;

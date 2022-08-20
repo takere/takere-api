@@ -1,7 +1,7 @@
-const externalLink = require('./externalLink');
-const dataInput = require('./dataInput');
-const motivational = require('./motivacional');
-const reminder = require('./reminder');
+// const externalLink = require('./externalLink');
+// const dataInput = require('./dataInput');
+// const motivational = require('./motivacional');
+
 
 const JOB_TYPES = {
     DATA_INPUT: "DATA_INPUT",
@@ -11,16 +11,18 @@ const JOB_TYPES = {
 }
 
 const handleJob = async (jobName: string, jobId: string, data: any, flowId: string) => {
+    const reminder = require('./reminder');
+    
     switch (jobName) {
-        case JOB_TYPES.EXTERNAL_LINK:
-            await externalLink.handler(data, jobId, flowId)
-            break;
-        case JOB_TYPES.DATA_INPUT:
-            await dataInput.handler(data, jobId, flowId)
-            break;
-        case JOB_TYPES.MOTIVATIONAL:
-            await motivational.handler(data, jobId, flowId);
-            break;
+        // case JOB_TYPES.EXTERNAL_LINK:
+        //     await externalLink.handler(data, jobId, flowId)
+        //     break;
+        // case JOB_TYPES.DATA_INPUT:
+        //     await dataInput.handler(data, jobId, flowId)
+        //     break;
+        // case JOB_TYPES.MOTIVATIONAL:
+        //     await motivational.handler(data, jobId, flowId);
+        //     break;
         case JOB_TYPES.REMINDER:
             await reminder.handler(data, jobId, flowId);
             break;

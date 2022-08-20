@@ -1,5 +1,5 @@
-import BoardRepository from "../../board.repository";
-import Board from "../../../domain/board.domain";
+import BoardRepository = require('../../board.repository');
+import Board = require('../../../domain/board.domain');
 
 class BoardCollection implements BoardRepository {
   private _schema: any;

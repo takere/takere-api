@@ -1,5 +1,5 @@
-import User from "../../../domain/user.domain";
-import UserRepository from "../../user.repository";
+import UserRepository = require('../../user.repository');
+import User = require('../../../domain/user.domain');
 
 class UserCollection implements UserRepository {
   private _schema: any;

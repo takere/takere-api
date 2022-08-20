@@ -1,10 +1,10 @@
-
-import EdgeRepository from "../edge.repository";
-import ExecutedRepository from "../executed.repository";
-import FlowRepository from "../flow.repository";
-import NodeRepository from "../node.repository";
-import Repository from "../repository";
-import UserRepository from "../user.repository";
+import Repository = require('../repository');
+import UserRepository = require('../user.repository');
+import NodeRepository = require('../node.repository');
+import FlowRepository = require('../flow.repository');
+import ExecutedRepository = require('../executed.repository');
+import BoardRepository = require('../board.repository');
+import EdgeRepository = require('../edge.repository');
 
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
@@ -47,7 +47,8 @@ class MongoDbRepository implements Repository {
       nodeRepository: this.buildInstance('./collections/node.collection'),
       flowRepository: this.buildInstance('./collections/flow.collection'),
       executedRepository: this.buildInstance('./collections/executed.collection'),
-      edgeRepository: this.buildInstance('./collections/edge.collection')
+      edgeRepository: this.buildInstance('./collections/edge.collection'),
+      boardRepository: this.buildInstance('./collections/board.collection'),
     }
   }
 
@@ -106,6 +107,9 @@ class MongoDbRepository implements Repository {
   public get edgeRepository(): EdgeRepository {
     return this.repositories['edgeRepository'];
   }
+  public get boardRepository(): BoardRepository {
+    return this.repositories['boardRepository'];
+  }
 }
 
-module.exports = new MongoDbRepository();
+export = MongoDbRepository;

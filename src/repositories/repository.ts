@@ -1,7 +1,9 @@
-import NodeRepository from "./node.repository";
-import UserRepository from "./user.repository";
+import UserRepository = require('./user.repository');
+import NodeRepository = require('./node.repository');
 
-export default interface Repository {
+interface Repository {
   userRepository: UserRepository,
   nodeRepository: NodeRepository
 }
+
+export = Repository;

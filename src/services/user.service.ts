@@ -1,16 +1,18 @@
-import User from "../domain/user.domain";
-import UserDTO from '../dto/user.dto';
-import UserRepository from "../repositories/user.repository";
+import Service = require('./service');
+import User = require('../domain/user.domain');
+import UserDTO = require('../dto/user.dto');
+import UserRepository = require('../repositories/user.repository');
 
-const bcrypt = require('bcrypt');
-const generalConfig = require('../config/general.config');
-const repository = require('../repositories');
-
-class UserService {
-  private userRepository: UserRepository; 
+class UserService extends Service {
+  private userRepository: UserRepository;
+  private bcrypt: any;
+  private generalConfig: any;
 
   constructor() {
-    this.userRepository = repository.userRepository;
+    super();
+    this.userRepository = this.repository.userRepository;
+    this.bcrypt = require('bcrypt');
+    this.generalConfig = require('../config/general.config');
   }
 
   async findByEmail(email: string): Promise<User> {
@@ -22,12 +24,12 @@ class UserService {
   }
 
   async createUser(user: UserDTO): Promise<User> {
-    const salt = await bcrypt.genSaltSync(parseInt(generalConfig.BCRYPT_SALT));
-    const hashedPassword = await bcrypt.hashSync(user.password, salt);
+    const salt = await this.bcrypt.genSaltSync(parseInt(this.generalConfig.BCRYPT_SALT));
+    const hashedPassword = await this.bcrypt.hashSync(user.password, salt);
     const newUser: User = { ...user, password: hashedPassword, role: 'user', id: '' };
 
     return this.userRepository.save(newUser);
   }
 }
 
-module.exports = new UserService();
+export = UserService;
