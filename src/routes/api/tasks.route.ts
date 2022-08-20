@@ -21,9 +21,14 @@ class TasksRoute extends Route {
       (req: any, res: any, next: any) => this.taskController.getAll(req, res, next)
     );
     router.get(
-      '/mine', 
+      '/mine/:uid', 
       this.passport.authenticate('jwt'), 
       (req: any, res: any, next: any) => this.taskController.get(req, res, next)
+    );
+    router.delete(
+      '/mine/:uid', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.taskController.remove(req, res, next)
     );
     router.options('*', this.cors());
   }
