@@ -81,7 +81,7 @@ class TaskController {
             }
         });
 
-        if(storedNode.type === 'TIME_TICKER'){
+        if(storedNode.type === 'BEGIN_NODE'){
             timeTickers.push(storedNode);
         }
     }

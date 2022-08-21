@@ -28,7 +28,7 @@ class BoardService extends Service {
   }
 
   async update(board: Board): Promise<Board> {
-    return this.boardRepository.save(board);
+    return this.boardRepository.update(board);
   }
 }
 

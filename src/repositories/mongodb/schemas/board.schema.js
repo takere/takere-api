@@ -45,6 +45,10 @@ const BoardSchema = new mongoose.Schema(
   }
 );
 
+BoardSchema.statics.findById = async function (id) {
+  return this.model("Board").findOne({ _id: id });
+}
+
 BoardSchema.statics.findByUserEmail = async function (userEmail) {
   return this.model("Board").find({ userEmail: userEmail, completed: false })
     .populate("node")

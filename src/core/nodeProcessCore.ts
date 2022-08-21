@@ -12,7 +12,11 @@ class NodeProcessCore {
     const jobs = require("../jobs/handleJobs");
   
     const sourceNode = await nodeService.findById(nodeId);
-    console.log(sourceNode)
+
+    if (!sourceNode) {
+      return;
+    }
+
     const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
     await jobs.handleJob(
       sourceNode.data.type,
@@ -26,8 +30,4 @@ class NodeProcessCore {
   };
 }
 
-const core = new NodeProcessCore();
-
-module.exports = {
-  process: (node: any) => core.process(node)
-};
+export = NodeProcessCore;

@@ -1,7 +1,7 @@
 // const externalLink = require('./externalLink');
 // const dataInput = require('./dataInput');
 // const motivational = require('./motivacional');
-
+import Reminder = require("./reminder");
 
 const JOB_TYPES = {
     DATA_INPUT: "DATA_INPUT",
@@ -11,8 +11,9 @@ const JOB_TYPES = {
 }
 
 const handleJob = async (jobName: string, jobId: string, data: any, flowId: string) => {
-    const reminder = require('./reminder');
-    
+    //const reminder = require('./reminder');
+    const reminder = new Reminder();
+
     switch (jobName) {
         // case JOB_TYPES.EXTERNAL_LINK:
         //     await externalLink.handler(data, jobId, flowId)

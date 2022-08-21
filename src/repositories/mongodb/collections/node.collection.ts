@@ -11,7 +11,7 @@ class NodeCollection implements NodeRepository {
   public async findOne(fields: object): Promise<Node> {
     const storedNode = await this._schema.findOne(fields);
 
-    return { ...storedNode._doc, id: storedNode._doc._id };
+    return storedNode ? { ...storedNode._doc, id: storedNode._doc._id } : null;
   }
 
   public async find(fields: object): Promise<Node[]> {
@@ -26,7 +26,7 @@ class NodeCollection implements NodeRepository {
     const targetNode = new this._schema(node);
     const storedNode = await targetNode.save();
 
-    return { ...storedNode, id: storedNode._id };
+    return { ...storedNode._doc, id: storedNode._id };
   }
 }
 

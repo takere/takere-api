@@ -10,8 +10,7 @@ class ExecutedCollection implements ExecutedRepository {
   }
 
   public async save(executed: ExecutedDTO): Promise<Executed> {
-    const targetExecuted = new this._schema({ ...executed, id: undefined });
-    const storedExecuted = await targetExecuted.save();
+    const storedExecuted = await this._schema.create(executed.result, executed.node);
 
     return { ...storedExecuted, id: storedExecuted._id };
   }

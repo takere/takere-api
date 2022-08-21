@@ -24,10 +24,24 @@ class BoardCollection implements BoardRepository {
   }
 
   public async save(board: BoardDTO): Promise<Board> {
-    const targetBoard = new this._schema({ ...board, completed: false, id: undefined });
+    const targetBoard = new this._schema({ ...board, completed: false });
     const storedBoard = await targetBoard.save();
 
-    return { ...storedBoard, id: storedBoard._id };
+    return { ...storedBoard._doc };
+  }
+
+  public async update(board: Board): Promise<Board> {
+    const targetBoard = await this._schema.findById(board.id);
+    
+    targetBoard.completed = board.completed;
+    targetBoard.description = board.description;
+    targetBoard.name = board.name;
+    targetBoard.executed = board.executed;
+    targetBoard.userEmail = board.userEmail;
+
+    const storedBoard = await targetBoard.save();
+
+    return { ...storedBoard._doc };
   }
 }
 

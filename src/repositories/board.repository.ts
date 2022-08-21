@@ -3,6 +3,7 @@ import BoardDTO = require('../dto/board.dto');
 
 interface BoardRepository {
   save(board: BoardDTO): Promise<Board>;
+  update(board: Board): Promise<Board>;
   find(fields: object): Promise<Board[]>;
   findOne(fields: object): Promise<Board>;
   findByUserEmail(email: string): Promise<Board[]>;

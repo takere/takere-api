@@ -2,8 +2,8 @@ import BoardService = require('../services/board.service');
 import ExecutedService = require('../services/executed.service');
 
 class BoardController {
-  boardService: any;
-  executedService: any;
+  boardService: BoardService;
+  executedService: ExecutedService;
 
   constructor() {
     this.boardService = new BoardService();
@@ -39,7 +39,7 @@ class BoardController {
         },
         node: {
             id: board.node.id,
-            results: this.objectWithoutProperties(board?.node?.data?.results, ["boardName", "boardDescription"]),
+            results: this.objectWithoutProperties(board?.node?.data?.results, ["name", "description"]),
         }
     }
   }
@@ -61,10 +61,10 @@ class BoardController {
     board.completed = true;
 
     if(!board.executed) {
-       const executed = await this.executedService.insert(
+       const executed = await this.executedService.insert({
             result,
-            board.id
-       );
+            node: board.id
+    });
         board.executed = executed.id;
     }
 

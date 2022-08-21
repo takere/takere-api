@@ -3,7 +3,9 @@ interface BoardDTO {
   description: string,
   userEmail: string,
   flow: string,
-  node: string
+  node: string,
+  executed: any,
+  completed: boolean
 }
 
 export = BoardDTO;
