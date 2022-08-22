@@ -7,6 +7,10 @@ const jobQueue = () => {
     const nodeProcess = new NodeProcessCore();
     ag.start();
 
+    ag.define("CHECK_CONDITIONALS", async (job: any) => {
+        console.log('Updating conditionals...')
+    });
+
     ag.define("TIME_TICKER", async (job: any) => {
         try{
             const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));

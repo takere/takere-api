@@ -1,5 +1,6 @@
 import Repositories = require('./repositories');
 import Routes = require('./routes');
+import JobConfig = require('./config/job.config');
 
 const generalConfig = require('./config/general.config');
 const express = require('express');
@@ -16,7 +17,7 @@ repository.connect();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const jQueue = require('./helpers/jobQueue');
+// const jQueue = require('./helpers/jobQueue');
 require('./helpers/passport')(passport);
 
 const app = express();
@@ -60,7 +61,9 @@ app.use(function(req: any, res: any, next: any) {
 
 //Start cron jobs;
 // crons.cronJobs();
-jQueue.jobQueue();
+const jobConfig = new JobConfig();
+jobConfig.run();
+
 
 
 // error handler

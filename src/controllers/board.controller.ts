@@ -62,14 +62,13 @@ class BoardController {
 
     if(!board.executed) {
        const executed = await this.executedService.insert({
-            result,
-            node: board.id
-    });
-        board.executed = executed.id;
+          result,
+          node: board.id
+       });
+      board.executed = executed.id;
     }
 
     this.boardService.update(board);
-
     res.send(board);
   }
 }

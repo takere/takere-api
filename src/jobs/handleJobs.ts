@@ -7,7 +7,7 @@ const JOB_TYPES = {
     DATA_INPUT: "DATA_INPUT",
     EXTERNAL_LINK: "EXTERNAL_LINK",
     MOTIVATIONAL: "MOTIVATIONAL",
-    REMINDER: "REMINDER"
+    REMINDER: "REMINDER_NODE"
 }
 
 const handleJob = async (jobName: string, jobId: string, data: any, flowId: string) => {

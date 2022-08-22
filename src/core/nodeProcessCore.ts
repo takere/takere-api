@@ -19,7 +19,7 @@ class NodeProcessCore {
 
     const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
     await jobs.handleJob(
-      sourceNode.data.type,
+      sourceNode.type,
       sourceNode.id,
       sourceNode.data,
       sourceNode.flow

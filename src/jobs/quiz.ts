@@ -3,7 +3,7 @@ import BoardService = require('../services/board.service');
 import FlowService = require('../services/flow.service');
 import ExecutedService = require('../services/executed.service');
 
-class Reminder {
+class Quiz {
   boardService: BoardService;
   flowService: FlowService;
   executedService: ExecutedService;
@@ -37,5 +37,4 @@ class Reminder {
   }
 }
 
-export = Reminder;
-  
+export = Quiz;
