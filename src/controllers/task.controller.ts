@@ -30,15 +30,15 @@ class TaskController {
     const edges = await this.edgeService.findAllByFlowId(flowId);
 
     res.send({
-        flowId: flow.id,
-        flowName: flow.name,
-        flowDescription: flow.description,
-        flowEmail: flow.userEmail,
-        data: [
-            ...nodes,
-            ...edges
-        ]
-   });
+      flowId: flow.id,
+      flowName: flow.name,
+      flowDescription: flow.description,
+      flowEmail: flow.userEmail,
+      data: [
+        ...nodes,
+        ...edges
+      ]
+    });
   }
 
   async remove(req: any, res: any, next: any) {
@@ -57,66 +57,68 @@ class TaskController {
     const { data, name, description, userEmail } = req.body
     const user = await req.user;
 
-    let timeTickers = [];
+    let timeTickers: any[] = [];
     let nodes = data.filter((d: { type: any; }) => d.type);
     let edges = data.filter((d: { source: any; }) => d.source);
 
-    const flow = await this.flowService.insert({
-        user: user.id,
-        name: name,
-        userEmail: userEmail,
-        description: description
+    const storedFlow = await this.flowService.insert({
+      user: user.id,
+      name: name,
+      userEmail: userEmail,
+      description: description
     });
 
-    for (let n of nodes){
-        console.log('STORING', n.id)
-        const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
-
-        edges.map((e: { target: any; source: any; }) => {
-            if(e?.target === n.id){
-                e.target = storedNode.id
-            }
-            if(e.source === n.id){
-                e.source = storedNode.id
-            }
-        });
-
-        if(storedNode.type === 'BEGIN_NODE'){
-            timeTickers.push(storedNode);
-        }
+    for (let n of nodes) {
+      await this.storeNode(n, storedFlow, edges, timeTickers);
     }
-    console.log('inserting edges...');
-    for(let e of edges){
-      this.edgeService.insert({source: e.source, target: e?.target, flow: flow.id, animated: e.animated});
+   
+    for (let e of edges) {
+      this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
     }
 
-    console.log('ok');
-
-
-    for(let t of timeTickers){
-        
-
-        if (t.data.results === undefined) {
-            t.data.results = {
-                repeatInterval: "0",
-                skipDays: "0"
-            };
-        }
-
-        const agendaData = t.data.results;
-
-        const job = this.ag.ag.create("TIME_TICKER", t);
-
-        job.repeatEvery(agendaData.repeatInterval, {
-            endDate: new Date(agendaData.endDate),
-            skipDays: agendaData.skipDays,
-            skipImmediate: agendaData.skipImmediate,
-            startDate: new Date(agendaData.startDate),
-        });
-        job.save();
+    for (let t of timeTickers) {
+      this.storeTimeTicker(t);
     }
 
     res.send('Success');
+  }
+
+  private storeTimeTicker(t: any) {
+    if (t.data.results === undefined) {
+      t.data.results = {
+        repeatInterval: "0",
+        skipDays: "0"
+      };
+    }
+
+    const agendaData = t.data.results;
+    const job = this.ag.ag.create("TIME_TICKER", t);
+
+    job.repeatEvery(agendaData.repeatInterval, {
+      endDate: new Date(agendaData.endDate),
+      skipDays: agendaData.skipDays,
+      skipImmediate: agendaData.skipImmediate,
+      startDate: new Date(agendaData.startDate),
+    });
+    job.save();
+  }
+
+  private async storeNode(n: any, flow: any, edges: any, timeTickers: any[]) {
+    console.log('STORING', n.id);
+    const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
+
+    edges.map((e: { target: any; source: any; }) => {
+      if (e?.target === n.id) {
+        e.target = storedNode.id;
+      }
+      if (e.source === n.id) {
+        e.source = storedNode.id;
+      }
+    });
+
+    if (storedNode.type === 'BEGIN_NODE') {
+      timeTickers.push(storedNode);
+    }
   }
 }
 
