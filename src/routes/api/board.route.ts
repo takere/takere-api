@@ -2,7 +2,7 @@ import BoardController = require('../../controllers/board.controller');
 import Route = require('../route');
 
 class BoardRoute extends Route {
-  boardController: any;
+  private readonly boardController: BoardController;
 
   constructor(express: any, cors: any, passport: any) {
     super(express, cors, passport);

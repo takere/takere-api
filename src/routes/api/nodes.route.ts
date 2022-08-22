@@ -2,7 +2,7 @@ import NodeController = require('../../controllers/node.controller');
 import Route = require('../route');
 
 class NodesRoute extends Route {
-  nodeController: NodeController;
+  private readonly nodeController: NodeController;
 
   constructor(express: any, cors: any, passport: any) {
     super(express, cors, passport);

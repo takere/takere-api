@@ -2,7 +2,7 @@ import TaskController = require('../../controllers/task.controller');
 import Route = require('../route');
 
 class TasksRoute extends Route {
-  taskController: any;
+  private readonly taskController: TaskController;
 
   constructor(express: any, cors: any, passport: any) {
     super(express, cors, passport);
