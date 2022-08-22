@@ -12,7 +12,7 @@ class UserCollection implements UserRepository {
   public async findOne(fields: object): Promise<User> {
     const storedUser = await this._schema.findOne(fields);
 
-    return { ...storedUser._doc, id: storedUser._doc._id };
+    return storedUser;
   }
 
   public async save(user: UserDTO): Promise<User> {
