@@ -124,10 +124,13 @@ class TaskController {
     if (storedNode.data.results?.frequency) {
       const { type, value } = storedNode.data.results.frequency;
       
-      const job = this.ag.ag.create("TIME_TICKER", t);
+      const job = this.ag.ag.create("TIME_TICKER");
+      const jobData = {
+        endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
+      };
 
       if (type === 'onlyOnce') {
-        job.scheduleJob()
+        job.now('today', jobData);
       }
       else {
         let repeatInterval = '';
@@ -142,17 +145,9 @@ class TaskController {
           repeatInterval = `0 23 */${value} * *`;
         }
 
-        job.repeatEvery(repeatInterval, {
-          endDate: new Date(agendaData.endDate),
-          skipDays: agendaData.skipDays,
-          skipImmediate: agendaData.skipImmediate,
-          startDate: new Date(agendaData.startDate),
-        });
+        job.repeatEvery(repeatInterval, jobData);
       }
       
-
-      
-
       job.save();
     }
   }
