@@ -57,7 +57,7 @@ class TaskController {
     const { data, name, description, userEmail } = req.body
     const user = await req.user;
 
-    let timeTickers: any[] = [];
+    // let timeTickers: any[] = [];
     let nodes = data.filter((d: { type: any; }) => d.type);
     let edges = data.filter((d: { source: any; }) => d.source);
 
@@ -69,41 +69,41 @@ class TaskController {
     });
 
     for (let n of nodes) {
-      await this.storeNode(n, storedFlow, edges, timeTickers);
+      await this.storeNode(n, storedFlow, edges/*, timeTickers*/);
     }
    
     for (let e of edges) {
       this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
     }
 
-    for (let t of timeTickers) {
-      this.storeTimeTicker(t);
-    }
+    // for (let t of timeTickers) {
+    //   this.storeTimeTicker(t);
+    // }
 
     res.send('Success');
   }
 
-  private storeTimeTicker(t: any) {
-    if (t.data.results === undefined) {
-      t.data.results = {
-        repeatInterval: "0",
-        skipDays: "0"
-      };
-    }
+  // private storeTimeTicker(t: any) {
+  //   if (t.data.results === undefined) {
+  //     t.data.results = {
+  //       repeatInterval: "0",
+  //       skipDays: "0"
+  //     };
+  //   }
 
-    const agendaData = t.data.results;
-    const job = this.ag.ag.create("TIME_TICKER", t);
+    // const agendaData = t.data.results;
+    // const job = this.ag.ag.create("TIME_TICKER", t);
 
-    job.repeatEvery(agendaData.repeatInterval, {
-      endDate: new Date(agendaData.endDate),
-      skipDays: agendaData.skipDays,
-      skipImmediate: agendaData.skipImmediate,
-      startDate: new Date(agendaData.startDate),
-    });
-    job.save();
-  }
+    // job.repeatEvery(agendaData.repeatInterval, {
+    //   endDate: new Date(agendaData.endDate),
+    //   skipDays: agendaData.skipDays,
+    //   skipImmediate: agendaData.skipImmediate,
+    //   startDate: new Date(agendaData.startDate),
+    // });
+    // job.save();
+  // }
 
-  private async storeNode(n: any, flow: any, edges: any, timeTickers: any[]) {
+  private async storeNode(n: any, flow: any, edges: any/*, timeTickers: any[]*/) {
     console.log('STORING', n.id);
     const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
 
@@ -115,9 +115,45 @@ class TaskController {
         e.source = storedNode.id;
       }
     });
+    
 
-    if (storedNode.type === 'BEGIN_NODE') {
-      timeTickers.push(storedNode);
+    // if (storedNode.type === 'BEGIN_NODE') {
+    //   timeTickers.push(storedNode);
+    // }
+
+    if (storedNode.data.results?.frequency) {
+      const { type, value } = storedNode.data.results.frequency;
+      
+      const job = this.ag.ag.create("TIME_TICKER", t);
+
+      if (type === 'onlyOnce') {
+        job.scheduleJob()
+      }
+      else {
+        let repeatInterval = '';
+
+        if (type === 'daily') {
+          repeatInterval = '59 23 * * *';
+        }
+        else if (type === 'everyHours') {
+          repeatInterval = `0 */${value} * * *`;
+        }
+        else if (type === 'everyDays') {
+          repeatInterval = `0 23 */${value} * *`;
+        }
+
+        job.repeatEvery(repeatInterval, {
+          endDate: new Date(agendaData.endDate),
+          skipDays: agendaData.skipDays,
+          skipImmediate: agendaData.skipImmediate,
+          startDate: new Date(agendaData.startDate),
+        });
+      }
+      
+
+      
+
+      job.save();
     }
   }
 }
