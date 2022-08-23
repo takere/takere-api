@@ -4,11 +4,11 @@ const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
-function initialize(passport) {
+function initialize(passport: any) {
   const UserServiceClass = require("../services/user.service");
   const userService = new UserServiceClass();
 
-  const authenticateUser = async (email, password, done) => {
+  const authenticateUser = async (email: any, password: any, done: any) => {
     const user = await userService.findByEmail(email);
     if (user === null) {
       return done(null, false, { message: "Usuário ou senha inválido" });
@@ -26,8 +26,8 @@ function initialize(passport) {
   };
 
   passport.use(new LocalStrategy({ usernameField: "email" }, authenticateUser));
-  passport.serializeUser((user, done) => done(null, user.id));
-  passport.deserializeUser((id, done) => {
+  passport.serializeUser((user: any, done: any) => done(null, user.id));
+  passport.deserializeUser((id: any, done: any) => {
     return done(null, userService.findById(id));
   });
 
@@ -37,7 +37,7 @@ function initialize(passport) {
         jwtFromRequest: ExtractJwt.fromHeader("authorization"),
         secretOrKey: process.env.TOKEN_SECRET,
       },
-      async function (jwt_payload, done) {
+      async function (jwt_payload: any, done: any) {
         try {
           const user = await userService.findById(jwt_payload.data.id);
           return done(null, user);

@@ -17,7 +17,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // const jQueue = require('./helpers/jobQueue');
-require('./helpers/passport')(passport);
+require('./config/passport.config')(passport);
 
 const app = express();
 const port = generalConfig.port || '3000'
