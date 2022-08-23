@@ -8,7 +8,7 @@ class UserController {
 
   constructor() {
     this.userService = new UserService();
-    this.logger = require('../helpers/logger');
+    this.logger = require('../config/logger.config');
     this.generalConfig = require('../config/general.config');
     this.jwt = require('jsonwebtoken');
   }

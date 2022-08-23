@@ -13,7 +13,7 @@ const options = {
   }
 };
 
-const logger = winston.createLogger({
+const loggerConfig = winston.createLogger({
   transports: [
     // new winston.transports.File(options.file),
     new winston.transports.Console(),
@@ -22,12 +22,12 @@ const logger = winston.createLogger({
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(
+  loggerConfig.add(
     new winston.transports.Console({
       level: 'debug',
       format: winston.format.combine(
         winston.format.simple(),
-        winston.format.printf(msg =>
+        winston.format.printf((msg: { level: any; message: any; }) =>
           colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
         )
       ),
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
       level: 'info',
       format: winston.format.combine(
         winston.format.simple(),
-        winston.format.printf(msg =>
+        winston.format.printf((msg: { level: any; message: any; }) =>
           colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
         )
       ),
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== 'production') {
       level: 'error',
       format: winston.format.combine(
         winston.format.simple(),
-        winston.format.printf(msg =>
+        winston.format.printf((msg: { level: any; message: any; }) =>
           colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
         )
       ),
@@ -53,10 +53,10 @@ if (process.env.NODE_ENV !== 'production') {
   );
 }
 
-logger.stream = {
-  write: function(message, encoding) {
-    logger.info(message);
+loggerConfig.stream = {
+  write: function(message: any, encoding: any) {
+    loggerConfig.info(message);
   },
 };
 
-module.exports = logger;
+module.exports = loggerConfig;

@@ -1,5 +1,6 @@
 import Agenda = require("agenda");
-import NodeProcessCore = require("../core/nodeProcessCore");
+import EdgeService = require('../services/edge.service');
+import NodeService = require('../services/node.service');
 
 const isBefore = require('date-fns/isBefore')
 
@@ -11,7 +12,7 @@ class JobConfig {
   }
 
   private buildAgenda() {
-    const nodeProcess = new NodeProcessCore();
+    // const nodeProcess = new NodeProcessCore();
     JobConfig._agenda = new Agenda.Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
     JobConfig._agenda.start();
 
@@ -24,17 +25,18 @@ class JobConfig {
     });
 
     JobConfig._agenda.define("TIME_TICKER", async (job: any) => {
-        try{
-            const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
-            if(finishDateIsBeforeToday) {
-                await nodeProcess.process(job.attrs.data);
-            } else {
-                await job.disable();
-                console.log("Successfully removed job from collection");
-            }
-        } catch (e) {
-            console.log(e)
-        }
+      console.log('Running time ticker job...');
+        // try{
+        //     const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
+        //     if(finishDateIsBeforeToday) {
+        //         await nodeProcess.process(job.attrs.data);
+        //     } else {
+        //         await job.disable();
+        //         console.log("Successfully removed job from collection");
+        //     }
+        // } catch (e) {
+        //     console.log(e)
+        // }
     });
 
     JobConfig._agenda.on("start", (job: any) => {
@@ -46,19 +48,38 @@ class JobConfig {
     });
   }
 
-  private createDefaultJobs(): void {
-    // this.createCheckConditionalsJob();
+  private async process(node: any) {
+    await this.handleRecursiveTreeEdges(node.id);
+  }
+  
+  private async handleRecursiveTreeEdges(nodeId: any) {
+    const edgeService = new EdgeService();
+    const nodeService = new NodeService();
+    const jobs = require("../jobs/handleJobs");
+  
+    const sourceNode = await nodeService.findById(nodeId);
+
+    if (!sourceNode) {
+      return;
+    }
+
+    const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
+    await jobs.handleJob(
+      sourceNode.type,
+      sourceNode.id,
+      sourceNode.data,
+      sourceNode.flow
+    );
+    for (let e of edges) {
+      await this.handleRecursiveTreeEdges(e.target._id);
+    }
   }
 
-  // private createCheckConditionalsJob(): void {
-  //   const job = this.agenda?.create('CHECK_CONDITIONALS', {});
-
-  //   job?.repeatAt("0:00am");
-
-  //   job?.save();
-  // }
-
   get agenda(): Agenda.Agenda {
+    if (!JobConfig._agenda) {
+      this.buildAgenda();
+    }
+
     return JobConfig._agenda;
   }
 }

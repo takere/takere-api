@@ -14,7 +14,7 @@ import UserCollection = require('./collections/user.collection');
 
 const mongoose = require('mongoose');
 const dbConfig = require('../../config/db.config');
-const logger = require('../../helpers/logger');
+const logger = require('../../config/logger.config');
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,

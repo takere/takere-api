@@ -18,9 +18,9 @@ class JobService extends Service {
   }
 
   private buildAgenda(): Agenda.Agenda {
-    const jobService = new JobConfig();
+    const jobConfig = new JobConfig();
 
-    return jobService.agenda;
+    return jobConfig.agenda;
   }
 
   public createOnlyOnceEvent(job: Job): void {
