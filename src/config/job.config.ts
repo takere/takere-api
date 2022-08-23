@@ -4,31 +4,26 @@ import NodeProcessCore = require("../core/nodeProcessCore");
 const isBefore = require('date-fns/isBefore')
 
 class JobConfig {
-  private agenda: Agenda.Agenda | null;
-
-  constructor() {
-    this.agenda = null;
-  }
+  private static _agenda: Agenda.Agenda;
 
   public run(): void {
     this.buildAgenda();
-    this.createDefaultJobs();
   }
 
   private buildAgenda() {
     const nodeProcess = new NodeProcessCore();
-    this.agenda = new Agenda.Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
-    this.agenda.start();
+    JobConfig._agenda = new Agenda.Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
+    JobConfig._agenda.start();
 
-    this.agenda.define("CHECK_CONDITIONALS", async (job: any) => {
+    JobConfig._agenda.define("CHECK_CONDITIONALS", async (job: any) => {
         console.log('Updating conditionals...')
     });
 
-    this.agenda.define("ONLY_ONCE", async (job: any) => {
+    JobConfig._agenda.define("ONLY_ONCE", async (job: any) => {
       console.log('Running only once job...');
     });
 
-    this.agenda.define("TIME_TICKER", async (job: any) => {
+    JobConfig._agenda.define("TIME_TICKER", async (job: any) => {
         try{
             const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
             if(finishDateIsBeforeToday) {
@@ -42,25 +37,29 @@ class JobConfig {
         }
     });
 
-    this.agenda.on("start", (job: any) => {
+    JobConfig._agenda.on("start", (job: any) => {
         console.log("Job %s starting on node %s", job.attrs.name, job.attrs.data._id);
     });
 
-    this.agenda.on("complete", (job: any) => {
+    JobConfig._agenda.on("complete", (job: any) => {
         console.log(`Job ${job.attrs.name} finished on node ${job.attrs.data._id}`);
     });
   }
 
   private createDefaultJobs(): void {
-    this.createCheckConditionalsJob();
+    // this.createCheckConditionalsJob();
   }
 
-  private createCheckConditionalsJob(): void {
-    const job = this.agenda?.create('CHECK_CONDITIONALS', {});
+  // private createCheckConditionalsJob(): void {
+  //   const job = this.agenda?.create('CHECK_CONDITIONALS', {});
 
-    job?.repeatAt("0:00am");
+  //   job?.repeatAt("0:00am");
 
-    job?.save();
+  //   job?.save();
+  // }
+
+  get agenda(): Agenda.Agenda {
+    return JobConfig._agenda;
   }
 }
 

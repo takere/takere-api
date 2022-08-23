@@ -1,32 +1,33 @@
-import Agenda = require("agenda");
 import NodeService = require('../services/node.service');
 import FlowService = require('../services/flow.service');
 import EdgeService = require('../services/edge.service');
 import JobService = require('../services/job.service');
 import Job = require("../models/job.model");
 import Cron = require("../models/cron.model");
+import Node = require("../domain/node.domain");
+import Edge = require("../domain/edge.domain");
 
 class TaskController {
-  nodeService: NodeService;
-  flowService: FlowService;
-  edgeService: EdgeService;
-  jobService: JobService;
+  private readonly nodeService: NodeService;
+  private readonly flowService: FlowService;
+  private readonly edgeService: EdgeService;
+  private readonly jobService: JobService;
 
-  constructor(agenda: Agenda.Agenda) {
+  constructor() {
     this.nodeService = new NodeService();
     this.flowService = new FlowService();
     this.edgeService = new EdgeService();
-    this.jobService = new JobService(agenda);
+    this.jobService = new JobService();
   }
 
-  async getAll(req: any, res: any, next: any) {
+  public async getAll(req: any, res: any, next: any) {
     const user = await req.user;
     const flows = await this.flowService.findAllByUserId(user.id);
 
     res.send(flows);
   }
   
-  async get(req: any, res: any, next: any) {
+  public async get(req: any, res: any, next: any) {
     const user = await req.user;
     const flowId = await req.params.uid;
 
@@ -46,7 +47,7 @@ class TaskController {
     });
   }
 
-  async remove(req: any, res: any, next: any) {
+  public async remove(req: any, res: any, next: any) {
     const user = await req.user;
     const flowId = await req.params.uid;
 
@@ -58,7 +59,7 @@ class TaskController {
     res.send('success');
   }
 
-  async create(req: any, res: any, next: any) {
+  public async create(req: any, res: any, next: any) {
     const { data, name, description, userEmail } = req.body
     const user = await req.user;
 
@@ -74,7 +75,7 @@ class TaskController {
     });
 
     for (let n of nodes) {
-      await this.storeNode(n, storedFlow, edges/*, timeTickers*/);
+      await this.storeNode(n, storedFlow, nodes, edges/*, timeTickers*/);
     }
    
     for (let e of edges) {
@@ -108,10 +109,11 @@ class TaskController {
     // job.save();
   // }
 
-  private async storeNode(n: any, flow: any, edges: any/*, timeTickers: any[]*/) {
+  private async storeNode(n: Node, flow: any, nodes: Node[], edges: Edge[]) {
     console.log('STORING', n.id);
     const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
 
+    // Updates node id on each edge
     edges.map((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {
         e.target = storedNode.id;
@@ -120,41 +122,51 @@ class TaskController {
         e.source = storedNode.id;
       }
     });
-    
-
-    // if (storedNode.type === 'BEGIN_NODE') {
-    //   timeTickers.push(storedNode);
-    // }
 
     if (storedNode.data.results?.frequency) {
-      const { type, value } = storedNode.data.results.frequency;
-      
-      // const job = this.ag.ag.create("TIME_TICKER");
-      // const jobData = {
-        // endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
-        // startDate: beginNode.startDate,
-      // }
-      const job: Job = {
-        beginDate: beginNode.startDate,
-        endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
-        data: storedNode
-      }
-
-      if (type === 'onlyOnce') { 
-        this.jobService.createOnlyOnceEvent(job);
-      }
-      else {
-        const repeatInterval: Cron = {
-          seconds: (type === 'daily') ? '59' : '0',
-          minute: (type === 'daily') ? '23' : `*/${value}`,
-          hour: (type === 'everyDays') ? `*/${value}` : undefined,
-          dayOfMonth: undefined,
-          month: undefined,
-          dayOfWeek: undefined
-        };
-        this.jobService.createRepeatedEvent(job, repeatInterval);
-      }
+      this.createJobForNode(storedNode, nodes, edges);
     }
+  }
+
+  private createJobForNode(storedNode: Node, nodes: Node[], edges: Edge[]) {
+    const { type, value } = storedNode.data.results.frequency;
+    const beginNode: Node = this.findRoot(storedNode, nodes, edges);
+    const job: Job = {
+      beginDate: beginNode.data.results.startDate,
+      endDate: beginNode.data.results.endDate,
+      data: storedNode
+    };
+
+    if (type === 'onlyOnce') {
+      this.jobService.createOnlyOnceEvent(job);
+    }
+    else {
+      const repeatInterval: Cron = {
+        seconds: (type === 'daily') ? '59' : '0',
+        minute: (type === 'daily') ? '23' : `*/${value}`,
+        hour: (type === 'everyDays') ? `*/${value}` : undefined,
+        dayOfMonth: undefined,
+        month: undefined,
+        dayOfWeek: undefined
+      };
+      this.jobService.createRepeatedEvent(job, repeatInterval);
+    }
+  }
+  
+  private findRoot(node: Node, nodes: Node[], edges: Edge[]): Node {
+    const parent = this.findParent(node, nodes, edges);
+
+    if (parent === node) {
+      return parent;
+    }
+
+    return this.findRoot(parent, nodes, edges);
+  }
+
+  private findParent(node: Node, nodes: Node[], edges: Edge[]): Node {
+    const parentId = edges.find(edge => edge.target === node.id)?.id ?? node.id;
+
+    return nodes.find(n => n.id === parentId) ?? node;
   }
 }
 
