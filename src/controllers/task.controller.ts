@@ -127,7 +127,8 @@ class TaskController {
       const job = this.ag.ag.create("TIME_TICKER");
       const jobData = {
         endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
-      };
+        startDate: beginNode.startDate,
+      }
 
       if (type === 'onlyOnce') {
         job.now('today', jobData);
