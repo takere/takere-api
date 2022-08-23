@@ -24,6 +24,10 @@ class JobConfig {
         console.log('Updating conditionals...')
     });
 
+    this.agenda.define("ONLY_ONCE", async (job: any) => {
+      console.log('Running only once job...');
+    });
+
     this.agenda.define("TIME_TICKER", async (job: any) => {
         try{
             const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));

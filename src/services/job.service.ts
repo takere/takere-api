@@ -17,26 +17,22 @@ class JobService extends Service {
   }
 
   public createOnlyOnceEvent(job: Job): void {
-    if (this.isBefore(new Date(job.date.end), new Date())) {
+    if (this.isBefore(new Date(job.endDate), new Date())) {
       return;
     }
     
-    const isFutureEvent = this.isBefore(new Date(), new Date(job.date.begin));
+    const isFutureEvent = this.isBefore(new Date(), new Date(job.beginDate));
     
     if (isFutureEvent) {
-      this.agenda.schedule(new Date(job.date.begin), job.name, job.data);
+      this.agenda.schedule(new Date(job.beginDate), 'ONLY_ONCE', job.data);
     }
     else {  // begin < event < end
-      this.agenda.schedule('today', job.name, job.data);
+      this.agenda.schedule('today', 'ONLY_ONCE', job.data);
     }
-    
   }
 
   public createRepeatedEvent(job: Job, repeatInterval: Cron): void {
-    const newJob = this.agenda.create(job.name, {
-      startDate: job.date.begin,
-      endDate: job.date.end, // beginNode of this node (remember: may have multiple begin nodes)
-    });
+    const newJob = this.createTimeTickerJob(job.beginDate, job.endDate);
 
     newJob.repeatEvery(
       this.cronService.convertCronToString(repeatInterval), 
@@ -44,6 +40,15 @@ class JobService extends Service {
     );
 
     newJob.save();
+  }
+
+  private createTimeTickerJob(startDate: string, endDate: string) {
+    return this.agenda.create("TIME_TICKER", {
+      repeatInterval: '0',
+      skipDays: '0',
+      startDate,
+      endDate
+    });
   }
 }
 

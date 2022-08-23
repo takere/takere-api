@@ -1,18 +1,22 @@
+import Agenda = require("agenda");
 import NodeService = require('../services/node.service');
 import FlowService = require('../services/flow.service');
 import EdgeService = require('../services/edge.service');
+import JobService = require('../services/job.service');
+import Job = require("../models/job.model");
+import Cron = require("../models/cron.model");
 
 class TaskController {
   nodeService: NodeService;
   flowService: FlowService;
   edgeService: EdgeService;
-  ag: any;
+  jobService: JobService;
 
-  constructor() {
+  constructor(agenda: Agenda.Agenda) {
     this.nodeService = new NodeService();
     this.flowService = new FlowService();
     this.edgeService = new EdgeService();
-    this.ag = require('../helpers/jobQueue');
+    this.jobService = new JobService(agenda);
   }
 
   async getAll(req: any, res: any, next: any) {
@@ -21,6 +25,7 @@ class TaskController {
 
     res.send(flows);
   }
+  
   async get(req: any, res: any, next: any) {
     const user = await req.user;
     const flowId = await req.params.uid;
@@ -124,32 +129,31 @@ class TaskController {
     if (storedNode.data.results?.frequency) {
       const { type, value } = storedNode.data.results.frequency;
       
-      const job = this.ag.ag.create("TIME_TICKER");
-      const jobData = {
+      // const job = this.ag.ag.create("TIME_TICKER");
+      // const jobData = {
+        // endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
+        // startDate: beginNode.startDate,
+      // }
+      const job: Job = {
+        beginDate: beginNode.startDate,
         endDate: beginNode.end, // beginNode of this node (remember: may have multiple begin nodes)
-        startDate: beginNode.startDate,
+        data: storedNode
       }
 
-      if (type === 'onlyOnce') {
-        job.now('today', jobData);
+      if (type === 'onlyOnce') { 
+        this.jobService.createOnlyOnceEvent(job);
       }
       else {
-        let repeatInterval = '';
-
-        if (type === 'daily') {
-          repeatInterval = '59 23 * * *';
-        }
-        else if (type === 'everyHours') {
-          repeatInterval = `0 */${value} * * *`;
-        }
-        else if (type === 'everyDays') {
-          repeatInterval = `0 23 */${value} * *`;
-        }
-
-        job.repeatEvery(repeatInterval, jobData);
+        const repeatInterval: Cron = {
+          seconds: (type === 'daily') ? '59' : '0',
+          minute: (type === 'daily') ? '23' : `*/${value}`,
+          hour: (type === 'everyDays') ? `*/${value}` : undefined,
+          dayOfMonth: undefined,
+          month: undefined,
+          dayOfWeek: undefined
+        };
+        this.jobService.createRepeatedEvent(job, repeatInterval);
       }
-      
-      job.save();
     }
   }
 }

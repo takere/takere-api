@@ -1,7 +1,7 @@
 interface Job {
-  date: { begin: string, end: string },
-  data: any,
-  name: string
+  beginDate: string,
+  endDate: string,
+  data: any
 }
 
 export = Job;
