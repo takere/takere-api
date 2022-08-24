@@ -27,7 +27,7 @@ class EdgeCollection implements EdgeRepository {
     const targetEdge = new this._schema({ ...edge, id: undefined });
     const storedEdge = await targetEdge.save();
 
-    return { ...storedEdge, id: storedEdge._id };
+    return { ...storedEdge._doc, id: storedEdge._id };
   }
 }
 

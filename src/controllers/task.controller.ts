@@ -74,12 +74,16 @@ class TaskController {
       description: description
     });
 
-    for (let n of nodes) {
-      await this.storeNode(n, storedFlow, nodes, edges/*, timeTickers*/);
-    }
-   
-    for (let e of edges) {
-      this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
+    // for (let n of nodes) {
+    //   await this.storeNode(n, storedFlow, nodes, edges/*, timeTickers*/);
+    // }
+    const storedNodes: Node[] = await this.storeNodes(nodes, edges, storedFlow);
+    const storedEdges: Edge[] = await this.storeEdges(edges, storedFlow);
+
+    for (let n of storedNodes) {
+      if (n.data.results?.frequency) {
+        this.createJobForNode(n, storedNodes, storedEdges);
+      }
     }
 
     // for (let t of timeTickers) {
@@ -109,6 +113,30 @@ class TaskController {
     // job.save();
   // }
 
+  private async storeNodes(nodes: any, edges: any, storedFlow: any) {
+    const storedNodes = [];
+
+    for (let n of nodes) {
+      let storedNode = await this.storeNode(n, storedFlow, nodes, edges);
+
+      storedNodes.push(storedNode);
+    }
+
+    return storedNodes;
+  }
+
+  private async storeEdges(edges: any, storedFlow: any) {
+    const storedEdges = [];
+
+    for (let e of edges) {
+      let storedEdge = await this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
+
+      storedEdges.push(storedEdge);
+    }
+
+    return storedEdges;
+  }
+
   private async storeNode(n: Node, flow: any, nodes: Node[], edges: Edge[]) {
     console.log('STORING', n.id);
     const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
@@ -116,9 +144,9 @@ class TaskController {
     // Updates node id on each edge
     
 
-    if (storedNode.data.results?.frequency) {
-      this.createJobForNode(storedNode, nodes, edges);
-    }
+    // if (storedNode.data.results?.frequency) {
+    //   this.createJobForNode(storedNode, nodes, edges);
+    // }
 
     edges.map((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {
@@ -128,6 +156,8 @@ class TaskController {
         e.source = storedNode.id;
       }
     });
+
+    return storedNode;
   }
 
   private createJobForNode(storedNode: Node, nodes: Node[], edges: Edge[]) {
@@ -135,6 +165,7 @@ class TaskController {
     console.log('finding root...')
     console.log(nodes)
     console.log(edges)
+    console.log(typeof edges[0].source)
     const beginNode: Node = this.findRoot(storedNode, nodes, edges);
     console.log(storedNode, beginNode)
     // problem: findRoot not working
