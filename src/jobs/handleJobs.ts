@@ -2,6 +2,9 @@
 // const dataInput = require('./dataInput');
 // const motivational = require('./motivacional');
 import Reminder = require("./reminder");
+import BoardService = require('../services/board.service');
+import FlowService = require('../services/flow.service');
+import BoardDTO = require('../dto/board.dto');
 
 const JOB_TYPES = {
     DATA_INPUT: "DATA_INPUT",
@@ -11,23 +14,20 @@ const JOB_TYPES = {
 }
 
 const handleJob = async (jobName: string, jobId: string, data: any, flowId: string) => {
-    //const reminder = require('./reminder');
-    const reminder = new Reminder();
-
-    switch (jobName) {
-        // case JOB_TYPES.EXTERNAL_LINK:
-        //     await externalLink.handler(data, jobId, flowId)
-        //     break;
-        // case JOB_TYPES.DATA_INPUT:
-        //     await dataInput.handler(data, jobId, flowId)
-        //     break;
-        // case JOB_TYPES.MOTIVATIONAL:
-        //     await motivational.handler(data, jobId, flowId);
-        //     break;
-        case JOB_TYPES.REMINDER:
-            await reminder.handler(data, jobId, flowId);
-            break;
+    const boardService = new BoardService();
+    const flowService = new FlowService();
+    const flow = await flowService.findById(flowId);
+    const board: BoardDTO = {
+        name: data.results.name,
+        description: data.results.description,
+        userEmail: flow.userEmail,
+        flow: flow.id,
+        node: jobId,
+        executed: undefined,
+        content: data.results
+        // completed: false
     }
+    boardService.insert(board);
 }
 
 

@@ -22,21 +22,12 @@ class JobConfig {
 
     JobConfig._agenda.define("ONLY_ONCE", async (job: any) => {
       console.log('Running only once job...');
+      await this.runJob(job);
     });
 
     JobConfig._agenda.define("TIME_TICKER", async (job: any) => {
       console.log('Running time ticker job...');
-        // try{
-        //     const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
-        //     if(finishDateIsBeforeToday) {
-        //         await nodeProcess.process(job.attrs.data);
-        //     } else {
-        //         await job.disable();
-        //         console.log("Successfully removed job from collection");
-        //     }
-        // } catch (e) {
-        //     console.log(e)
-        // }
+      await this.runJob(job);
     });
 
     JobConfig._agenda.on("start", (job: any) => {
@@ -46,6 +37,22 @@ class JobConfig {
     JobConfig._agenda.on("complete", (job: any) => {
         console.log(`Job ${job.attrs.name} finished on node ${job.attrs.data._id}`);
     });
+  }
+
+  private async runJob(job: any) {
+    try{
+      // console.log(job.attrs)
+      const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
+      if(finishDateIsBeforeToday) {
+          await this.process(job.attrs.data);
+      } else {
+          await job.disable();
+          console.log("Successfully removed job from collection");
+      }
+    } 
+    catch (e) {
+        console.log(e)
+    }
   }
 
   private async process(node: any) {
@@ -64,14 +71,16 @@ class JobConfig {
     }
 
     const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
-    await jobs.handleJob(
-      sourceNode.type,
-      sourceNode.id,
-      sourceNode.data,
-      sourceNode.flow
-    );
+    if (sourceNode.type !== 'CONDITIONAL_NODE') {
+      await jobs.handleJob(
+        sourceNode.type,
+        sourceNode.id,
+        sourceNode.data,
+        sourceNode.flow
+      );
+    }
     for (let e of edges) {
-      await this.handleRecursiveTreeEdges(e.target._id);
+      await this.handleRecursiveTreeEdges(e.target);
     }
   }
 

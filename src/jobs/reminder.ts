@@ -16,11 +16,11 @@ class Reminder {
 
   public async handler(data: any, jobId: string, flowId: string) {
       const flow = await this.flowService.findById(flowId);
-      const executed = await this.executedService.insert({
-          result: data.results.content,
-          node: jobId
-      }
-      );
+      // const executed = await this.executedService.insert({
+      //     result: data.results.content,
+      //     node: jobId
+      // }
+      // );
   
       //name, description, userEmail, flow, node
 
@@ -30,8 +30,8 @@ class Reminder {
           userEmail: flow.userEmail,
           flow: flow.id,
           node: jobId,
-          executed: executed.id,
-          completed: false
+          executed: undefined,
+          content: data.results.content
       }
       this.boardService.insert(board);
   }

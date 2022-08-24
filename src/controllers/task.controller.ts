@@ -114,6 +114,12 @@ class TaskController {
     const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
 
     // Updates node id on each edge
+    
+
+    if (storedNode.data.results?.frequency) {
+      this.createJobForNode(storedNode, nodes, edges);
+    }
+
     edges.map((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {
         e.target = storedNode.id;
@@ -122,35 +128,37 @@ class TaskController {
         e.source = storedNode.id;
       }
     });
-
-    if (storedNode.data.results?.frequency) {
-      this.createJobForNode(storedNode, nodes, edges);
-    }
   }
 
   private createJobForNode(storedNode: Node, nodes: Node[], edges: Edge[]) {
     const { type, value } = storedNode.data.results.frequency;
+    console.log('finding root...')
+    console.log(nodes)
+    console.log(edges)
     const beginNode: Node = this.findRoot(storedNode, nodes, edges);
-    const job: Job = {
-      beginDate: beginNode.data.results.startDate,
-      endDate: beginNode.data.results.endDate,
-      data: storedNode
-    };
+    console.log(storedNode, beginNode)
+    // problem: findRoot not working
+    console.log('----')
+    // const job: Job = {
+    //   beginDate: beginNode.data.results.startDate,
+    //   endDate: beginNode.data.results.endDate,
+    //   data: storedNode
+    // };
 
-    if (type === 'onlyOnce') {
-      this.jobService.createOnlyOnceEvent(job);
-    }
-    else {
-      const repeatInterval: Cron = {
-        seconds: (type === 'daily') ? '59' : '0',
-        minute: (type === 'daily') ? '23' : `*/${value}`,
-        hour: (type === 'everyDays') ? `*/${value}` : undefined,
-        dayOfMonth: undefined,
-        month: undefined,
-        dayOfWeek: undefined
-      };
-      this.jobService.createRepeatedEvent(job, repeatInterval);
-    }
+    // if (type === 'onlyOnce') {
+    //   this.jobService.createOnlyOnceEvent(job);
+    // }
+    // else {
+    //   const repeatInterval: Cron = {
+    //     seconds: (type === 'daily') ? '59' : '0',
+    //     minute: (type === 'daily') ? '23' : `*/${value}`,
+    //     hour: (type === 'everyDays') ? `*/${value}` : undefined,
+    //     dayOfMonth: undefined,
+    //     month: undefined,
+    //     dayOfWeek: undefined
+    //   };
+    //   this.jobService.createRepeatedEvent(job, repeatInterval);
+    // }
   }
   
   private findRoot(node: Node, nodes: Node[], edges: Edge[]): Node {

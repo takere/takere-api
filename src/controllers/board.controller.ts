@@ -32,6 +32,7 @@ class BoardController {
         name: board.name,
         description: board.description,
         icon: board.icon,
+        content: board.content,
         executed: {
             id: board?.executed?.id,
             executedAt: board?.executed?.createdAt,
@@ -58,7 +59,7 @@ class BoardController {
     const {boardId, result} = req.body
 
     let board = await this.boardService.findById(boardId);
-    board.completed = true;
+    // board.completed = true;
 
     if(!board.executed) {
        const executed = await this.executedService.insert({

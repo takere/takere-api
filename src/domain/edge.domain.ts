@@ -1,7 +1,7 @@
 interface Edge {
   id: string,
-  source: any,
-  target: any,
+  source: string,
+  target: string,
   animated: boolean,
   flow: any
 }

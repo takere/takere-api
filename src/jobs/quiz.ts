@@ -15,23 +15,24 @@ class Quiz {
   }
 
   public async handler(data: any, jobId: string, flowId: string) {
-      const flow = await this.flowService.findById(flowId);
-      const executed = await this.executedService.insert({
-          result: data.results.content,
-          node: jobId
-      }
-      );
-  
+    // const executed = await this.executedService.insert({
+      //     result: data.results.content,
+      //     node: jobId
+      // }
+      // );
+      
       //name, description, userEmail, flow, node
-
+      
+      const flow = await this.flowService.findById(flowId);
       const board: BoardDTO = {
           name: data.results.name,
           description: data.results.description,
           userEmail: flow.userEmail,
           flow: flow.id,
           node: jobId,
-          executed: executed.id,
-          completed: false
+          executed: undefined,
+          content: data.results.content
+          // completed: false
       }
       this.boardService.insert(board);
   }
