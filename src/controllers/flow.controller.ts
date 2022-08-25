@@ -7,7 +7,7 @@ import Cron = require("../models/cron.model");
 import Node = require("../domain/node.domain");
 import Edge = require("../domain/edge.domain");
 
-class TaskController {
+class FlowController {
   private readonly nodeService: NodeService;
   private readonly flowService: FlowService;
   private readonly edgeService: EdgeService;
@@ -169,4 +169,4 @@ class TaskController {
   }
 }
 
-export = TaskController;
+export = FlowController;

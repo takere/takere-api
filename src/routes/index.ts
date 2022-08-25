@@ -18,7 +18,7 @@ class Routes {
   private buildRoutes() {
     this._routeList = [
       { path: '/users', module: this.buildApiRoute('users') },
-      { path: '/tasks', module: this.buildApiRoute('tasks') },
+      { path: '/flows', module: this.buildApiRoute('flows') },
       { path: '/nodes', module: this.buildApiRoute('nodes') },
       { path: '/board', module: this.buildApiRoute('board') },
     ];
