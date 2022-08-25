@@ -58,7 +58,7 @@ class FlowService extends Service {
   }
 
   public async insert(flow: FlowDTO): Promise<Flow> {
-    const storedFlow = this.flowRepository.save(flow);
+    const storedFlow = await this.flowRepository.save(flow);
     const storedNodes: Node[] = await this.storeNodes(flow.nodes, flow.edges, storedFlow);
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
@@ -83,20 +83,8 @@ class FlowService extends Service {
     return storedNodes;
   }
 
-  private async storeEdges(edges: any, storedFlow: any) {
-    const storedEdges = [];
-
-    for (let e of edges) {
-      let storedEdge = await this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
-
-      storedEdges.push(storedEdge);
-    }
-
-    return storedEdges;
-  }
-
   private async storeNode(n: Node, flow: any, nodes: Node[], edges: Edge[]) {
-    console.log('STORING', n.id);
+    console.log('STORING NODE', n.id);
     const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
 
     edges.map((e: { target: any; source: any; }) => {
@@ -109,6 +97,19 @@ class FlowService extends Service {
     });
 
     return storedNode;
+  }
+
+  private async storeEdges(edges: any, storedFlow: any) {
+    console.log('STORING EDGES');
+    const storedEdges = [];
+
+    for (let e of edges) {
+      let storedEdge = await this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
+
+      storedEdges.push(storedEdge);
+    }
+
+    return storedEdges;
   }
 }
 
