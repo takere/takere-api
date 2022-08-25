@@ -5,8 +5,7 @@ interface BoardDTO {
   flow: string,
   node: string,
   content: any,
-  executed: any//,
-  // completed: boolean
+  executed: any
 }
 
 export = BoardDTO;
