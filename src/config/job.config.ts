@@ -1,18 +1,28 @@
 import Agenda = require("agenda");
+import BoardService = require("../services/board.service");
+import FlowService = require("../services/flow.service");
 import EdgeService = require('../services/edge.service');
 import NodeService = require('../services/node.service');
 
-const isBefore = require('date-fns/isBefore')
-
 class JobConfig {
   private static _agenda: Agenda.Agenda;
+  private readonly boardService: BoardService;
+  private readonly flowService: FlowService;
+  private readonly edgeService: EdgeService;
+  private readonly nodeService: NodeService;
+
+  constructor() {
+    this.boardService = new BoardService();
+    this.flowService = new FlowService();
+    this.edgeService = new EdgeService();
+    this.nodeService = new NodeService();
+  }
 
   public run(): void {
     this.buildAgenda();
   }
 
   private buildAgenda() {
-    // const nodeProcess = new NodeProcessCore();
     JobConfig._agenda = new Agenda.Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
     JobConfig._agenda.start();
 
@@ -39,7 +49,9 @@ class JobConfig {
     });
   }
 
-  private async runJob(job: any) {
+  public async runJob(job: any) {
+    const isBefore = require('date-fns/isBefore')
+
     try{
       // console.log(job.attrs)
       const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
@@ -60,30 +72,31 @@ class JobConfig {
   }
   
   private async handleRecursiveTreeEdges(nodeId: any) {
-    const edgeService = new EdgeService();
-    const nodeService = new NodeService();
-    const jobs = require("../jobs/handleJobs");
-  
-    const sourceNode = await nodeService.findById(nodeId);
+    const sourceNode = await this.nodeService.findById(nodeId);
 
     if (!sourceNode) {
       return;
     }
 
-    const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
+    const edges = await this.edgeService.findAllBySourceId(sourceNode.id ?? '');
     if (sourceNode.type !== 'CONDITIONAL_NODE') {
-      await jobs.handleJob(
-        sourceNode.type,
-        sourceNode.id,
-        sourceNode.data,
-        sourceNode.flow
-      );
+      const flow = await this.flowService.findById(sourceNode.flow);
+
+      await this.boardService.insert({
+        name: sourceNode.data.results.name,
+        description: sourceNode.data.results.description,
+        userEmail: flow.userEmail,
+        flow: flow.id,
+        node: nodeId,
+        executed: undefined,
+        content: sourceNode.data.results
+      });
     }
     for (let e of edges) {
       await this.handleRecursiveTreeEdges(e.target);
     }
   }
-
+  
   get agenda(): Agenda.Agenda {
     if (!JobConfig._agenda) {
       this.buildAgenda();

@@ -5,16 +5,19 @@ import Job = require('../models/job.model');
 import Cron = require('../models/cron.model');
 import CronService = require("./cron.service");
 
+
 class JobService extends Service {
   private readonly agenda: Agenda.Agenda;
   private readonly cronService: CronService;
+  
   private readonly isBefore: any;
 
   constructor() {
     super();
     this.isBefore = require('date-fns/isBefore');
     this.cronService = new CronService();
-    this.agenda = this.buildAgenda();;
+    
+    this.agenda = this.buildAgenda();
   }
 
   private buildAgenda(): Agenda.Agenda {
