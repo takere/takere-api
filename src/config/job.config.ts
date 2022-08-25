@@ -7,15 +7,9 @@ import NodeService = require('../services/node.service');
 class JobConfig {
   private static _agenda: Agenda.Agenda;
   private readonly boardService: BoardService;
-  private readonly flowService: FlowService;
-  private readonly edgeService: EdgeService;
-  private readonly nodeService: NodeService;
 
   constructor() {
     this.boardService = new BoardService();
-    this.flowService = new FlowService();
-    this.edgeService = new EdgeService();
-    this.nodeService = new NodeService();
   }
 
   public run(): void {
@@ -68,19 +62,23 @@ class JobConfig {
   }
 
   private async process(node: any) {
-    await this.handleRecursiveTreeEdges(node.id);
+    const flowService = new FlowService();
+    const edgeService = new EdgeService();
+    const nodeService = new NodeService();
+
+    await this.handleRecursiveTreeEdges(node.id, flowService, edgeService, nodeService);
   }
   
-  private async handleRecursiveTreeEdges(nodeId: any) {
-    const sourceNode = await this.nodeService.findById(nodeId);
+  private async handleRecursiveTreeEdges(nodeId: any, flowService: any, edgeService: any, nodeService: any) {
+    const sourceNode = await nodeService.findById(nodeId);
 
     if (!sourceNode) {
       return;
     }
 
-    const edges = await this.edgeService.findAllBySourceId(sourceNode.id ?? '');
+    const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
     if (sourceNode.type !== 'CONDITIONAL_NODE') {
-      const flow = await this.flowService.findById(sourceNode.flow);
+      const flow = await flowService.findById(sourceNode.flow);
 
       await this.boardService.insert({
         name: sourceNode.data.results.name,
@@ -93,7 +91,7 @@ class JobConfig {
       });
     }
     for (let e of edges) {
-      await this.handleRecursiveTreeEdges(e.target);
+      await this.handleRecursiveTreeEdges(e.target, flowService, edgeService, nodeService);
     }
   }
   

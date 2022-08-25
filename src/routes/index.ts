@@ -1,3 +1,7 @@
+import BoardRoute = require("./api/board.route");
+import FlowsRoute = require("./api/flows.route");
+import NodesRoute = require("./api/nodes.route");
+import UsersRoute = require("./api/users.route");
 import RouteList = require("./route-list");
 
 class Routes {
@@ -17,19 +21,13 @@ class Routes {
 
   private buildRoutes() {
     this._routeList = [
-      { path: '/users', module: this.buildApiRoute('users') },
-      { path: '/flows', module: this.buildApiRoute('flows') },
-      { path: '/nodes', module: this.buildApiRoute('nodes') },
-      { path: '/board', module: this.buildApiRoute('board') },
+      { path: '/users', module: new UsersRoute(this.express, this.cors, this.passport) },
+      { path: '/flows', module: new FlowsRoute(this.express, this.cors, this.passport) },
+      { path: '/nodes', module: new NodesRoute(this.express, this.cors, this.passport) },
+      { path: '/board', module: new BoardRoute(this.express, this.cors, this.passport) },
     ];
   }
-
-  private buildApiRoute(name: string) {
-    const className = require(`./api/${name}.route`);
-
-    return new className(this.express, this.cors, this.passport);
-  }
-
+  
   get routeList(): RouteList[] {
     return this._routeList;
   }

@@ -6,7 +6,7 @@ class FlowsRoute extends Route {
 
   constructor(express: any, cors: any, passport: any) {
     super(express, cors, passport);
-    this.flowController = new FlowController;
+    this.flowController = new FlowController();
   }
 
   protected buildRoutes(router: any) {

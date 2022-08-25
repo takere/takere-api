@@ -1,6 +1,7 @@
 import Service = require('./service');
 import NodeService = require('./node.service');
 import EdgeService = require('./edge.service');
+import JobService = require('./job.service');
 import Flow = require('../domain/flow.domain');
 import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
@@ -12,12 +13,14 @@ class FlowService extends Service {
   private readonly flowRepository: FlowRepository;
   private readonly edgeService: EdgeService;
   private readonly nodeService: NodeService;
+  private readonly jobService: JobService;
 
   constructor() {
     super();
     this.flowRepository = this.repository.flowRepository;
     this.nodeService = new NodeService();
     this.edgeService = new EdgeService();
+    this.jobService = new JobService();
   }
 
   public async findByUserIdAndFlowId(userId: string, flowId: string): Promise<UserFlowDTO> {
@@ -56,12 +59,12 @@ class FlowService extends Service {
 
   public async insert(flow: FlowDTO): Promise<Flow> {
     const storedFlow = this.flowRepository.save(flow);
-    const storedNodes: Node[] = await this.storeNodes(nodes, flow.edges, storedFlow);
+    const storedNodes: Node[] = await this.storeNodes(flow.nodes, flow.edges, storedFlow);
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
     for (let n of storedNodes) {
       if (n.data.results?.frequency) {
-        this.nodeService.createJobForNode(n, storedNodes, storedEdges);
+        this.jobService.createJobForNode(n, storedNodes, storedEdges);
       }
     }
 

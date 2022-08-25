@@ -45,8 +45,8 @@ for (let route of routeList) {
   app.use(route.path, route.module.build());
 }
 
-const jobConfig = new JobConfig();
-jobConfig.run();
+
+new JobConfig().run();
 
 const server = http.createServer(app);
 
