@@ -1,34 +1,111 @@
 import Service = require('./service');
+import NodeService = require('./node.service');
+import EdgeService = require('./edge.service');
 import Flow = require('../domain/flow.domain');
+import Node = require('../domain/node.domain');
+import Edge = require('../domain/edge.domain');
 import FlowDTO = require('../dto/flow.dto');
+import UserFlowDTO = require('../dto/user-flow.dto');
 import FlowRepository = require('../repositories/flow.repository');
 
 class FlowService extends Service {
-  private flowRepository: FlowRepository; 
+  private readonly flowRepository: FlowRepository;
+  private readonly edgeService: EdgeService;
+  private readonly nodeService: NodeService;
 
   constructor() {
     super();
     this.flowRepository = this.repository.flowRepository;
+    this.nodeService = new NodeService();
+    this.edgeService = new EdgeService();
   }
 
-  async findByUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
-    return this.flowRepository.findOne({ user: userId, _id: flowId });
+  public async findByUserIdAndFlowId(userId: string, flowId: string): Promise<UserFlowDTO> {
+    const flow = await this.flowRepository.findOne({ user: userId, _id: flowId });
+    const nodes = await this.nodeService.findAllByFlowId(flowId);
+    const edges = await this.edgeService.findAllByFlowId(flowId);
+    
+    return {
+      flowId: flow.id,
+      flowName: flow.name,
+      flowDescription: flow.description,
+      flowEmail: flow.userEmail,
+      data: [
+        ...nodes,
+        ...edges
+      ]
+    };
   }
 
-  async findAllByUserId(id: string): Promise<Flow[]> {
+  public async findAllByUserId(id: string): Promise<Flow[]> {
     return this.flowRepository.find({ user: id });
   }
 
-  async findById(id: string): Promise<Flow> {
+  public async findById(id: string): Promise<Flow> {
     return this.flowRepository.findOne({ _id: id });
   }
 
-  async removeWithUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
-    return this.flowRepository.findOneAndRemove({user: userId, _id: flowId});
+  public async removeWithUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
+    const flow = await this.flowRepository.findOneAndRemove({user: userId, _id: flowId});
+
+    await this.nodeService.removeAllWithFlowId(flow.id);
+    await this.edgeService.removeAllWithFlowId(flow.id);
+
+    return flow;
   }
 
-  async insert(flow: FlowDTO): Promise<Flow> {
-    return this.flowRepository.save(flow);
+  public async insert(flow: FlowDTO): Promise<Flow> {
+    const storedFlow = this.flowRepository.save(flow);
+    const storedNodes: Node[] = await this.storeNodes(nodes, flow.edges, storedFlow);
+    const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
+
+    for (let n of storedNodes) {
+      if (n.data.results?.frequency) {
+        this.nodeService.createJobForNode(n, storedNodes, storedEdges);
+      }
+    }
+
+    return storedFlow;
+  }
+
+  private async storeNodes(nodes: any, edges: any, storedFlow: any) {
+    const storedNodes = [];
+
+    for (let n of nodes) {
+      let storedNode = await this.storeNode(n, storedFlow, nodes, edges);
+
+      storedNodes.push(storedNode);
+    }
+
+    return storedNodes;
+  }
+
+  private async storeEdges(edges: any, storedFlow: any) {
+    const storedEdges = [];
+
+    for (let e of edges) {
+      let storedEdge = await this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
+
+      storedEdges.push(storedEdge);
+    }
+
+    return storedEdges;
+  }
+
+  private async storeNode(n: Node, flow: any, nodes: Node[], edges: Edge[]) {
+    console.log('STORING', n.id);
+    const storedNode = await this.nodeService.insert({ type: n.type, position: n?.position, data: n?.data, flow: flow.id, id: n.id });
+
+    edges.map((e: { target: any; source: any; }) => {
+      if (e?.target === n.id) {
+        e.target = storedNode.id;
+      }
+      if (e.source === n.id) {
+        e.source = storedNode.id;
+      }
+    });
+
+    return storedNode;
   }
 }
 
