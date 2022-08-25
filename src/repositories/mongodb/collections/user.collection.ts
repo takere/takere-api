@@ -1,6 +1,6 @@
 import UserRepository = require('../../user.repository');
 import User = require('../../../domain/user.domain');
-import UserDTO = require('../../../dto/user.dto');
+import NewUserDTO = require('../../../dto/new-user.dto');
 
 class UserCollection implements UserRepository {
   private _schema: any;
@@ -15,7 +15,7 @@ class UserCollection implements UserRepository {
     return storedUser;
   }
 
-  public async save(user: UserDTO): Promise<User> {
+  public async save(user: NewUserDTO): Promise<User> {
     const targetUser = new this._schema({ ...user, id: undefined });
     const storedUser = await targetUser.save();
 

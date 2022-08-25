@@ -1,8 +1,8 @@
 import User = require('../domain/user.domain');
-import UserDTO = require('../dto/user.dto');
+import NewUserDTO = require('../dto/new-user.dto');
 
 interface UserRepository {
-  save(user: UserDTO): Promise<User>;
+  save(user: NewUserDTO): Promise<User>;
   findOne(fields: object): Promise<User>;
 }
 

@@ -1,11 +1,10 @@
-interface UserDTO {
+interface CreatedUserDTO {
   id: string,
   firstName: string,
   lastName: string,
   email: string,
   profileUrl: string,
-  createdAt: string,
-  updatedAt: string
+  token: string
 }
 
-export = UserDTO;
+export = CreatedUserDTO;
