@@ -54,7 +54,7 @@ BoardSchema.statics.findById = async function (id) {
 }
 
 BoardSchema.statics.findByUserEmail = async function (userEmail) {
-  return this.model("Board").find({ userEmail: userEmail, completed: false })
+  return this.model("Board").find({ userEmail: userEmail })
     .populate("node")
     .populate("executed")
     .exec();

@@ -17,6 +17,7 @@ class BoardService extends Service {
 
   public async findAllByUserEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findByUserEmail(email);
+    console.log(boards)
     const formattedBoards = [];
 
     for(const board of boards) {
@@ -27,6 +28,7 @@ class BoardService extends Service {
   }
   
   private formatBoard(board: Board): UserBoardDTO {
+    console.log(board)
     return {
       id: board.id,
       name: board.name,

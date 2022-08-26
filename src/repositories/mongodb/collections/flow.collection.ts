@@ -29,7 +29,7 @@ class FlowCollection implements FlowRepository {
     const targetFlow = new this._schema({ ...flow, id: undefined });
     const storedFlow = await targetFlow.save();
 
-    return { ...storedFlow, id: storedFlow._id };
+    return { ...storedFlow._doc, id: storedFlow._id };
   }
 }
 

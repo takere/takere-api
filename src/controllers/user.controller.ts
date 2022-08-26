@@ -23,12 +23,13 @@ class UserController {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     }
-    const token = this.userService.login(userData);
+    const token = await this.userService.login(userData);
   
     res.send({
       status: 200,
       message: 'Login feito com sucesso!',
-      token
+      token,
+      userData
     });
   }
 

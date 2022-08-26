@@ -8,12 +8,16 @@ import Edge = require('../domain/edge.domain');
 import FlowDTO = require('../dto/flow.dto');
 import UserFlowDTO = require('../dto/user-flow.dto');
 import FlowRepository = require('../repositories/flow.repository');
+import boardNodes from './nodes/board-nodes';
+import BoardService = require('./board.service');
+import BoardDTO = require('../dto/board.dto');
 
 class FlowService extends Service {
   private readonly flowRepository: FlowRepository;
   private readonly edgeService: EdgeService;
   private readonly nodeService: NodeService;
   private readonly jobService: JobService;
+  private readonly boardService: BoardService;
 
   constructor() {
     super();
@@ -21,6 +25,7 @@ class FlowService extends Service {
     this.nodeService = new NodeService();
     this.edgeService = new EdgeService();
     this.jobService = new JobService();
+    this.boardService = new BoardService();
   }
 
   public async findByUserIdAndFlowId(userId: string, flowId: string): Promise<UserFlowDTO> {
@@ -63,8 +68,23 @@ class FlowService extends Service {
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
     for (let n of storedNodes) {
-      if (n.data.results?.frequency) {
-        this.jobService.createJobForNode(n, storedNodes, storedEdges);
+      if (boardNodes.includes(n.type.toUpperCase())) {
+        if (n.data.results.frequency) {
+          this.jobService.createJobForNode(n, storedNodes, storedEdges);
+        }
+        else {
+
+          let board : BoardDTO = {
+            name: storedFlow.name,
+            description: storedFlow.description !== undefined ? storedFlow.description : 'N/A',
+            userEmail: storedFlow.userEmail,
+            flow: storedFlow.id,
+            node: n.id,
+            content: n.data,
+            executed: undefined
+          };
+          this.boardService.insert(board);
+        }
       }
     }
 
