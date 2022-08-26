@@ -17,25 +17,24 @@ class BoardService extends Service {
 
   public async findAllByUserEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findByUserEmail(email);
-    console.log(boards)
+    
     const formattedBoards = [];
 
     for(const board of boards) {
       formattedBoards.push(this.formatBoard(board));
+      console.log(this.formatBoard(board))
     }
 
     return formattedBoards;
   }
   
   private formatBoard(board: Board): UserBoardDTO {
-    console.log(board)
     return {
       id: board.id,
       name: board.name,
       description: board.description,
-      type: board.node.data.type,
+      type: board.node.type,
       icon: board.node.data.icon,
-      content: board.content,
       executed: {
           id: board?.executed?.id,
           executedAt: board?.executed?.createdAt,

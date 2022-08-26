@@ -33,7 +33,6 @@ class BoardCollection implements BoardRepository {
   public async update(board: Board): Promise<Board> {
     const targetBoard = await this._schema.findById(board.id);
     
-    targetBoard.content = board.content;
     targetBoard.description = board.description;
     targetBoard.name = board.name;
     targetBoard.executed = board.executed;

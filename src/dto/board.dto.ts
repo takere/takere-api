@@ -4,7 +4,6 @@ interface BoardDTO {
   userEmail: string,
   flow: string,
   node: string,
-  content: any,
   executed: any
 }
 

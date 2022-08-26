@@ -27,20 +27,11 @@ const BoardSchema = new mongoose.Schema(
       required: true,
       ref: "Node",
     },
-    content: {
-      type: mongoose.Schema.Types.Mixed,
-      required: false,
-    },
     executed: {
       type: mongoose.Schema.ObjectId,
       required: false,
       ref: "Executed",
-    },
-    // completed: {
-    //   type: Boolean,
-    //   required: false,
-    //   default: false,
-    // },
+    }
   },
   {
     usePushEach: true,
