@@ -33,17 +33,18 @@ class BoardService extends Service {
       id: board.id,
       name: board.name,
       description: board.description,
-      type: board.node.type,
-      icon: board.node.data.icon,
-      executed: {
-          id: board?.executed?.id,
-          executedAt: board?.executed?.createdAt,
-          result: board?.executed?.result
-      },
       node: {
         id: board.node.id,
+        type: board.node.type,
+        icon: board.node.data.icon,
+        bgColor: board.node.data.bgColor,
         results: this.objectWithoutProperties(board?.node?.data?.results, ["name", "description"]),
-      }
+      },
+      executed: {
+        id: board?.executed?.id,
+        executedAt: board?.executed?.createdAt,
+        result: board?.executed?.result
+      },
     }
   }
   

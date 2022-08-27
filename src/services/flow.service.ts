@@ -69,10 +69,10 @@ class FlowService extends Service {
 
     for (let n of storedNodes) {
       if (boardNodes.includes(n.type.toUpperCase())) {
-        if (n.data.results.frequency) {
-          this.jobService.createJobForNode(n, storedNodes, storedEdges);
-        }
-        else {
+        // if (n.data.results.frequency) {
+        //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
+        // }
+        // else {
 
           let board : BoardDTO = {
             name: storedFlow.name,
@@ -83,7 +83,7 @@ class FlowService extends Service {
             executed: undefined
           };
           this.boardService.insert(board);
-        }
+        // }
       }
     }
 

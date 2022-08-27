@@ -2,10 +2,18 @@ interface UserBoardDTO {
   id: string,
   name: string,
   description: string,
-  type: string,
-  icon: string,
-  executed: { id: string, executedAt: string, result: any },
-  node: { id: string, results: any }
+  node: { 
+    id: string, 
+    results: any,
+    type: string,
+    icon: string,
+    bgColor: string
+  },
+  executed: { 
+    id: string, 
+    executedAt: string, 
+    result: any 
+  },
 }
 
 export = UserBoardDTO;

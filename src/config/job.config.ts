@@ -47,9 +47,8 @@ class JobConfig {
     const isBefore = require('date-fns/isBefore')
 
     try{
-      // console.log(job.attrs)
       const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
-      if(finishDateIsBeforeToday) {
+      if(finishDateIsBeforeToday || job.attrs.endDate === undefined) {
           await this.process(job.attrs.data);
       } else {
           await job.disable();
