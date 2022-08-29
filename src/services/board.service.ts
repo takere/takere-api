@@ -62,12 +62,12 @@ class BoardService extends Service {
     return this.boardRepository.find({ user: id });
   }
 
-  public async resolve(boardId: string, result: any): Promise<Board> {
+  public async resolve(boardId: string, result: { payload: any }): Promise<Board> {
     let board = await this.findById(boardId);
 
     if(!board.executed) {
        const executed = await this.executedService.insert({
-          result,
+          result: result.payload,
           node: board.id
        });
       
