@@ -4,7 +4,7 @@
     "data": {
         "label": "Quiz",
         "description": "Some useful text",
-        "icon": "question",
+        "icon": "help",
         "bgColor": "#be96fb",
         "handles": [
             {
