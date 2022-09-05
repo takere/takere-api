@@ -3,7 +3,7 @@
     "type": "REMINDER",
     "data": {
         "label": "Reminder",
-        "description": "Remember the patient about something",
+        "description": "Remember about something.",
         "icon": "textsms",
         "bgColor": "#f974bc",
         "handles": [

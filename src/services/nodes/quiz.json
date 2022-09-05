@@ -3,7 +3,7 @@
     "type": "QUIZ",
     "data": {
         "label": "Quiz",
-        "description": "Some useful text",
+        "description": "Ask about something.",
         "icon": "help",
         "bgColor": "#be96fb",
         "handles": [

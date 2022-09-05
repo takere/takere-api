@@ -3,7 +3,7 @@
     "type": "MEDICATION_CONTROL",
     "data": {
         "label": "Medication control",
-        "description": "Some useful text",
+        "description": "Instruct about some medication and how to use it correctly.",
         "icon": "healing",
         "bgColor": "#db594f",
         "handles": [

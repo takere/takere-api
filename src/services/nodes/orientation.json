@@ -3,7 +3,7 @@
     "type": "ORIENTATION",
     "data": {
         "label": "Orientation",
-        "description": "Some useful text",
+        "description": "Instruct about something.",
         "icon": "info",
         "bgColor": "#49a9ff",
         "handles": [

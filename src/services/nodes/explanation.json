@@ -3,7 +3,7 @@
     "type": "EXPLANATION",
     "data": {
         "label": "Explanation",
-        "description": "Guide / e-book for explaining something",
+        "description": "Guide / e-book for explaining something.",
         "icon": "school",
         "bgColor": "#46bdc6",
         "handles": [
