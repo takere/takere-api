@@ -1,8 +1,8 @@
 {
     "id": 4,
-    "type": "INFORMATION_NODE",
+    "type": "ORIENTATION",
     "data": {
-        "label": "Information",
+        "label": "Orientation",
         "description": "Some useful text",
         "icon": "info",
         "bgColor": "#49a9ff",

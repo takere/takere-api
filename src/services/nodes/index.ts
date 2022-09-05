@@ -2,7 +2,7 @@ const nodes = [
   require ('./begin.json'),
   require ('./conditional.json'),
   require ('./explanation.json'),
-  require ('./information.json'),
+  require ('./orientation.json'),
   require ('./quiz.json'),
   require ('./reminder.json'),
   require ('./medication-control.json'),
