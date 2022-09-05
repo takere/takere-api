@@ -1,6 +1,6 @@
 {
     "id": 1,
-    "type": "BEGIN_NODE",
+    "type": "BEGIN",
     "data": {
         "label": "Start",
         "description": "Every care plan must begin from this node",

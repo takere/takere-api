@@ -1,6 +1,6 @@
 {
     "id": 7,
-    "type": "MEDICATION_CONTROL_NODE",
+    "type": "MEDICATION_CONTROL",
     "data": {
         "label": "Medication control",
         "description": "Some useful text",

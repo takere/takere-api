@@ -1,6 +1,6 @@
 {
     "id": 3,
-    "type": "EXPLANATION_NODE",
+    "type": "EXPLANATION",
     "data": {
         "label": "Explanation",
         "description": "Guide / e-book for explaining something",

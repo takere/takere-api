@@ -1,6 +1,6 @@
 {
     "id": 2,
-    "type": "CONDITIONAL_NODE",
+    "type": "CONDITIONAL",
     "data": {
         "label": "Conditional",
         "description": "Chooses which flow will be executed based on some condition",

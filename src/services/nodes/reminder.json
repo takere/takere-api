@@ -1,8 +1,7 @@
 {
     "id": 6,
-    "type": "REMINDER_NODE",
+    "type": "REMINDER",
     "data": {
-        "type": "REMINDER",
         "label": "Reminder",
         "description": "Remember the patient about something",
         "icon": "textsms",
