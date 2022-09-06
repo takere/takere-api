@@ -17,6 +17,17 @@
                     "width": 20,
                     "height": 12
                 }
+            },
+            {
+                "type": "source",
+                "position": "bottom",
+                "id": "a_bottom",
+                "style": {
+                    "left": "50%",
+                    "borderRadius": 8,
+                    "width": 20,
+                    "height": 12
+                }
             }
         ]
     }
