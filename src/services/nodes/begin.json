@@ -2,7 +2,7 @@
     "id": 1,
     "type": "BEGIN",
     "data": {
-        "label": "Start",
+        "label": "Begin",
         "description": "Every care plan must begin from this node.",
         "icon": "schedule_send",
         "bgColor": "#34a853",
