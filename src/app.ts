@@ -7,7 +7,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const passport = require('passport');
-const morgan = require('./config/morgan.config');
+const httpExceptionFilter = require('./filters/http-exception.filter');
 
 const repository = new Repositories();
 
@@ -27,8 +27,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 if (generalConfig.environment !== 'production') {
-  app.use(morgan.successHandler);
-  app.use(morgan.errorHandler);
+  app.use(httpExceptionFilter.successHandler);
+  app.use(httpExceptionFilter.errorHandler);
 }
 
 app.use(cors());
