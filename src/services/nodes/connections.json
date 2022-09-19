@@ -1,0 +1,55 @@
+{
+  "BEGIN": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL", 
+    "REMINDER"
+  ],
+  "MEDICATION_CONTROL": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL", 
+    "REMINDER", 
+    "CONDITIONAL"
+  ],
+  "REMINDER": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL", 
+    "REMINDER", 
+    "CONDITIONAL"
+  ],
+  "CONDITIONAL": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL",
+    "CONDITIONAL", 
+    "REMINDER"
+  ],
+  "EXPLANATION": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL"
+  ],
+  "ORIENTATION": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL", 
+    "REMINDER", 
+    "CONDITIONAL"
+  ],
+  "QUIZ": [
+    "QUIZ", 
+    "EXPLANATION", 
+    "ORIENTATION", 
+    "MEDICATION_CONTROL", 
+    "REMINDER", 
+    "CONDITIONAL"
+  ]
+}

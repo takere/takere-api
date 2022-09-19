@@ -14,6 +14,12 @@ class NodeService extends Service {
     return require('./nodes');
   }
 
+  public getAllConnections(): Object {
+    const connections = require('./nodes/connections');
+    
+    return connections;
+  }
+
   public async find(fields: object): Promise<Node[]> {
     return this.nodeRepository.find(fields);
   }

@@ -15,6 +15,11 @@ class NodesRoute extends Route {
       this.passport.authenticate('jwt'), 
       (req: any, res: any, next: any) => this.nodeController.get(req, res, next)
     );
+    router.get(
+      '/connections', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.nodeController.getAllConnections(req, res, next)
+    );
     router.options('*', this.cors());
   }
 }

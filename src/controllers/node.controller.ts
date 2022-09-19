@@ -7,8 +7,12 @@ class NodeController {
     this.nodeService = new NodeService();
   }
 
-  async get(req: any, res: any, next: any) {
+  public async get(req: any, res: any, next: any) {
     res.send(this.nodeService.getNodes());
+  }
+
+  public getAllConnections(req: any, res: any, next: any) {
+    res.send(this.nodeService.getAllConnections());
   }
 }
 
