@@ -1,5 +1,6 @@
 {
     "id": 4,
+    "slug": "orientation",
     "type": "ORIENTATION",
     "data": {
         "label": "Orientation",

@@ -1,5 +1,6 @@
 {
     "id": 3,
+    "slug": "explanation",
     "type": "EXPLANATION",
     "data": {
         "label": "Explanation",

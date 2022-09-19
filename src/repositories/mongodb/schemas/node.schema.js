@@ -6,6 +6,9 @@ const NodeSchema = new mongoose.Schema({
       required: true,
       trim: true
     },
+    slug: {
+      type: String
+    },
     type: {
       type: String,
       required: true,

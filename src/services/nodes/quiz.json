@@ -1,5 +1,6 @@
 {
     "id": 5,
+    "slug": "quiz",
     "type": "QUIZ",
     "data": {
         "label": "Quiz",

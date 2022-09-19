@@ -1,5 +1,6 @@
 {
     "id": 7,
+    "slug": "medication_control",
     "type": "MEDICATION_CONTROL",
     "data": {
         "label": "Medication control",

@@ -1,55 +1,9 @@
-{
-  "BEGIN": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL", 
-    "REMINDER"
-  ],
-  "MEDICATION_CONTROL": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL", 
-    "REMINDER", 
-    "CONDITIONAL"
-  ],
-  "REMINDER": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL", 
-    "REMINDER", 
-    "CONDITIONAL"
-  ],
-  "CONDITIONAL": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL",
-    "CONDITIONAL", 
-    "REMINDER"
-  ],
-  "EXPLANATION": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL"
-  ],
-  "ORIENTATION": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL", 
-    "REMINDER", 
-    "CONDITIONAL"
-  ],
-  "QUIZ": [
-    "QUIZ", 
-    "EXPLANATION", 
-    "ORIENTATION", 
-    "MEDICATION_CONTROL", 
-    "REMINDER", 
-    "CONDITIONAL"
-  ]
-}
+[
+  { "slug": "begin", "connections": ["explanation", "medication_control", "orientation", "quiz", "reminder"] },
+  { "slug": "conditional", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
+  { "slug": "explanation", "connections": ["explanation", "medication_control", "orientation", "quiz"] },
+  { "slug": "medication_control", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
+  { "slug": "orientation", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
+  { "slug": "quiz", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
+  { "slug": "reminder", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] }
+]
