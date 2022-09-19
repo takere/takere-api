@@ -43,7 +43,7 @@ class BoardService extends Service {
       },
       finished: {
         id: board?.finished?.id,
-        executedAt: board?.finished?.createdAt,
+        at: board?.finished?.createdAt,
         result: board?.finished?.result
       },
     }

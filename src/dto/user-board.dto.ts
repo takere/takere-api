@@ -11,7 +11,7 @@ interface UserBoardDTO {
   },
   finished: { 
     id: string, 
-    executedAt: string, 
+    at: string, 
     result: any 
   },
 }
