@@ -35,7 +35,7 @@ class BoardCollection implements BoardRepository {
     
     targetBoard.description = board.description;
     targetBoard.name = board.name;
-    targetBoard.executed = board.executed;
+    targetBoard.finished = board.finished;
     targetBoard.userEmail = board.userEmail;
 
     const storedBoard = await targetBoard.save();

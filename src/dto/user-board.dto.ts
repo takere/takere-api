@@ -9,7 +9,7 @@ interface UserBoardDTO {
     icon: string,
     bgColor: string
   },
-  executed: { 
+  finished: { 
     id: string, 
     executedAt: string, 
     result: any 

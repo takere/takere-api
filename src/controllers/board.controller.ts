@@ -1,13 +1,13 @@
 import BoardService = require('../services/board.service');
-import ExecutedService = require('../services/executed.service');
+import FinishedService = require('../services/finished.service');
 
 class BoardController {
   boardService: BoardService;
-  executedService: ExecutedService;
+  finishedService: FinishedService;
 
   constructor() {
     this.boardService = new BoardService();
-    this.executedService = new ExecutedService();
+    this.finishedService = new FinishedService();
   }
 
   public async get(req: any, res: any, next: any) {

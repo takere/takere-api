@@ -4,7 +4,7 @@ interface BoardDTO {
   userEmail: string,
   flow: string,
   node: string,
-  executed: any
+  finished: any
 }
 
 export = BoardDTO;

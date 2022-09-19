@@ -2,12 +2,12 @@ import Repository = require('../repository');
 import UserRepository = require('../user.repository');
 import NodeRepository = require('../node.repository');
 import FlowRepository = require('../flow.repository');
-import ExecutedRepository = require('../executed.repository');
+import FinishedRepository = require('../finished.repository');
 import BoardRepository = require('../board.repository');
 import EdgeRepository = require('../edge.repository');
 import BoardCollection = require('./collections/board.collection');
 import EdgeCollection = require('./collections/edge.collection');
-import ExecutedCollection = require('./collections/executed.collection');
+import FinishedCollection = require('./collections/finished.collection');
 import FlowCollection = require('./collections/flow.collection');
 import NodeCollection = require('./collections/node.collection');
 import UserCollection = require('./collections/user.collection');
@@ -78,8 +78,8 @@ class MongoDbRepository implements Repository {
     return new FlowCollection();
   }
 
-  public get executedRepository(): ExecutedRepository {
-    return new ExecutedCollection();
+  public get finishedRepository(): FinishedRepository {
+    return new FinishedCollection();
   }
 
   public get edgeRepository(): EdgeRepository {

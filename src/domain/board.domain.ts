@@ -5,7 +5,7 @@ interface Board {
   userEmail: string,
   flow: any,
   node: any,
-  executed: any//,
+  finished: any//,
   // completed: boolean
 }
 

@@ -80,7 +80,7 @@ class FlowService extends Service {
             userEmail: storedFlow.userEmail,
             flow: storedFlow.id,
             node: n.id,
-            executed: undefined
+            finished: undefined
           };
           this.boardService.insert(board);
         // }

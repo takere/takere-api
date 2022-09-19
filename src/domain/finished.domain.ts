@@ -1,7 +1,7 @@
-interface Executed {
+interface Finished {
   id: string,
   result: string,
   node: any
 }
 
-export = Executed;
+export = Finished;

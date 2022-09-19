@@ -27,10 +27,10 @@ const BoardSchema = new mongoose.Schema(
       required: true,
       ref: "Node",
     },
-    executed: {
+    finished: {
       type: mongoose.Schema.ObjectId,
       required: false,
-      ref: "Executed",
+      ref: "Finished",
     }
   },
   {
@@ -47,7 +47,7 @@ BoardSchema.statics.findById = async function (id) {
 BoardSchema.statics.findByUserEmail = async function (userEmail) {
   return this.model("Board").find({ userEmail: userEmail })
     .populate("node")
-    .populate("executed")
+    .populate("finished")
     .exec();
 };
 

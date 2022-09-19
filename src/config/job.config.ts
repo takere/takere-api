@@ -85,7 +85,7 @@ class JobConfig {
         userEmail: flow.userEmail,
         flow: flow.id,
         node: nodeId,
-        executed: undefined
+        finished: undefined
       });
     }
     for (let e of edges) {
