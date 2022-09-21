@@ -28,6 +28,13 @@ export default {
             "type": "text"
         },
         {
+            "slug": "questions",
+            "name": "Questions",
+            "description": "Questions to be asked",
+            "required": true,
+            "type": "form"
+        },
+        {
             "slug": "severity",
             "name": "Severity",
             "description": "How important is to finish this activity?",

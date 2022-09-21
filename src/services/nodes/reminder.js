@@ -40,7 +40,7 @@ export default {
             "name": "Notification type",
             "description": "How this reminder should be displayed?",
             "required": true,
-            "type": "options",
+            "type": "select",
             "options": notificationType
         },
         {
