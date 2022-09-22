@@ -80,31 +80,31 @@ class JobService extends Service {
   }
 
   public createJobForNode(storedNode: Node, nodes: Node[], edges: Edge[]) {
-    const { type, value } = storedNode.data.results.frequency;
-    const beginNode: Node = this.findRoot(storedNode, nodes, edges);
+    // const { type, value } = storedNode.data.results.frequency;
+    // const beginNode: Node = this.findRoot(storedNode, nodes, edges);
 
-    // TODO: Validate if received nodes contains all required fields
+    // // TODO: Validate if received nodes contains all required fields
 
-    const job: Job = {
-      beginDate: beginNode.data.results.startDate,
-      endDate: beginNode.data.results.endDate,
-      data: storedNode
-    };
+    // const job: Job = {
+    //   beginDate: beginNode.data.results.startDate,
+    //   endDate: beginNode.data.results.endDate,
+    //   data: storedNode
+    // };
 
-    if (type === 'onlyOnce') {
-      this.createOnlyOnceEvent(job);
-    }
-    else {
-      const repeatInterval: Cron = {
-        seconds: (type === 'daily') ? '59' : '0',
-        minute: (type === 'daily') ? '23' : `*/${value}`,
-        hour: (type === 'everyDays') ? `*/${value}` : undefined,
-        dayOfMonth: undefined,
-        month: undefined,
-        dayOfWeek: undefined
-      };
-      this.createRepeatedEvent(job, repeatInterval);
-    }
+    // if (type === 'onlyOnce') {
+    //   this.createOnlyOnceEvent(job);
+    // }
+    // else {
+    //   const repeatInterval: Cron = {
+    //     seconds: (type === 'daily') ? '59' : '0',
+    //     minute: (type === 'daily') ? '23' : `*/${value}`,
+    //     hour: (type === 'everyDays') ? `*/${value}` : undefined,
+    //     dayOfMonth: undefined,
+    //     month: undefined,
+    //     dayOfWeek: undefined
+    //   };
+    //   this.createRepeatedEvent(job, repeatInterval);
+    // }
   }
   
   private findRoot(node: Node, nodes: Node[], edges: Edge[]): Node {

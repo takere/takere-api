@@ -3,7 +3,7 @@ interface BoardDTO {
   description: string,
   userEmail: string,
   flow: string,
-  node: string,
+  node?: string,
   finished: any
 }
 
