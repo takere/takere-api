@@ -1,5 +1,6 @@
 const severityType = require("./severity.type")
 const frequencyType = require("./frequency.type")
+const answerType = require("./answer.type")
 
 module.exports = {
     "slug": "quiz",
@@ -32,7 +33,8 @@ module.exports = {
             "name": "Questions",
             "description": "Questions to be asked",
             "required": true,
-            "type": "form"
+            "type": "form",
+            "options": answerType
         },
         {
             "slug": "severity",
