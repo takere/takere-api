@@ -23,15 +23,7 @@ interface Node {
     }[]
   }[],
   icons?: string[],
-  value?: any,
-  questions?: {
-    label: string,
-    type: string,
-    options?: {
-      value: string,
-      label: string
-    }[]
-  }[],
+  arguments?: any[],
   position: any,
   flow: any
 }
