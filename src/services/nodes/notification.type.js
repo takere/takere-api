@@ -1,4 +1,4 @@
-export default [
+module.exports = [
     {
       "value": "popup",
       "label": "Pop-up message"

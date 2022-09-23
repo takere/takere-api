@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     "slug": "conditional",
     "name": "Conditional",
     "description": "Chooses which flow will be executed based on some condition.",

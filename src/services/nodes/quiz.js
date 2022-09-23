@@ -1,7 +1,7 @@
-import severityType from "./severity.type"
-import frequencyType from "./frequency.type"
+const severityType = require("./severity.type")
+const frequencyType = require("./frequency.type")
 
-export default {
+module.exports = {
     "slug": "quiz",
     "name": "Quiz",
     "description": "Ask about something.",

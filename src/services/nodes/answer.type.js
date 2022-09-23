@@ -1,4 +1,4 @@
-export default [
+module.exports = [
   {
     "value": "number",
     "label": "Numeric"

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     "slug": "begin",
     "name": "Begin",
     "description": "Every care plan must begin from this node.",

@@ -1,4 +1,4 @@
-export default [
+module.exports = [
   {
     "value": "1",
     "label": "Very low"

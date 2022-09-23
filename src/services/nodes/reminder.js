@@ -1,8 +1,8 @@
-import notificationType from "./notification.type"
-import severityType from "./severity.type"
-import frequencyType from "./frequency.type"
+const notificationType = require("./notification.type")
+const severityType = require("./severity.type")
+const frequencyType = require("./frequency.type")
 
-export default {
+module.exports = {
     "slug": "reminder",
     "name": "Reminder",
     "description": "Remember about something.",

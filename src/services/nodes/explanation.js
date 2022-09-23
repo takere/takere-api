@@ -1,6 +1,6 @@
-import severityType from "./severity.type"
+const severityType = require("./severity.type")
 
-export default {
+module.exports = {
     "slug": "explanation",
     "name": "Explanation",
     "description": "Guide / e-book for explaining something.",
