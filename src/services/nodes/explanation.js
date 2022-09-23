@@ -31,7 +31,7 @@ module.exports = {
             "name": "Pages",
             "description": "Explanation content",
             "required": true,
-            "type": ["structure", "style"]
+            "type": "rich_text"
         },
         {
             "slug": "severity",
