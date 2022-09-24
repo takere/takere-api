@@ -15,8 +15,8 @@ class BoardService extends Service {
     this.finishedService = new FinishedService();
   }
 
-  public async findAllByUserEmail(email: string): Promise<UserBoardDTO[]> {
-    const boards = await this.boardRepository.findByUserEmail(email);
+  public async findAllByEmail(email: string): Promise<UserBoardDTO[]> {
+    const boards = await this.boardRepository.findByEmail(email);
     
     const formattedBoards = [];
 

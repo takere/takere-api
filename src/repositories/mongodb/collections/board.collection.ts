@@ -19,8 +19,8 @@ class BoardCollection implements BoardRepository {
     return this._schema.find(fields);
   }
 
-  public async findByUserEmail(email: string): Promise<Board[]> {
-    return this._schema.findByUserEmail(email);
+  public async findByEmail(email: string): Promise<Board[]> {
+    return this._schema.findByEmail(email);
   }
 
   public async save(board: BoardDTO): Promise<Board> {
@@ -36,7 +36,7 @@ class BoardCollection implements BoardRepository {
     targetBoard.description = board.description;
     targetBoard.name = board.name;
     targetBoard.finished = board.finished;
-    targetBoard.userEmail = board.userEmail;
+    targetBoard.userEmail = board.patientEmail;
 
     const storedBoard = await targetBoard.save();
 

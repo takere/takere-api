@@ -12,7 +12,7 @@ const BoardSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    userEmail: {
+    patientEmail: {
       type: String,
       required: true,
       trim: true,
@@ -44,8 +44,8 @@ BoardSchema.statics.findById = async function (id) {
   return this.model("Board").findOne({ _id: id });
 }
 
-BoardSchema.statics.findByUserEmail = async function (userEmail) {
-  return this.model("Board").find({ userEmail: userEmail })
+BoardSchema.statics.findByEmail = async function (email) {
+  return this.model("Board").find({ patientEmail: email })
     .populate("node")
     .populate("finished")
     .exec();

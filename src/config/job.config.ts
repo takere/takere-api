@@ -82,7 +82,7 @@ class JobConfig {
       await this.boardService.insert({
         name: sourceNode.data.results.name,
         description: sourceNode.data.results.description,
-        userEmail: flow.userEmail,
+        patientEmail: flow.userEmail,
         flow: flow.id,
         node: nodeId,
         finished: undefined

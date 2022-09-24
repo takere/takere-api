@@ -1,9 +1,9 @@
 interface UserFlowDTO {
-  flowId: string,
-  flowName: string,
-  flowDescription: string,
-  flowEmail: string,
-  data: any
+  id: string,
+  name: string,
+  description: string,
+  email: string,
+  graph: any[]
 }
 
 export = UserFlowDTO;

@@ -12,7 +12,7 @@ class BoardController {
 
   public async get(req: any, res: any, next: any) {
     const searchEmail = await req?.query?.email;
-    const boards = await this.boardService.findAllByUserEmail(searchEmail);
+    const boards = await this.boardService.findAllByEmail(searchEmail);
 
     res.send(boards);
   }

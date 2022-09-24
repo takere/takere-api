@@ -34,11 +34,11 @@ class FlowService extends Service {
     const edges = await this.edgeService.findAllByFlowId(flowId);
     
     return {
-      flowId: flow.id,
-      flowName: flow.name,
-      flowDescription: flow.description,
-      flowEmail: flow.userEmail,
-      data: [
+      id: flow.id,
+      name: flow.name,
+      description: flow.description,
+      email: flow.patientEmail,
+      graph: [
         ...nodes,
         ...edges
       ]
@@ -46,7 +46,7 @@ class FlowService extends Service {
   }
 
   public async findAllByUserId(id: string): Promise<Flow[]> {
-    return this.flowRepository.find({ user: id });
+    return this.flowRepository.find({ author: id });
   }
 
   public async findById(id: string): Promise<Flow> {
@@ -54,7 +54,7 @@ class FlowService extends Service {
   }
 
   public async removeWithUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
-    const flow = await this.flowRepository.findOneAndRemove({user: userId, _id: flowId});
+    const flow = await this.flowRepository.findOneAndRemove({author: userId, _id: flowId});
 
     await this.nodeService.removeAllWithFlowId(flow.id);
     await this.edgeService.removeAllWithFlowId(flow.id);
@@ -77,7 +77,7 @@ class FlowService extends Service {
           let board : BoardDTO = {
             name: storedFlow.name,
             description: storedFlow.description !== undefined ? storedFlow.description : 'N/A',
-            userEmail: storedFlow.userEmail,
+            patientEmail: storedFlow.patientEmail,
             flow: storedFlow.id,
             node: n.id,
             finished: undefined

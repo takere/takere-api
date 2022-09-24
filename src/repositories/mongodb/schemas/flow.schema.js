@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const FlowSchema = new mongoose.Schema({
-    user: {
+    author: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true
@@ -15,7 +15,7 @@ const FlowSchema = new mongoose.Schema({
      type: String,
      trim: true
     },
-    userEmail: {
+    patientEmail: {
      type: String,
      trim: true
     },

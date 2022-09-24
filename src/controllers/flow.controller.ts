@@ -33,16 +33,16 @@ class FlowController {
   }
 
   public async create(req: any, res: any, next: any) {
-    const { data, name, description, userEmail } = req.body
+    const { graph, name, description, patientEmail } = req.body
     const user = await req.user;
 
     await this.flowService.insert({
-      user: user.id,
+      author: user.id,
       name: name,
-      userEmail: userEmail,
+      patientEmail: patientEmail,
       description: description,
-      nodes: data.filter((d: { type: any; }) => d.type),
-      edges: data.filter((d: { source: any; }) => d.source)
+      nodes: graph.filter((d: { type: any; }) => d.type),
+      edges: graph.filter((d: { source: any; }) => d.source)
     });
 
     res.send('Success');
