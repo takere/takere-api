@@ -29,7 +29,7 @@ class FlowService extends Service {
   }
 
   public async findByUserIdAndFlowId(userId: string, flowId: string): Promise<UserFlowDTO> {
-    const flow = await this.flowRepository.findOne({ user: userId, _id: flowId });
+    const flow = await this.flowRepository.findOne({ author: userId, _id: flowId });
     const nodes = await this.nodeService.findAllByFlowId(flowId);
     const edges = await this.edgeService.findAllByFlowId(flowId);
     
