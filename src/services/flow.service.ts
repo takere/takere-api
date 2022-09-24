@@ -8,7 +8,6 @@ import Edge = require('../domain/edge.domain');
 import FlowDTO = require('../dto/flow.dto');
 import UserFlowDTO = require('../dto/user-flow.dto');
 import FlowRepository = require('../repositories/flow.repository');
-import boardNodes from './nodes/board-nodes';
 import BoardService = require('./board.service');
 import BoardDTO = require('../dto/board.dto');
 
@@ -68,7 +67,7 @@ class FlowService extends Service {
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
     for (let n of storedNodes) {
-      if (boardNodes.includes(n.type.toUpperCase())) {
+      if (!['begin', 'conditional'].includes(n.slug)) {
         // if (n.data.results.frequency) {
         //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
         // }
@@ -102,9 +101,11 @@ class FlowService extends Service {
     return storedNodes;
   }
 
-  private async storeNode(n: Node, flow: any, nodes: Node[], edges: Edge[]) {
+  private async storeNode(n: any, flow: any, nodes: Node[], edges: Edge[]) {
     console.log('STORING NODE', n.id);
-    const storedNode = await this.nodeService.insert({ ...n, position: n?.position, flow: flow.id, id: n.id });
+    //console.log('@', { ...n?.data, position: n?.position, flow: flow.id, id: n.id })
+
+    const storedNode = await this.nodeService.insert({ ...n?.data, position: n?.position, flow: flow.id, id: n.id });
 
     edges.map((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {

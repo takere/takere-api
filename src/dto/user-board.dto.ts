@@ -2,13 +2,7 @@ interface UserBoardDTO {
   id: string,
   name: string,
   description: string,
-  node: { 
-    id: string, 
-    results: any,
-    type: string,
-    icon: string,
-    bgColor: string
-  },
+  node: any,
   finished: { 
     id: string, 
     at: string, 

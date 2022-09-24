@@ -22,7 +22,6 @@ class BoardService extends Service {
 
     for(const board of boards) {
       formattedBoards.push(this.formatBoard(board));
-      console.log(this.formatBoard(board))
     }
 
     return formattedBoards;
@@ -33,14 +32,7 @@ class BoardService extends Service {
       id: board.id,
       name: board.name,
       description: board.description,
-      node: {
-        id: board.node.id,
-        type: board.node.type,
-        icon: board.node.data.icon,
-        bgColor: board.node.data.bgColor,
-        results: board?.node?.data?.results
-        //results: this.objectWithoutProperties(board?.node?.data?.results, ["name", "description"]),
-      },
+      node: board.node,
       finished: {
         id: board?.finished?.id,
         at: board?.finished?.createdAt,

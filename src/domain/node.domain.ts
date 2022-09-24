@@ -9,7 +9,7 @@ interface Node {
   shape: string,
   input_list: string[],
   output_list: string[],
-  content_type: string,
+  content_type?: string,
   parameters: {
     slug: string,
     name: string,
