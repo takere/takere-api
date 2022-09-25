@@ -15,7 +15,7 @@ class NodeService extends Service {
   }
 
   public getAllConnections(): Object {
-    const connections = require('./nodes/connections');
+    const connections = require('../assets/nodes/connections');
     
     return connections;
   }
