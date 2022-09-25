@@ -34,7 +34,7 @@ const NodeSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    inout_list: {
+    input_list: {
       type: Array,
       required: true,
     },

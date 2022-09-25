@@ -16,6 +16,10 @@ module.exports = [
     "label": "Radio"
   },
   {
+    "value": "select",
+    "label": "Select"
+  },
+  {
     "value": "text-area",
     "label": "Multiple line text"
   }
