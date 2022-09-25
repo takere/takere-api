@@ -11,7 +11,7 @@ class NodeService extends Service {
   }
 
   getNodes(): Node[] {
-    return require('./nodes');
+    return require('../assets/nodes');
   }
 
   public getAllConnections(): Object {
