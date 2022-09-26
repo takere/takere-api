@@ -39,7 +39,7 @@ class BoardService extends Service {
       const board2Options = board2.node.parameters[board2SeverityIdx].options;
       const board1Selection = board1.node.arguments[board1SeverityIdx];
       const board2Selection = board2.node.arguments[board2SeverityIdx];
-      
+
       return parseInt(board2Options[board2Selection].value) - parseInt(board1Options[board1Selection].value);
     });
 
@@ -66,7 +66,7 @@ class BoardService extends Service {
     if(!board.finished) {
        const finished = await this.finishedService.insert({
           answers,
-          node: board.node.id
+          node: board.node
        });
       
        board.finished = finished.id;

@@ -1,5 +1,5 @@
 interface Finished {
-  id: string,
+  id?: string,
   answers?: string[],
   node: any
 }
