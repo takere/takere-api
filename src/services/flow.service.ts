@@ -103,9 +103,13 @@ class FlowService extends Service {
 
   private async storeNode(n: any, flow: any, nodes: Node[], edges: Edge[]) {
     console.log('STORING NODE', n.id);
+    let data = { ...n?.data, position: n?.position, flow: flow.id }
+    
     //console.log('@', { ...n?.data, position: n?.position, flow: flow.id, id: n.id })
 
-    const storedNode = await this.nodeService.insert({ ...n?.data, position: n?.position, flow: flow.id, id: n.id });
+    const storedNode = await this.nodeService.insert(data);
+
+    console.log('OK')
 
     edges.map((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {

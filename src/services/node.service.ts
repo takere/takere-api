@@ -33,7 +33,7 @@ class NodeService extends Service {
   }
 
   public async insert(node: Node): Promise<Node> {
-    return this.nodeRepository.save(node);
+    return this.nodeRepository.insert(node);
   }
 
   public async removeAllWithFlowId(flowId: string): Promise<Node[]> {
