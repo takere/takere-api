@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const FinishedSchema = new mongoose.Schema({
-    result: {
-      type: String,
+    answers: {
+      type: any,
       required: false,
     },
     node: {
@@ -17,9 +17,9 @@ const FinishedSchema = new mongoose.Schema({
     versionKey: false,
   })
 
-FinishedSchema.statics.create = async function (result, node) {
+FinishedSchema.statics.create = async function (answers, node) {
     const Finished = this.model('Finished')
-    const finishedInstance = new Finished({result, node})
+    const finishedInstance = new Finished({answers, node})
     return await finishedInstance.save()
 }
 

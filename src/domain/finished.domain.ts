@@ -1,6 +1,6 @@
 interface Finished {
   id: string,
-  result: string,
+  answers?: any[],
   node: any
 }
 

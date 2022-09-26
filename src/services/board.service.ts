@@ -56,13 +56,13 @@ class BoardService extends Service {
     }
   }
 
-  public async resolve(boardId: string, result: { payload: any }): Promise<Board> {
+  public async resolve(boardId: string, answers: any ): Promise<Board> {
     let board = await this.findById(boardId);
 
     if(!board.finished) {
        const finished = await this.finishedService.insert({
-          result: result.payload,
-          node: board.id
+          answers,
+          node: board.node.id
        });
       
        board.finished = finished.id;

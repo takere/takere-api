@@ -10,7 +10,7 @@ class FinishedCollection implements FinishedRepository {
   }
 
   public async save(finished: FinishedDTO): Promise<Finished> {
-    const storedFinished = await this._schema.create(finished.result, finished.node);
+    const storedFinished = await this._schema.create(finished.answers, finished.node);
 
     return { ...storedFinished, id: storedFinished._id };
   }

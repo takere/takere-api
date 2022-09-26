@@ -1,5 +1,5 @@
 interface FinishedDTO {
-  result: string,
+  answers?: any[],
   node: any
 }
 
