@@ -36,7 +36,7 @@ class BoardService extends Service {
       const board1SeverityIdx = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
       const board2SeverityIdx = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
 
-      return board1.node.arguments[board1SeverityIdx].value - board2.node.arguments[board2SeverityIdx].value;
+      return board2.node.arguments[board1SeverityIdx].value - board1.node.arguments[board2SeverityIdx].value;
     });
 
     return formattedBoards;
