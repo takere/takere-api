@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const FinishedSchema = new mongoose.Schema({
     answers: {
-      type: any,
+      type: Array,
       required: false,
     },
     node: {
