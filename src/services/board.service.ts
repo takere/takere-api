@@ -15,7 +15,7 @@ class BoardService extends Service {
     this.finishedService = new FinishedService();
   }
 
-  public async findAllByEmail(email: string): Promise<UserBoardDTO[]> {
+  public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findByEmail(email);
     
     const formattedBoards = [];
@@ -33,8 +33,8 @@ class BoardService extends Service {
         return 1;
       }
 
-      const board1SeverityIdx = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
-      const board2SeverityIdx = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
+      const board1SeverityIdx: number = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
+      const board2SeverityIdx: number = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
       const board1Options = board1.node.parameters[board1SeverityIdx].options;
       const board2Options = board2.node.parameters[board2SeverityIdx].options;
       const board1Selection = board1.node.arguments[board1SeverityIdx];
