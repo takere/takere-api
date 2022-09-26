@@ -14,6 +14,10 @@ class FinishedCollection implements FinishedRepository {
 
     return { ...storedFinished, id: storedFinished._id };
   }
+
+  public async removeAllWithNodeId(id: any): Promise<Finished[]> {
+    return this._schema.deleteMany({ node: id });
+  }
 }
 
 export = FinishedCollection;

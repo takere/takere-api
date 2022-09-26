@@ -14,6 +14,10 @@ class FinishedService extends Service {
   async insert(finished: FinishedDTO): Promise<Finished> {
     return this.finishedRepository.save(finished);
   }
+
+  public async removeAllWithNodeId(id: string): Promise<Finished[]> {
+    return this.finishedRepository.removeAllWithNodeId(id);
+  }
 }
 
 export = FinishedService;
