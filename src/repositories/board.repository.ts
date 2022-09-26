@@ -6,7 +6,7 @@ interface BoardRepository {
   update(board: Board): Promise<Board>;
   find(fields: object): Promise<Board[]>;
   findOne(fields: object): Promise<Board>;
-  findByEmail(email: string): Promise<Board[]>;
+  findAllUnfinishedByEmail(email: string): Promise<Board[]>;
   removeAllWithFlowId(id: any): Promise<Board[]>;
 }
 
