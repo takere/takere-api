@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const boardModel = require('./board.schema');
 
 const FlowSchema = new mongoose.Schema({
     author: {
@@ -30,6 +31,12 @@ FlowSchema.pre("save", function(next) {
   if (this.isNew) {
      this._doc.id = this._id;
   }
+  next();
+});
+
+FlowSchema.pre("remove", function(next) {
+  boardModel.remove({ flow: this._id });
+
   next();
 });
 

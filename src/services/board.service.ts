@@ -84,6 +84,10 @@ class BoardService extends Service {
   public async update(board: Board): Promise<Board> {
     return this.boardRepository.update(board);
   }
+
+  public async removeAllWithFlowId(id: string): Promise<Board[]> {
+    return this.boardRepository.removeAllWithFlowId(id);
+  }
 }
 
 export = BoardService;

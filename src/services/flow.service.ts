@@ -55,8 +55,9 @@ class FlowService extends Service {
   public async removeWithUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
     const flow = await this.flowRepository.findOneAndRemove({author: userId, _id: flowId});
 
-    await this.nodeService.removeAllWithFlowId(flow.id);
-    await this.edgeService.removeAllWithFlowId(flow.id);
+    await this.nodeService.removeAllWithFlowId(flowId);
+    await this.edgeService.removeAllWithFlowId(flowId);
+    await this.boardService.removeAllWithFlowId(flowId);
 
     return flow;
   }
@@ -104,8 +105,6 @@ class FlowService extends Service {
   private async storeNode(n: any, flow: any, nodes: Node[], edges: Edge[]) {
     console.log('STORING NODE', n.id);
     let data = { ...n?.data, position: n?.position, flow: flow.id }
-    
-    //console.log('@', { ...n?.data, position: n?.position, flow: flow.id, id: n.id })
 
     const storedNode = await this.nodeService.insert(data);
 

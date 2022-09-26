@@ -42,6 +42,10 @@ class BoardCollection implements BoardRepository {
 
     return { ...storedBoard._doc };
   }
+
+  public async removeAllWithFlowId(id: any): Promise<Board[]> {
+    return this._schema.deleteMany({ flow: id });
+  }
 }
 
 export = BoardCollection;
