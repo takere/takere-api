@@ -20,7 +20,7 @@ class BoardCollection implements BoardRepository {
   }
 
   public async findAllUnfinishedByEmail(email: string): Promise<Board[]> {
-    return this._schema.findByEmail(email);
+    return this._schema.findAllUnfinishedByEmail(email);
   }
 
   public async save(board: BoardDTO): Promise<Board> {
