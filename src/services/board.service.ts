@@ -24,6 +24,21 @@ class BoardService extends Service {
       formattedBoards.push(this.formatBoard(board));
     }
 
+    formattedBoards.sort((board1, board2) => {
+      if (!board1.node.arguments) {
+        return -1;
+      }
+
+      if (!board2.node.arguments) {
+        return 1;
+      }
+
+      const board1SeverityIdx = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
+      const board2SeverityIdx = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
+
+      return board1.node.arguments[board1SeverityIdx].value - board2.node.arguments[board2SeverityIdx].value;
+    });
+
     return formattedBoards;
   }
   
@@ -39,20 +54,6 @@ class BoardService extends Service {
         result: board?.finished?.result
       },
     }
-  }
-  
-  private objectWithoutProperties(obj: any, keys: any) {
-    let target: any = {};
-    for (const i in obj) {
-        if (keys.indexOf(i) >= 0) continue;
-        if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-        target[i] = obj[i];
-    }
-    return target;
-  }
-
-  public async findAllByUserId(id: string): Promise<Board[]> {
-    return this.boardRepository.find({ user: id });
   }
 
   public async resolve(boardId: string, result: { payload: any }): Promise<Board> {

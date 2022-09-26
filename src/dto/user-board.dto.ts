@@ -1,8 +1,10 @@
+import Node from "../domain/node.domain";
+
 interface UserBoardDTO {
   id: string,
   name: string,
   description: string,
-  node: any,
+  node: Node,
   finished: { 
     id: string, 
     at: string, 
