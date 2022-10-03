@@ -63,31 +63,44 @@ class FlowService extends Service {
   }
 
   public async insert(flow: FlowDTO): Promise<Flow> {
-    const storedFlow = await this.flowRepository.save(flow);
+    const storedFlow: Flow = await this.flowRepository.save(flow);
     const storedNodes: Node[] = await this.storeNodes(flow.nodes, flow.edges, storedFlow);
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
-    for (let n of storedNodes) {
-      if (!['begin', 'conditional'].includes(n.slug)) {
-        // if (n.data.results.frequency) {
-        //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
-        // }
-        // else {
-
-          let board : BoardDTO = {
-            name: storedFlow.name,
-            description: storedFlow.description !== undefined ? storedFlow.description : 'N/A',
-            patientEmail: storedFlow.patientEmail,
-            flow: storedFlow.id,
-            node: n.id,
-            finished: undefined
-          };
-          this.boardService.insert(board);
-        // }
-      }
+    for (let n of this.findAllChildrenOfRoot(storedNodes, storedEdges)) {
+      await this.insertNodeOnTheBoard(n, storedFlow);
     }
 
     return storedFlow;
+  }
+
+  private findAllChildrenOfRoot(nodes: Node[], edges: Edge[]): Node[] {
+    const root = nodes.find(node => node.type === 'BEGIN');
+    const childrenIds = edges
+      .filter(edge => edge.target === root?.id)
+      .map(edge => edge.source);
+
+    return nodes.filter(node => childrenIds.includes(node.id ?? ''));
+  }
+
+  private async insertNodeOnTheBoard(n: Node, flow: Flow) {
+    if (!['BEGIN', 'CONDITIONAL'].includes(n.type)) {
+      // if (n.data.results.frequency) {
+      //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
+      // }
+      // else {
+
+        let board : BoardDTO = {
+          name: flow.name,
+          description: flow.description !== undefined ? flow.description : 'N/A',
+          patientEmail: flow.patientEmail,
+          flow: flow.id,
+          node: n.id,
+          finished: undefined
+        };
+        this.boardService.insert(board);
+      // }
+    }
   }
 
   private async storeNodes(nodes: any, edges: any, storedFlow: any) {
