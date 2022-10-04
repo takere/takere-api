@@ -12,7 +12,7 @@ import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
 
 class BoardService extends Service {
-  
+    
   private boardRepository: BoardRepository; 
   private finishedService: FinishedService; 
   private readonly edgeService: EdgeService;
@@ -260,6 +260,19 @@ class BoardService extends Service {
     const referencedBoard = await this.boardRepository.findBoard(n.id ?? '', flow.id);
 
     return referencedBoard && (referencedBoard.finished !== undefined);
+  }
+
+  public async findAllWithTodayDeadline(userId: any) {
+    const today = new Date();
+
+    return this.boardRepository.findAllByUserIdAndDeadlineFor(userId, today);
+  }
+
+  public async findAllWithTomorrowDeadline(userId: string) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    return this.boardRepository.findAllByUserIdAndDeadlineFor(userId, tomorrow);
   }
 }
 
