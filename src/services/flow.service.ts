@@ -162,8 +162,9 @@ class FlowService extends Service {
     const parent = this.getParent(n, nodes, edges);
     const trueFlow: Node[] = [];
     const falseFlow: Node[] = [];
+    const condition = await this.evaluateCondition(n, parent, flow);
 
-    if (this.evaluateCondition(n, parent, flow)) {
+    if (condition) {
       trueFlow.forEach(node => {
         this.insertNodeOnTheBoard(node, flow, nodes, edges);
       });
@@ -183,7 +184,7 @@ class FlowService extends Service {
     return nodes.filter(node => parentIds.includes(node.id ?? ''))[0];
   }
 
-  private async evaluateCondition(conditionalNode: Node, parent: Node, flow: Flow): boolean {
+  private async evaluateCondition(conditionalNode: Node, parent: Node, flow: Flow): Promise<boolean> {
     if (!conditionalNode.arguments || !parent.arguments) {
       return false;
     }
@@ -242,15 +243,6 @@ class FlowService extends Service {
         this.createBoard(n, flow);
         break;
     }
-
-    // this.jobService.createJobForNode(n, storedNodes, storedEdges);
-    /*
-      setInterval(() => {
-        se nodo.arguments[BEGIN] > NOW() ou nodo.arguments[END] < NOW()
-          retorna cancela_intervalo
-        gera_board_para_nodo(nodo)
-      }, nodo.arguments[FREQUENCY])
-    */
   }
 
   private async parseNonPeriodicNode(n: Node, flow: Flow) {

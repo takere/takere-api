@@ -21,7 +21,7 @@ class CronService extends Service {
   }
 
   private convertCronValueToString(value: string | undefined) {
-    if (!value) {
+    if (value === undefined) {
       return '*';
     }
 
