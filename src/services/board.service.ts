@@ -4,8 +4,11 @@ import Board = require('../domain/board.domain');
 import BoardDTO = require('../dto/board.dto');
 import BoardRepository = require('../repositories/board.repository');
 import UserBoardDTO = require('../dto/user-board.dto');
+import Flow = require('../domain/flow.domain');
+import Node = require('../domain/node.domain');
 
 class BoardService extends Service {
+  
   private boardRepository: BoardRepository; 
   private finishedService: FinishedService; 
 
@@ -91,6 +94,12 @@ class BoardService extends Service {
 
   public async removeAllWithFlowId(id: string): Promise<Board[]> {
     return this.boardRepository.removeAllWithFlowId(id);
+  }
+
+  public async isFinished(n: Node, flow: Flow) {
+    const referencedBoard = await this.boardRepository.findBoard(n.id ?? '', flow.id);
+
+    return referencedBoard && (referencedBoard.finished !== undefined);
   }
 }
 
