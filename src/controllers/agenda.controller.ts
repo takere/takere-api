@@ -8,15 +8,15 @@ class AgendaController {
   }
 
   public async getToday(req: any, res: any, next: any) {
-    const user = await req.user;
-    const cards = await this.boardService.findAllWithTodayDeadline(user.id);
+    const patientEmail = await req?.query?.email;
+    const cards = await this.boardService.findAllWithTodayDeadline(patientEmail);
 
     res.send(cards);
   }
 
   public async getTomorrow(req: any, res: any, next: any) {
-    const user = await req.user;
-    const cards = await this.boardService.findAllWithTomorrowDeadline(user.id);
+    const patientEmail = await req?.query?.email;
+    const cards = await this.boardService.findAllWithTomorrowDeadline(patientEmail);
 
     res.send(cards);
   }

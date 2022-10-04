@@ -262,17 +262,52 @@ class BoardService extends Service {
     return referencedBoard && (referencedBoard.finished !== undefined);
   }
 
-  public async findAllWithTodayDeadline(userId: any) {
-    const today = new Date();
+  public async findAllWithTodayDeadline(email: string) {
+    const board: Board[] =  await this.boardRepository.findAllUnfinishedByEmail(email);
+    const boardWithDeadline = board.filter(card => this.hasEndDate(card.node));
 
-    return this.boardRepository.findAllByUserIdAndDeadlineFor(userId, today);
+    return boardWithDeadline.filter(card => this.hasDeadlineForToday(card.node));
   }
 
-  public async findAllWithTomorrowDeadline(userId: string) {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    return this.boardRepository.findAllByUserIdAndDeadlineFor(userId, tomorrow);
+  private hasEndDate(node: Node) {
+    return (node.parameters.find((parameter: any) => parameter.slug === 'end_date') !== undefined)
+  }
+
+  private hasDeadlineForToday(node: Node): boolean {
+    if (!node.arguments) {
+      return false;
+    }
+
+    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
+    const endDate = new Date(node.arguments[idxEndDate]);
+
+    return (endDate.getDate() === new Date().getDate());
+  }
+
+  public async findAllWithTomorrowDeadline(email: string) {
+    const board: Board[] =  await this.boardRepository.findAllUnfinishedByEmail(email);
+    const boardWithDeadline = board.filter(card => this.hasEndDate(card.node));
+
+    return boardWithDeadline.filter(card => this.hasDeadlineForTomorrow(card.node));
+  }
+
+  private hasDeadlineForTomorrow(node: Node): boolean {
+    if (!node.arguments) {
+      return false;
+    }
+
+    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
+    const endDate = new Date(node.arguments[idxEndDate]);
+
+    return (endDate.getDate() === this.getTomorrowDate().getDate());
+  }
+
+  private getTomorrowDate() {
+    const date = new Date();
+
+    date.setDate(date.getDate() + 1);
+
+    return date;
   }
 }
 

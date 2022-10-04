@@ -8,7 +8,7 @@ class BoardCollection implements BoardRepository {
   constructor() {
     this._schema = require('../schemas/board.schema');
   }
-  
+    
   public async findOne(fields: object): Promise<Board> {
     const storedBoard = await this._schema.findOne(fields);
 
