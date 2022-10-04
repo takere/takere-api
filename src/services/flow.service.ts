@@ -184,6 +184,10 @@ class FlowService extends Service {
   }
 
   private async evaluateCondition(conditionalNode: Node, parent: Node, flow: Flow): boolean {
+    if (!conditionalNode.arguments || !parent.arguments) {
+      return false;
+    }
+    
     const leftOperand = conditionalNode.arguments[0];
     const operator = conditionalNode.arguments[1];
     const rightOperand = conditionalNode.arguments[2];
