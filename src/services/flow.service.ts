@@ -250,11 +250,22 @@ class FlowService extends Service {
   }
 
   private async parseNonPeriodicNode(n: Node, flow: Flow) {
-    if (hasBeginDate(n) && isEndDateBeforeNow(n)) {
+    if (this.hasBeginDate(n) && this.isEndDateBeforeNow(n)) {
       return;
     }
 
     this.createBoard(n, flow);
+  }
+
+  private hasBeginDate(node: Node) {
+    return (node.parameters.find(parameter => parameter.slug === 'begin_date') !== undefined);
+  }
+
+  private isEndDateBeforeNow(node: Node) {
+    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
+    const endDate = node.arguments ? node.arguments[indexEndDate] : null;
+
+    return new Date(endDate).getTime() < new Date().getTime();
   }
 
   private async createBoard(n: Node, flow: Flow) {
