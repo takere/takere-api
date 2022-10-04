@@ -68,39 +68,10 @@ class FlowService extends Service {
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
     for (let n of this.findAllChildrenOfRoot(storedNodes, storedEdges)) {
-      await this.insertNodeOnTheBoard(n, storedFlow);
+      await this.insertNodeOnTheBoard(n, storedFlow, storedNodes, storedEdges);
     }
 
     return storedFlow;
-  }
-
-  private findAllChildrenOfRoot(nodes: Node[], edges: Edge[]): Node[] {
-    const root = nodes.find(node => node.type === 'BEGIN');
-    const childrenIds = edges
-      .filter(edge => edge.target === root?.id)
-      .map(edge => edge.source);
-
-    return nodes.filter(node => childrenIds.includes(node.id ?? ''));
-  }
-
-  private async insertNodeOnTheBoard(n: Node, flow: Flow) {
-    if (!['BEGIN', 'CONDITIONAL'].includes(n.type)) {
-      // if (n.data.results.frequency) {
-      //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
-      // }
-      // else {
-
-        let board : BoardDTO = {
-          name: flow.name,
-          description: flow.description !== undefined ? flow.description : 'N/A',
-          patientEmail: flow.patientEmail,
-          flow: flow.id,
-          node: n.id,
-          finished: undefined
-        };
-        this.boardService.insert(board);
-      // }
-    }
   }
 
   private async storeNodes(nodes: any, edges: any, storedFlow: any) {
@@ -146,6 +117,135 @@ class FlowService extends Service {
     }
 
     return storedEdges;
+  }
+
+  private findAllChildrenOfRoot(nodes: Node[], edges: Edge[]): Node[] {
+    const root = nodes.find(node => node.type === 'BEGIN');
+    const childrenIds = edges
+      .filter(edge => edge.source === root?.id)
+      .map(edge => edge.target);
+
+    return nodes.filter(node => childrenIds.includes(node.id ?? ''));
+  }
+
+  private async insertNodeOnTheBoard(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
+    if (n.type === 'CONDITIONAL') {
+      this.parseConditionalNode(n, flow, nodes, edges);
+    }
+    else if (n.type === 'PERIODIC') {
+      this.parsePeriodicNode(n, flow);
+    }
+    else {
+      this.parseNonPeriodicNode(n, flow);
+    }
+
+    // if (!['BEGIN', 'CONDITIONAL'].includes(n.type)) {
+      // if (n.data.results.frequency) {
+      //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
+      // }
+      // else {
+
+        // let board : BoardDTO = {
+        //   name: flow.name,
+        //   description: flow.description !== undefined ? flow.description : 'N/A',
+        //   patientEmail: flow.patientEmail,
+        //   flow: flow.id,
+        //   node: n.id,
+        //   finished: undefined
+        // };
+        // this.boardService.insert(board);
+      // }
+    // }
+  }
+
+  private async parseConditionalNode(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
+    const parent = this.getParent(n, nodes, edges);
+    const trueFlow: Node[] = [];
+    const falseFlow: Node[] = [];
+
+    if (this.evaluateCondition(n, parent, flow)) {
+      trueFlow.forEach(node => {
+        this.insertNodeOnTheBoard(node, flow, nodes, edges);
+      });
+    }
+    else {
+      falseFlow.forEach(node => {
+        this.insertNodeOnTheBoard(node, flow, nodes, edges);
+      });
+    }
+  }
+
+  private getParent(child: Node, nodes: Node[], edges: Edge[]) {
+    const parentIds = edges
+      .filter(edge => edge.target === child?.id)
+      .map(edge => edge.source);
+
+    return nodes.filter(node => parentIds.includes(node.id ?? ''))[0];
+  }
+
+  private async evaluateCondition(conditionalNode: Node, parent: Node, flow: Flow): boolean {
+    const leftOperand = conditionalNode.arguments[0];
+    const operator = conditionalNode.arguments[1];
+    const rightOperand = conditionalNode.arguments[2];
+
+    switch (operator) {
+      case 'contains':
+        return parent.arguments[leftOperand].contains(rightOperand);
+      case '==':
+        if (parent.arguments[leftOperand] === 'medication') {
+          return await this.isNodeFinished(parent, flow);
+        }
+
+        return parent.arguments[leftOperand] === rightOperand;
+      case '!=':
+        if (parent.arguments[leftOperand] === 'medication') {
+          return await !this.isNodeFinished(parent, flow);
+        }
+
+        return parent.arguments[leftOperand] !== rightOperand;
+      case '>=':
+        return parent.arguments[leftOperand] >= rightOperand;
+      case '>':
+        return parent.arguments[leftOperand] > rightOperand;
+      case '<=':
+        return parent.arguments[leftOperand] <= rightOperand;
+      case '<':
+        return parent.arguments[leftOperand] < rightOperand;
+      default:
+        return false;
+    }
+  }
+
+  private async isNodeFinished(n: Node, flow: Flow) {
+    return await this.boardService.isFinished(n, flow);
+  }
+
+  private async parsePeriodicNode(n: Node, flow: Flow) {
+    // this.jobService.createJobForNode(n, storedNodes, storedEdges);
+    /*
+      setInterval(() => {
+        se nodo.arguments[BEGIN] > NOW() ou nodo.arguments[END] < NOW()
+          retorna cancela_intervalo
+        gera_board_para_nodo(nodo)
+      }, nodo.arguments[FREQUENCY])
+    */
+  }
+
+  private async parseNonPeriodicNode(n: Node, flow: Flow) {
+    this.createBoard(n, flow);
+  }
+
+  private async createBoard(n: Node, flow: Flow) {
+    const board : BoardDTO = {
+      name: flow.name,
+      description: flow.description !== undefined ? flow.description : 'N/A',
+      patientEmail: flow.patientEmail,
+      flow: flow.id,
+      node: n.id,
+      finished: undefined
+    };
+
+    this.boardService.insert(board);
   }
 }
 
