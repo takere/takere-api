@@ -221,6 +221,24 @@ class FlowService extends Service {
   }
 
   private async parsePeriodicNode(n: Node, flow: Flow) {
+    const frequencyIndex = n.parameters.findIndex(parameter => parameter.slug === 'frequency');
+    const frequencyValue = n.arguments ? n.arguments[frequencyIndex] : { select: 'onlyOnce', number: 0 };
+
+    switch (frequencyValue.select) {
+      case 'daily':
+        this.jobService.createDailyJobForNode(n, flow);
+        break;
+      case 'everyHours':
+        this.jobService.createEveryHoursJobForNode(frequencyValue.number, n, flow);
+        break;
+      case 'everyDays':
+        this.jobService.createEveryDaysJobForNode(frequencyValue.number, n, flow);
+        break;
+      default:
+        this.createBoard(n, flow);
+        break;
+    }
+
     // this.jobService.createJobForNode(n, storedNodes, storedEdges);
     /*
       setInterval(() => {
@@ -232,6 +250,10 @@ class FlowService extends Service {
   }
 
   private async parseNonPeriodicNode(n: Node, flow: Flow) {
+    if (hasBeginDate(n) && isEndDateBeforeNow(n)) {
+      return;
+    }
+
     this.createBoard(n, flow);
   }
 

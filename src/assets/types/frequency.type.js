@@ -10,11 +10,11 @@ module.exports = [
   {
     "value": "everyHours",
     "label": "Every x hours",
-    "request_input": "numeric"
+    "request_input": "number"
   },
   {
     "value": "everyDays",
     "label": "Every x days",
-    "request_input": "numeric"
+    "request_input": "number"
   }
 ]
