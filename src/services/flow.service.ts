@@ -138,24 +138,6 @@ class FlowService extends Service {
     else {
       this.parseNonPeriodicNode(n, flow);
     }
-
-    // if (!['BEGIN', 'CONDITIONAL'].includes(n.type)) {
-      // if (n.data.results.frequency) {
-      //   this.jobService.createJobForNode(n, storedNodes, storedEdges);
-      // }
-      // else {
-
-        // let board : BoardDTO = {
-        //   name: flow.name,
-        //   description: flow.description !== undefined ? flow.description : 'N/A',
-        //   patientEmail: flow.patientEmail,
-        //   flow: flow.id,
-        //   node: n.id,
-        //   finished: undefined
-        // };
-        // this.boardService.insert(board);
-      // }
-    // }
   }
 
   private async parseConditionalNode(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {

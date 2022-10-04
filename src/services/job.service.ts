@@ -94,21 +94,6 @@ class JobService extends Service {
     this.createRepeatedEvent(job, repeatInterval);
   }
 
-  public createOnlyOnceEvent(job: Job): void {
-    if (this.isBefore(new Date(job.endDate), new Date())) {
-      return;
-    }
-    
-    const isFutureEvent = this.isBefore(new Date(), new Date(job.beginDate));
-    
-    if (isFutureEvent) {
-      this.agenda.schedule(new Date(job.beginDate), 'ONLY_ONCE', job.data);
-    }
-    else {  // begin < event < end
-      this.agenda.schedule('today', 'ONLY_ONCE', job.data);
-    }
-  }
-
   public createRepeatedEvent(job: Job, repeatInterval: Cron): void {
     const newJob = this.createTimeTickerJob(job.beginDate, job.endDate);
 
