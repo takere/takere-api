@@ -1,4 +1,4 @@
-const severityType = require("./severity.type")
+const severityType = require("../types/severity.type")
 
 module.exports = {
     "slug": "explanation",

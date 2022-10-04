@@ -1,5 +1,5 @@
-const severityType = require("./severity.type")
-const frequencyType = require("./frequency.type")
+const severityType = require("../types/severity.type")
+const frequencyType = require("../types/frequency.type")
 
 module.exports = {
     "slug": "medication_control",
@@ -75,7 +75,7 @@ module.exports = {
             "name": "Frequency",
             "description": "How often this treatment should be performed?",
             "required": true,
-            "type": "select",
+            "type": "select&number",
             "options": frequencyType
         }
     ],

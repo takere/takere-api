@@ -1,6 +1,6 @@
-const notificationType = require("./notification.type")
-const severityType = require("./severity.type")
-const frequencyType = require("./frequency.type")
+const notificationType = require("../types/notification.type")
+const severityType = require("../types/severity.type")
+const frequencyType = require("../types/frequency.type")
 
 module.exports = {
     "slug": "reminder",
@@ -56,7 +56,7 @@ module.exports = {
             "name": "Frequency",
             "description": "How often this treatment should be performed?",
             "required": true,
-            "type": "select",
+            "type": "select&number",
             "options": frequencyType
         }
     ]
