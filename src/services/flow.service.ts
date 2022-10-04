@@ -1,7 +1,6 @@
 import Service = require('./service');
 import NodeService = require('./node.service');
 import EdgeService = require('./edge.service');
-import JobService = require('./job.service');
 import Flow = require('../domain/flow.domain');
 import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
@@ -15,7 +14,6 @@ class FlowService extends Service {
   private readonly flowRepository: FlowRepository;
   private readonly edgeService: EdgeService;
   private readonly nodeService: NodeService;
-  private readonly jobService: JobService;
   private readonly boardService: BoardService;
 
   constructor() {
@@ -23,7 +21,6 @@ class FlowService extends Service {
     this.flowRepository = this.repository.flowRepository;
     this.nodeService = new NodeService();
     this.edgeService = new EdgeService();
-    this.jobService = new JobService();
     this.boardService = new BoardService();
   }
 
@@ -68,7 +65,7 @@ class FlowService extends Service {
     const storedEdges: Edge[] = await this.storeEdges(flow.edges, storedFlow);
 
     for (let n of this.findAllChildrenOfRoot(storedNodes, storedEdges)) {
-      await this.insertNodeOnTheBoard(n, storedFlow, storedNodes, storedEdges);
+      await this.boardService.insertNodeOnTheBoard(n, storedFlow, storedNodes, storedEdges);
     }
 
     return storedFlow;
@@ -126,137 +123,6 @@ class FlowService extends Service {
       .map(edge => edge.target);
 
     return nodes.filter(node => childrenIds.includes(node.id ?? ''));
-  }
-
-  private async insertNodeOnTheBoard(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
-    if (n.type === 'CONDITIONAL') {
-      this.parseConditionalNode(n, flow, nodes, edges);
-    }
-    else if (n.type === 'PERIODIC') {
-      this.parsePeriodicNode(n, flow);
-    }
-    else {
-      this.parseNonPeriodicNode(n, flow);
-    }
-  }
-
-  private async parseConditionalNode(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
-    const parent = this.getParent(n, nodes, edges);
-    const trueFlow: Node[] = [];
-    const falseFlow: Node[] = [];
-    const condition = await this.evaluateCondition(n, parent, flow);
-
-    if (condition) {
-      trueFlow.forEach(node => {
-        this.insertNodeOnTheBoard(node, flow, nodes, edges);
-      });
-    }
-    else {
-      falseFlow.forEach(node => {
-        this.insertNodeOnTheBoard(node, flow, nodes, edges);
-      });
-    }
-  }
-
-  private getParent(child: Node, nodes: Node[], edges: Edge[]) {
-    const parentIds = edges
-      .filter(edge => edge.target === child?.id)
-      .map(edge => edge.source);
-
-    return nodes.filter(node => parentIds.includes(node.id ?? ''))[0];
-  }
-
-  private async evaluateCondition(conditionalNode: Node, parent: Node, flow: Flow): Promise<boolean> {
-    if (!conditionalNode.arguments || !parent.arguments) {
-      return false;
-    }
-    
-    const leftOperand = conditionalNode.arguments[0];
-    const operator = conditionalNode.arguments[1];
-    const rightOperand = conditionalNode.arguments[2];
-
-    switch (operator) {
-      case 'contains':
-        return parent.arguments[leftOperand].contains(rightOperand);
-      case '==':
-        if (parent.arguments[leftOperand] === 'medication') {
-          return await this.isNodeFinished(parent, flow);
-        }
-
-        return parent.arguments[leftOperand] === rightOperand;
-      case '!=':
-        if (parent.arguments[leftOperand] === 'medication') {
-          return await !this.isNodeFinished(parent, flow);
-        }
-
-        return parent.arguments[leftOperand] !== rightOperand;
-      case '>=':
-        return parent.arguments[leftOperand] >= rightOperand;
-      case '>':
-        return parent.arguments[leftOperand] > rightOperand;
-      case '<=':
-        return parent.arguments[leftOperand] <= rightOperand;
-      case '<':
-        return parent.arguments[leftOperand] < rightOperand;
-      default:
-        return false;
-    }
-  }
-
-  private async isNodeFinished(n: Node, flow: Flow) {
-    return await this.boardService.isFinished(n, flow);
-  }
-
-  private async parsePeriodicNode(n: Node, flow: Flow) {
-    const frequencyIndex = n.parameters.findIndex(parameter => parameter.slug === 'frequency');
-    const frequencyValue = n.arguments ? n.arguments[frequencyIndex] : { select: 'onlyOnce', number: 0 };
-
-    switch (frequencyValue.select) {
-      case 'daily':
-        this.jobService.createDailyJobForNode(n, flow);
-        break;
-      case 'everyHours':
-        this.jobService.createEveryHoursJobForNode(frequencyValue.number, n, flow);
-        break;
-      case 'everyDays':
-        this.jobService.createEveryDaysJobForNode(frequencyValue.number, n, flow);
-        break;
-      default:
-        this.createBoard(n, flow);
-        break;
-    }
-  }
-
-  private async parseNonPeriodicNode(n: Node, flow: Flow) {
-    if (this.hasBeginDate(n) && this.isEndDateBeforeNow(n)) {
-      return;
-    }
-
-    this.createBoard(n, flow);
-  }
-
-  private hasBeginDate(node: Node) {
-    return (node.parameters.find(parameter => parameter.slug === 'begin_date') !== undefined);
-  }
-
-  private isEndDateBeforeNow(node: Node) {
-    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = node.arguments ? node.arguments[indexEndDate] : null;
-
-    return new Date(endDate).getTime() < new Date().getTime();
-  }
-
-  private async createBoard(n: Node, flow: Flow) {
-    const board : BoardDTO = {
-      name: flow.name,
-      description: flow.description !== undefined ? flow.description : 'N/A',
-      patientEmail: flow.patientEmail,
-      flow: flow.id,
-      node: n.id,
-      finished: undefined
-    };
-
-    this.boardService.insert(board);
   }
 }
 
