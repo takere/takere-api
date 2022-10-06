@@ -19,7 +19,13 @@ class NodeCollection implements NodeRepository {
   }
 
   public async deleteMany(fields: object): Promise<Node[]> {
-    return this._schema.deleteMany(fields);
+    let nodes = this._schema.deleteMany(fields);
+
+    if (!Array.isArray(nodes)) {
+      nodes = [nodes];
+    }
+
+    return nodes;
   }
 
   public async insert(node: Node): Promise<Node> {
