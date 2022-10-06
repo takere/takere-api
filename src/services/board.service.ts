@@ -322,6 +322,10 @@ class BoardService extends Service {
     return date;
   }
 
+  public async findProgressByEmail(email: string): Promise<ProgressDTO> {
+    const boards = await this.findAllFinishedByEmail(email);
+  }
+
   public async findAllFinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllFinishedByEmail(email);
     
