@@ -30,6 +30,8 @@ class BoardService extends Service {
 
   public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllUnfinishedByEmail(email);
+
+    console.log(boards);
     
     const formattedBoards = [];
 
@@ -195,6 +197,9 @@ class BoardService extends Service {
     switch (frequencyValue.select) {
       case 'daily':
         this.jobService.createDailyJobForNode(n, flow);
+        if (this.hasBeginDate(n) && this.isBeginDateBeforeNow(n) && !this.isEndDateBeforeNow(n)) {
+          this.createBoard(n, flow);
+        }
         break;
       case 'everyHours':
         this.jobService.createEveryHoursJobForNode(frequencyValue.number, n, flow);
@@ -218,6 +223,13 @@ class BoardService extends Service {
 
   private hasBeginDate(node: Node) {
     return (node.parameters.find(parameter => parameter.slug === 'begin_date') !== undefined);
+  }
+
+  private isBeginDateBeforeNow(node: Node) {
+    const indexBeginDate = node.parameters.findIndex(parameter => parameter.slug === 'begin_date');
+    const beginDate = node.arguments ? node.arguments[indexBeginDate] : null;
+
+    return new Date(beginDate).getTime() < new Date().getTime();
   }
 
   private isEndDateBeforeNow(node: Node) {
