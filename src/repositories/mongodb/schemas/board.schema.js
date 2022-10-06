@@ -53,6 +53,12 @@ BoardSchema.statics.findAllUnfinishedByEmail = async function (email) {
     .exec();
 };
 
+BoardSchema.statics.findAllFinishedByEmail = async function (email) {
+  return this.model("Board").find({ patientEmail: email, finished: {$ne:undefined} })
+    .populate("node")
+    .exec();
+};
+
 BoardSchema.statics.findAllByEmail = async function (email) {
   return this.model("Board").find({ patientEmail: email })
     .populate("node")
