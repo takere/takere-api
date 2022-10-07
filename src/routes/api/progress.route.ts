@@ -16,6 +16,16 @@ class ProgressRoute extends Route {
       this.passport.authenticate('jwt'), 
       (req: any, res: any, next: any) => this.progressController.getProgress(req, res, next)
     );
+    router.get(
+      '/patients', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.progressController.getPatientsProgress(req, res, next)
+    );
+    router.get(
+      '/patients/:flowId/:patientId', 
+      this.passport.authenticate('jwt'), 
+      (req: any, res: any, next: any) => this.progressController.getPatientProgress(req, res, next)
+    );
     router.options('*', this.cors());
   }
 }

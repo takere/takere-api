@@ -11,8 +11,7 @@ import Flow = require('../domain/flow.domain');
 import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
 
-class BoardService extends Service {
-    
+class BoardService extends Service {    
   private boardRepository: BoardRepository; 
   private finishedService: FinishedService; 
   private readonly edgeService: EdgeService;
@@ -233,6 +232,10 @@ class BoardService extends Service {
   }
 
   private isEndDateBeforeNow(node: Node) {
+    if (!this.hasEndDate(node)) {
+      return false;
+    }
+
     const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
     const endDate = node.arguments ? node.arguments[indexEndDate] : null;
 
@@ -396,6 +399,71 @@ class BoardService extends Service {
     });
 
     return formattedGroups;
+  }
+
+  public async findAllProgressWithFlowCreatedBy(userId: string) {
+    const boards = await this.boardRepository.findAllByAuthor(userId);
+    const formattedBoards: any[] = [];
+
+    boards.forEach((board: any) => {
+      const patient = this.userService.findByEmail(board.flow.patientEmail);
+
+      formattedBoards.push({
+        patient: patient,
+        flow: {
+          id: board.flow.id,
+          name: board.flow.name,
+          description: board.flow.description
+        }
+      });
+    });
+
+    return formattedBoards;
+  }
+
+  public async findProgressByFlowAndPatient(flowId: string, patientId: string) {
+    const boards = await this.boardRepository.findAllByFlowAndPatient(flowId, patientId);
+    const formattedBoards: any[] = [];
+
+    boards.forEach((board: any) => {
+      const patient = this.userService.findByEmail(board.flow.patientEmail);
+
+      formattedBoards.push({
+        patient: patient,
+        flow: {
+          id: board.flow.id,
+          name: board.flow.name,
+          description: board.flow.description,
+          completed: this.extractFinishedBoardsFrom(boards),
+          ongoing: this.extractOngoingBoardsFrom(boards),
+          late: this.extractLateBoardsFrom(boards)
+        }
+      });
+    });
+
+    return formattedBoards;
+  }
+
+  public extractFinishedBoardsFrom(boards: Board[]) {
+    return boards.filter(board => board.finished !== undefined);
+  }
+
+  public extractOngoingBoardsFrom(boards: Board[]) {
+    const unfinishedBoards = this.extractUnfinishedBoardsFrom(boards);
+
+    return unfinishedBoards.filter(board => !this.isEndDateBeforeNow(board.node));
+  }
+
+  public extractUnfinishedBoardsFrom(boards: Board[]): Board[] {
+    return boards.filter(board => board.finished !== undefined);
+  }
+
+  public extractLateBoardsFrom(boards: Board[]) {
+    const unfinishedBoards = this.extractUnfinishedBoardsFrom(boards);
+
+    return unfinishedBoards
+      .filter(board => this.hasEndDate(board.node))
+      .filter(board => this.isEndDateBeforeNow(board.node));
   }
 }
 

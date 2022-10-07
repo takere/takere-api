@@ -13,6 +13,23 @@ class ProgressController {
 
     res.send(progress);
   }
+
+  public async getPatientsProgress(req: any, res: any, next: any) {
+    const user = await req.user;
+    const progress = await this.boardService.findAllProgressWithFlowCreatedBy(user.id);
+
+    res.send(progress);
+  }
+
+  public async getPatientProgress(req: any, res: any, next: any) {
+    const user = await req.user;
+    const flowId = await req.params.flowId;
+    const patientId = await req.params.flowId;
+
+    const progress = await this.boardService.findProgressByFlowAndPatient(flowId, patientId);
+
+    res.send(progress);
+  }
 }
 
 export = ProgressController;
