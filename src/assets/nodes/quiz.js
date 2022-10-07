@@ -45,6 +45,20 @@ module.exports = {
             "options": severityType
         },
         {
+            "slug": "begin_date",
+            "name": "Begin date",
+            "description": "When should quiz start?",
+            "required": true,
+            "type": "date"
+        },
+        {
+            "slug": "end_date",
+            "name": "End date",
+            "description": "When should quiz end?",
+            "required": false,
+            "type": "date"
+        },
+        {
             "slug": "frequency",
             "name": "Frequency",
             "description": "How often this treatment should be performed?",
