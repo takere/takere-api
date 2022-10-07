@@ -387,7 +387,8 @@ class BoardService extends Service {
         node: { 
           slug: nodeSlug,
           color: nodeInstances[0].color,
-          icon: nodeInstances[0].icon
+          icon: nodeInstances[0].icon,
+          name: nodeInstances[0].name
         },
         completed: totalCompleted,
         total: nodeInstances.length
