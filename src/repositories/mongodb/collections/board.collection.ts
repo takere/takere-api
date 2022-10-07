@@ -18,9 +18,9 @@ class BoardCollection implements BoardRepository {
         name: board.name,
         description: board.description,
         patientEmail: board.patientEmail,
-        flow: { id: board.flow._id },
+        flow: { id: board.flow.id.toString() },
         node: board.node._doc,
-        finished: board.finished._doc
+        finished: board.finished ? board.finished._doc : undefined
       });
     });
 
