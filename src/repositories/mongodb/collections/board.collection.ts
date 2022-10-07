@@ -9,6 +9,24 @@ class BoardCollection implements BoardRepository {
     this._schema = require('../schemas/board.schema');
   }
   
+  public async findAll(email: string): Promise<Board[]> {
+    const formattedBoards: any[] = [];
+    const boards = await this._schema.findAll(email);
+
+    boards.forEach((board: any, index: number) => {
+      formattedBoards.push({
+        name: board.name,
+        description: board.description,
+        patientEmail: board.patientEmail,
+        flow: { id: board.flow._id },
+        node: board.node._doc,
+        finished: board.finished._doc
+      });
+    });
+
+    return formattedBoards;
+  }
+  
   public async findAllFinishedByEmail(email: string): Promise<Board[]> {
     return this._schema.findAllFinishedByEmail(email);
   }

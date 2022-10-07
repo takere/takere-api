@@ -40,11 +40,18 @@ const BoardSchema = new mongoose.Schema(
   }
 );
 
+BoardSchema.statics.findAll = async function (id) {
+  return this.model("Board").find({})
+    .populate("node")
+    .populate("finished")
+    .exec();
+}
+
 BoardSchema.statics.findById = async function (id) {
   return this.model("Board").findOne({ _id: id })
     .populate("node")
     .populate("finished")
-    .exec();;
+    .exec();
 }
 
 BoardSchema.statics.findAllUnfinishedByEmail = async function (email) {
@@ -56,6 +63,7 @@ BoardSchema.statics.findAllUnfinishedByEmail = async function (email) {
 BoardSchema.statics.findAllFinishedByEmail = async function (email) {
   return this.model("Board").find({ patientEmail: email, finished: {$ne:undefined} })
     .populate("node")
+    .populate("finished")
     .exec();
 };
 

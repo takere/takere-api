@@ -2,6 +2,7 @@ import Board = require('../domain/board.domain');
 import BoardDTO = require('../dto/board.dto');
 
 interface BoardRepository {
+  findAll(email: string): Promise<Board[]>;
   findAllFinishedByEmail(email: string): Promise<Board[]>;
   findBoard(nodeId: string, flowId: string): Promise<Board>;
   save(board: BoardDTO): Promise<Board>;

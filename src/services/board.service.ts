@@ -323,42 +323,78 @@ class BoardService extends Service {
   }
 
   public async findProgressByEmail(email: string): Promise<any> {
-    const boards = await this.findAllFinishedByEmail(email);
+    const boards = await this.boardRepository.findAll(email);
 
-    console.log(boards);
-
-    return boards;
+    return this.groupByFlow(boards);
   }
 
   public async findAllFinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllFinishedByEmail(email);
-    
-    const formattedBoards = [];
 
-    for(const board of boards) {
-      formattedBoards.push(this.formatBoard(board));
-    }
+    return boards;
+  }
 
-    formattedBoards.sort((board1, board2) => {
-      if (!board1.node.arguments) {
-        return -1;
+  private groupByFlow(boards: Board[]) {
+    const formattedGroups: any[] = [];
+    const groups = new Map();
+
+    boards.forEach(board => {
+      if (groups.has(board.flow.id)) {
+        const nodes = groups.get(board.flow.id);
+
+        groups.set(board.flow.id, [ ...nodes, { ...board.node, finished: board.finished } ]);
       }
-
-      if (!board2.node.arguments) {
-        return 1;
+      else {
+        groups.set(board.flow.id, [{ ...board.node, finished: board.finished }]);
       }
-
-      const board1SeverityIdx: number = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
-      const board2SeverityIdx: number = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
-      const board1Options = board1.node.parameters[board1SeverityIdx].options;
-      const board2Options = board2.node.parameters[board2SeverityIdx].options;
-      const board1Selection = board1.node.arguments[board1SeverityIdx];
-      const board2Selection = board2.node.arguments[board2SeverityIdx];
-
-      return parseInt(board2Options[board2Selection].value) - parseInt(board1Options[board1Selection].value);
     });
 
-    return formattedBoards;
+    groups.forEach((nodes, flowId) => {
+      const flowData: any = boards.find(board => board.flow.id === flowId);
+
+      formattedGroups.push({
+        flow: {
+          id: flowId,
+          name: flowData.name,
+          description: flowData.description,
+          nodes: this.groupByNode(nodes)
+        }
+      });
+    });
+
+    return formattedGroups;
+  }
+
+  private groupByNode(nodes: any[]) {
+    const groups = new Map();
+    const formattedGroups: any[] = [];
+
+    nodes.forEach(node => {
+      if (groups.has(node.slug)) {
+        const groupedNodes = groups.get(node.slug);
+
+        groups.set(node.slug, [ ...groupedNodes, node ]);
+      }
+      else {
+        groups.set(node.slug, [ node ]);
+      }
+    });
+
+    groups.forEach((nodeInstances, nodeSlug) => {
+      const totalCompleted = nodeInstances.filter((node: any) => node.finished !== undefined).length
+
+      formattedGroups.push({
+        node: { 
+          slug: nodeSlug,
+          color: nodeInstances[0].color,
+          icon: nodeInstances[0].icon
+        },
+        completed: totalCompleted,
+        total: nodeInstances.length
+      });
+    });
+
+    return formattedGroups;
   }
 }
 

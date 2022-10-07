@@ -5,11 +5,7 @@ interface UserBoardDTO {
   name: string,
   description: string,
   node: Node,
-  finished: { 
-    id: string, 
-    at: string, 
-    result: any 
-  },
+  finished: any,
 }
 
 export = UserBoardDTO;
