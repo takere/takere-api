@@ -407,8 +407,13 @@ class BoardService extends Service {
   public async findAllProgressWithFlowCreatedBy(userId: string) {
     const boards = await this.boardRepository.findAllByAuthor(userId);
     const formattedBoards: any[] = [];
+    const addedFlows = new Set();
 
     for (let board of boards) {
+      if (addedFlows.has(board.flow.id)) {
+        continue;
+      }
+
       const patient = await this.userService.findByEmail(board.flow.patientEmail);
 
       formattedBoards.push({
@@ -419,17 +424,20 @@ class BoardService extends Service {
           description: board.flow.description
         }
       });
+
+      addedFlows.add(board.flow.id);
     }
 
     return formattedBoards;
   }
 
   public async findProgressByFlowAndPatient(flowId: string, patientId: string) {
-    const boards = await this.boardRepository.findAllByFlowAndPatient(flowId, patientId);
+    const user = await this.userService.findById(patientId);
+    const boards = await this.boardRepository.findAllByFlowAndPatient(flowId, user.email);
     const formattedBoards: any[] = [];
 
-    boards.forEach((board: any) => {
-      const patient = this.userService.findByEmail(board.flow.patientEmail);
+    for (let board of boards) {
+      const patient = await this.userService.findByEmail(board.flow.patientEmail);
 
       formattedBoards.push({
         patient: patient,
@@ -442,7 +450,7 @@ class BoardService extends Service {
           late: this.extractLateBoardsFrom(boards)
         }
       });
-    });
+    };
 
     return formattedBoards;
   }

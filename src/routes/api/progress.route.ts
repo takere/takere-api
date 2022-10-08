@@ -22,7 +22,7 @@ class ProgressRoute extends Route {
       (req: any, res: any, next: any) => this.progressController.getPatientsProgress(req, res, next)
     );
     router.get(
-      '/patients/:flowId/:patientId', 
+      '/patients/:patientId/:flowId', 
       this.passport.authenticate('jwt'), 
       (req: any, res: any, next: any) => this.progressController.getPatientProgress(req, res, next)
     );

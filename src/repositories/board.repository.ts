@@ -2,7 +2,7 @@ import Board = require('../domain/board.domain');
 import BoardDTO = require('../dto/board.dto');
 
 interface BoardRepository {
-  findAllByFlowAndPatient(flowId: string, patientId: string): Promise<Board[]>;
+  findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]>;
   findAllByAuthor(userId: string): Promise<Board[]>;
   findAll(email: string): Promise<Board[]>;
   findAllFinishedByEmail(email: string): Promise<Board[]>;
