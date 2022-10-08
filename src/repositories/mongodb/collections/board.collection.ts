@@ -72,6 +72,14 @@ class BoardCollection implements BoardRepository {
   public async findBoard(nodeId: string, flowId: string): Promise<Board> {
     return this._schema.find({ node: nodeId, flow: flowId });
   }
+
+  public async findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]> {
+    return this._schema.findAllByFlowAndPatient(flowId, patientEmail);
+  }
+  
+  public async findAllByAuthor(userId: string): Promise<Board[]> {
+    return this._schema.findAllByAuthor(userId);
+  }
 }
 
 export = BoardCollection;

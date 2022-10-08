@@ -74,6 +74,22 @@ BoardSchema.statics.findAllByEmail = async function (email) {
     .exec();
 };
 
+BoardSchema.statics.findAllByFlowAndPatient = async function (flow, email) {
+  return this.model("Board").find({ flow: { id: flow, patientEmail: email } })
+    .populate("node")
+    .populate("finished")
+    .populate("flow")
+    .exec();
+};
+
+BoardSchema.statics.findAllByAuthor = async function (userId) {
+  return this.model("Board").find({ flow: { author: userId } })
+    .populate("node")
+    .populate("finished")
+    .populate("flow")
+    .exec();
+};
+
 
 BoardSchema.pre("save", function (next) {
   if (this.isNew) {
