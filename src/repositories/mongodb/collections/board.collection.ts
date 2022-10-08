@@ -11,7 +11,7 @@ class BoardCollection implements BoardRepository {
   
   public async findAll(email: string): Promise<Board[]> {
     const formattedBoards: any[] = [];
-    const boards = await this._schema.findAll(email);
+    const boards = await this._schema.findAll();
 
     boards.forEach((board: any, index: number) => {
       formattedBoards.push({
@@ -74,11 +74,18 @@ class BoardCollection implements BoardRepository {
   }
 
   public async findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]> {
-    return this._schema.findAllByFlowAndPatient(flowId, patientEmail);
+    const boards = await this._schema.findAll();
+
+    return boards
+      .filter((board: Board) => board.flow.id.toString() === flowId)
+      .filter((board: Board) => board.flow.patientEmail === patientEmail);
   }
   
   public async findAllByAuthor(userId: string): Promise<Board[]> {
-    return this._schema.findAllByAuthor(userId);
+    const boards = await this._schema.findAll();
+
+    return boards
+      .filter((board: Board) => board.flow.author.toString() === userId);
   }
 }
 

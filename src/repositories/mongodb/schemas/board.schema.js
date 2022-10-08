@@ -40,10 +40,11 @@ const BoardSchema = new mongoose.Schema(
   }
 );
 
-BoardSchema.statics.findAll = async function (id) {
+BoardSchema.statics.findAll = async function () {
   return this.model("Board").find({})
     .populate("node")
     .populate("finished")
+    .populate('flow')
     .exec();
 }
 
@@ -71,22 +72,6 @@ BoardSchema.statics.findAllByEmail = async function (email) {
   return this.model("Board").find({ patientEmail: email })
     .populate("node")
     .populate("finished")
-    .exec();
-};
-
-BoardSchema.statics.findAllByFlowAndPatient = async function (flow, email) {
-  return this.model("Board").find({ flow: { id: flow, patientEmail: email } })
-    .populate("node")
-    .populate("finished")
-    .populate("flow")
-    .exec();
-};
-
-BoardSchema.statics.findAllByAuthor = async function (userId) {
-  return this.model("Board").find({ flow: { author: userId } })
-    .populate("node")
-    .populate("finished")
-    .populate("flow")
     .exec();
 };
 

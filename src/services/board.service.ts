@@ -3,6 +3,7 @@ import FinishedService = require('./finished.service');
 import NodeService = require('./node.service');
 import EdgeService = require('./edge.service');
 import JobService = require('./job.service');
+import UserService = require('./user.service');
 import Board = require('../domain/board.domain');
 import BoardDTO = require('../dto/board.dto');
 import BoardRepository = require('../repositories/board.repository');
@@ -12,11 +13,12 @@ import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
 
 class BoardService extends Service {    
-  private boardRepository: BoardRepository; 
-  private finishedService: FinishedService; 
+  private readonly boardRepository: BoardRepository; 
+  private readonly finishedService: FinishedService; 
   private readonly edgeService: EdgeService;
   private readonly nodeService: NodeService;
   private readonly jobService: JobService;
+  private readonly userService: UserService;
 
   constructor() {
     super();
@@ -25,6 +27,7 @@ class BoardService extends Service {
     this.nodeService = new NodeService();
     this.edgeService = new EdgeService();
     this.jobService = new JobService();
+    this.userService = new UserService();
   }
 
   public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
@@ -405,8 +408,8 @@ class BoardService extends Service {
     const boards = await this.boardRepository.findAllByAuthor(userId);
     const formattedBoards: any[] = [];
 
-    boards.forEach((board: any) => {
-      const patient = this.userService.findByEmail(board.flow.patientEmail);
+    for (let board of boards) {
+      const patient = await this.userService.findByEmail(board.flow.patientEmail);
 
       formattedBoards.push({
         patient: patient,
@@ -416,7 +419,7 @@ class BoardService extends Service {
           description: board.flow.description
         }
       });
-    });
+    }
 
     return formattedBoards;
   }
