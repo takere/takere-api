@@ -24,7 +24,7 @@ class ProgressController {
   public async getPatientProgress(req: any, res: any, next: any) {
     const user = await req.user;
     const flowId = await req.params.flowId;
-    const patientId = await req.params.flowId;
+    const patientId = await req.params.patientId;
 
     const progress = await this.boardService.findProgressByFlowAndPatient(flowId, patientId);
 

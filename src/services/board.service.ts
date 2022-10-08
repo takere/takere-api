@@ -466,7 +466,7 @@ class BoardService extends Service {
   }
 
   public extractUnfinishedBoardsFrom(boards: Board[]): Board[] {
-    return boards.filter(board => board.finished !== undefined);
+    return boards.filter(board => board.finished === undefined);
   }
 
   public extractLateBoardsFrom(boards: Board[]) {
