@@ -434,47 +434,54 @@ class BoardService extends Service {
   public async findProgressByFlowAndPatient(flowId: string, patientId: string) {
     const user = await this.userService.findById(patientId);
     const boards = await this.boardRepository.findAllByFlowAndPatient(flowId, user.email);
-    const formattedBoards: any[] = [];
+    const flow = boards.length > 0 ? boards[0].flow : { id: -1, name: '', description: '' };
 
-    for (let board of boards) {
-      const patient = await this.userService.findByEmail(board.flow.patientEmail);
-
-      formattedBoards.push({
-        patient: patient,
-        flow: {
-          id: board.flow.id,
-          name: board.flow.name,
-          description: board.flow.description,
-          completed: this.extractFinishedBoardsFrom(boards),
-          ongoing: this.extractOngoingBoardsFrom(boards),
-          late: this.extractLateBoardsFrom(boards)
-        }
-      });
+    return {
+      patient: user,
+      flow: {
+        id: flow.id,
+        name: flow.name,
+        description: flow.description,
+        completed: this.extractFinishedBoardsFrom(boards),
+        ongoing: this.extractOngoingBoardsFrom(boards),
+        late: this.extractLateBoardsFrom(boards)
+      }
     };
-
-    return formattedBoards;
   }
 
-  public extractFinishedBoardsFrom(boards: Board[]) {
+  private extractFinishedBoardsFrom(boards: Board[]) {
     return boards.filter(board => board.finished !== undefined);
   }
 
-  public extractOngoingBoardsFrom(boards: Board[]) {
+  private extractOngoingBoardsFrom(boards: Board[]) {
     const unfinishedBoards = this.extractUnfinishedBoardsFrom(boards);
 
-    return unfinishedBoards.filter(board => !this.isEndDateBeforeNow(board.node));
+    return unfinishedBoards
+      .filter(board => !this.isEndDateBeforeNow(board.node))
+      .map(board => ({ ...board, deadline: this.extractDeadlineFrom(board.node) }));
   }
 
-  public extractUnfinishedBoardsFrom(boards: Board[]): Board[] {
+  private extractDeadlineFrom(node: Node) {
+    if (!node.arguments) {
+      return null;
+    }
+    
+    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
+    
+    return idxEndDate === -1 ? null : new Date(node.arguments[idxEndDate]);
+  }
+
+  private extractUnfinishedBoardsFrom(boards: Board[]): Board[] {
     return boards.filter(board => board.finished === undefined);
   }
 
-  public extractLateBoardsFrom(boards: Board[]) {
+  private extractLateBoardsFrom(boards: Board[]) {
     const unfinishedBoards = this.extractUnfinishedBoardsFrom(boards);
 
     return unfinishedBoards
       .filter(board => this.hasEndDate(board.node))
-      .filter(board => this.isEndDateBeforeNow(board.node));
+      .filter(board => this.isEndDateBeforeNow(board.node))
+      .map(board => ({ ...board, deadline: this.extractDeadlineFrom(board.node) }));
   }
 }
 

@@ -20,15 +20,41 @@ class BoardCollection implements BoardRepository {
         patientEmail: board.patientEmail,
         flow: { id: board.flow.id.toString() },
         node: board.node._doc,
-        finished: board.finished ? board.finished._doc : undefined
+        finished: board.finished ? this.formatFinished(board.finished._doc) : undefined
       });
     });
 
     return formattedBoards;
   }
+
+  private formatFinished(finished: any) {
+    return {
+      answers: finished.answers,
+      date: finished.createdAt
+    }
+  }
   
-  public async findAllFinishedByEmail(email: string): Promise<Board[]> {
-    return this._schema.findAllFinishedByEmail(email);
+  public async findAllFinishedByEmail(email: string): Promise<any[]> {
+    const boards = await this._schema.findAllFinishedByEmail(email);
+
+    return this.formatBoards(boards);
+  }
+
+  private formatBoards(boards: Board[]): any[] {
+    const formattedBoards: any[] = [];
+
+    boards.forEach((board: any, index: number) => {
+      formattedBoards.push({
+        name: board.name,
+        description: board.description,
+        patientEmail: board.patientEmail,
+        flow: board.flow,
+        node: board.node,
+        finished: board.finished ? this.formatFinished(board.finished) : undefined
+      });
+    });
+
+    return formattedBoards;
   }
     
   public async findOne(fields: object): Promise<Board> {
@@ -75,8 +101,8 @@ class BoardCollection implements BoardRepository {
 
   public async findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]> {
     const boards = await this._schema.findAll();
-
-    return boards
+    
+    return this.formatBoards(boards)
       .filter((board: Board) => board.flow.id.toString() === flowId)
       .filter((board: Board) => board.flow.patientEmail === patientEmail);
   }
