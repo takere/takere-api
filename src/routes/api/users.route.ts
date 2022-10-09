@@ -1,6 +1,8 @@
 import UserController = require('../../controllers/user.controller');
 import Route = require('../route');
 import validation = require('../../middlewares/validation.middleware');
+import userCreationErrorHandler = require('../../filters/user-creation.filter');
+import logoutErrorHandler = require('../../filters/logout.filter');
 
 class UsersRoute extends Route {
   private readonly userController: UserController;
@@ -14,7 +16,8 @@ class UsersRoute extends Route {
     router.post(
       '/create', 
       validation(this.validationService.validateRequestCreateUser),
-      (req: any, res: any, next: any) => this.userController.createUser(req, res, next)
+      (req: any, res: any, next: any) => this.userController.createUser(req, res, next),
+      (err: any, req: any, res: any, next: any) => userCreationErrorHandler(err, req, res, next),
     );
     router.post(
       '/login', 
@@ -24,7 +27,8 @@ class UsersRoute extends Route {
     );
     router.get(
       '/logout',
-      (req: any, res: any, next: any) => this.userController.logout(req, res, next)
+      (req: any, res: any, next: any) => this.userController.logout(req, res, next),
+      (err: any, req: any, res: any, next: any) => logoutErrorHandler(err, req, res, next),
     );
     router.options('*', this.cors());
   }
