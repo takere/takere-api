@@ -1,5 +1,6 @@
 import BoardController = require('../../controllers/board.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class BoardRoute extends Route {
   private readonly boardController: BoardController;
@@ -14,11 +15,13 @@ class BoardRoute extends Route {
     router.get(
       '/me', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestGetBoard),
       (req: any, res: any, next: any) => this.boardController.get(req, res, next)
     );
     router.post(
       '/resolve', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestResolveBoard),
       (req: any, res: any, next: any) => this.boardController.resolve(req, res, next)
     );
     router.options('*', this.cors());

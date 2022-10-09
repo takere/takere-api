@@ -1,5 +1,6 @@
 import ProgressController = require('../../controllers/progress.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class ProgressRoute extends Route {
   private readonly progressController: ProgressController;
@@ -14,16 +15,19 @@ class ProgressRoute extends Route {
     router.get(
       '/', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestProgress),
       (req: any, res: any, next: any) => this.progressController.getProgress(req, res, next)
     );
     router.get(
       '/patients', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestPatientsProgress),
       (req: any, res: any, next: any) => this.progressController.getPatientsProgress(req, res, next)
     );
     router.get(
       '/patients/:patientId/:flowId', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestPatientProgress),
       (req: any, res: any, next: any) => this.progressController.getPatientProgress(req, res, next)
     );
     router.options('*', this.cors());

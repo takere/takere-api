@@ -1,5 +1,6 @@
 import NodeController = require('../../controllers/node.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class NodesRoute extends Route {
   private readonly nodeController: NodeController;
@@ -13,11 +14,13 @@ class NodesRoute extends Route {
     router.get(
       '/me', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestNodes),
       (req: any, res: any, next: any) => this.nodeController.get(req, res, next)
     );
     router.get(
       '/connections', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestNodes),
       (req: any, res: any, next: any) => this.nodeController.getAllConnections(req, res, next)
     );
     router.options('*', this.cors());

@@ -1,5 +1,6 @@
 import AgendaController = require('../../controllers/agenda.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class AgendaRoute extends Route {
   private readonly agendaController: AgendaController;
@@ -14,11 +15,13 @@ class AgendaRoute extends Route {
     router.get(
       '/today', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestGetTodayAgenda),
       (req: any, res: any, next: any) => this.agendaController.getToday(req, res, next)
     );
     router.get(
       '/tomorrow', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestGetTomorrowAgenda),
       (req: any, res: any, next: any) => this.agendaController.getTomorrow(req, res, next)
     );
     router.options('*', this.cors());
