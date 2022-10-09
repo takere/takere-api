@@ -19,6 +19,8 @@
     "ejs": "~2.5.2",
     "express": "~4.14.0",
     "express-session": "^1.17.0",
+    "http-status": "^1.5.3",
+    "joi": "^17.6.2",
     "jsonwebtoken": "^8.5.1",
     "link-preview-js": "^2.1.6",
     "mongodb": "^3.6.11",

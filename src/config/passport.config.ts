@@ -4,12 +4,10 @@ const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
-const jwtOptions = new JwtStrategy(
-  {
-    jwtFromRequest: ExtractJwt.fromHeader("authorization"),
-    secretOrKey: process.env.TOKEN_SECRET,
-  }
-);
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+  secretOrKey: process.env.TOKEN_SECRET,
+}
 
 const jwtVerify = async function (jwt_payload: any, done: any) {
   const UserServiceClass = require("../services/user.service");
@@ -26,6 +24,10 @@ const jwtVerify = async function (jwt_payload: any, done: any) {
 }
 
 const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
+
+const localOptions = {
+  usernameField: "email"
+}
 
 const localVerify = async (email: any, password: any, done: any) => {
   const UserServiceClass = require("../services/user.service");
@@ -47,7 +49,7 @@ const localVerify = async (email: any, password: any, done: any) => {
   }
 }
 
-const localStrategy = new LocalStrategy({ usernameField: "email" }, localVerify);
+const localStrategy = new LocalStrategy(localOptions, localVerify);
 
 module.exports = {
   jwtStrategy,

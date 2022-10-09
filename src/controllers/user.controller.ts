@@ -33,19 +33,6 @@ class UserController {
     });
   }
 
-  // public async getUser(req: any, res: any, next: any) {
-  //   let user = await req.user;
-
-  //   res.send({status: 200, message: 'ok', data: {
-  //     id: user.id,
-  //     firstName: user.firstName,
-  //     lastName: user.lastName,
-  //     email: user.email,
-  //     profileUrl: user.profileUrl,
-  //     createdAt: user.createdAt,
-  //   }})
-  // }
-
   public async createUser(req: any, res: any, next: any) {
     try {
       const {firstName, lastName, password, email} = req.body
