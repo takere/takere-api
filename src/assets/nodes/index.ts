@@ -1,11 +1,11 @@
 const nodes = [
-  require ('./begin.js'),
-  require ('./conditional.js'),
-  require ('./explanation.js'),
-  require ('./orientation.js'),
-  require ('./quiz.js'),
-  require ('./reminder.js'),
-  require ('./medication-control.js'),
+  require ('./begin'),
+  require ('./conditional'),
+  require ('./explanation'),
+  require ('./orientation'),
+  require ('./quiz'),
+  require ('./reminder'),
+  require ('./medication-control'),
 ];
 
 module.exports = nodes;

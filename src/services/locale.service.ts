@@ -50,8 +50,7 @@ class LocaleService {
    */
 
   translate(string: any, args = undefined) {
-
-    return this.i18nProvider.translate(string, args)
+    return this.i18nProvider.__(string, args)
 
   }
 

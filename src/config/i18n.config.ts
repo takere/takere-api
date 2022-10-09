@@ -6,7 +6,7 @@ i18n.configure({
   locales: ['en'],
   defaultLocale: 'en',
   queryParameter: 'lang',
-  directory: path.join('./', 'assets', 'locales'),
+  directory: __dirname + '/../assets/locales',
 
   api: {
     '__': 'translate',
@@ -15,4 +15,4 @@ i18n.configure({
 
 });
 
-export = i18n;
+module.exports = i18n;
