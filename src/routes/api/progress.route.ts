@@ -21,7 +21,6 @@ class ProgressRoute extends Route {
     router.get(
       '/patients', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestPatientsProgress),
       (req: any, res: any, next: any) => this.progressController.getPatientsProgress(req, res, next)
     );
     router.get(

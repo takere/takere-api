@@ -14,13 +14,11 @@ class NodesRoute extends Route {
     router.get(
       '/me', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestNodes),
       (req: any, res: any, next: any) => this.nodeController.get(req, res, next)
     );
     router.get(
       '/connections', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestNodes),
       (req: any, res: any, next: any) => this.nodeController.getAllConnections(req, res, next)
     );
     router.options('*', this.cors());

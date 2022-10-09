@@ -20,19 +20,18 @@ class FlowsRoute extends Route {
     router.get(
       '/mines', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestGetAllFlow),
       (req: any, res: any, next: any) => this.flowController.getAll(req, res, next)
     );
     router.get(
       '/mine/:uid', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestGetFlow),
+      validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.get(req, res, next)
     );
     router.delete(
       '/mine/:uid', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestRemoveFLow),
+      validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.remove(req, res, next)
     );
     router.options('*', this.cors());

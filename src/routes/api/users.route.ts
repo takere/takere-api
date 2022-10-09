@@ -23,7 +23,6 @@ class UsersRoute extends Route {
       (req: any, res: any, next: any) => this.userController.login(req, res, next)
     );
     router.get(
-      validation(this.validationService.validateRequestLogout),
       '/logout',
       (req: any, res: any, next: any) => this.userController.logout(req, res, next)
     );
