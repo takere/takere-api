@@ -43,9 +43,14 @@ class UserController {
       email,
       profileUrl: `https://api.adorable.io/avatars/285/${email}`
     }
-    const createdUser = await this.userService.createUser(userData);
 
-    res.send(createdUser)
+    try {
+      const createdUser = await this.userService.createUser(userData);
+      res.send(createdUser)
+    }
+    catch (err) {
+      next(err, req, res, next);
+    }
   }
   
   public async logout(req: any, res: any, next: any) {
