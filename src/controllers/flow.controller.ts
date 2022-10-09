@@ -1,11 +1,13 @@
 import FlowService = require('../services/flow.service');
+import LocaleService = require('../services/locale.service');
 
 class FlowController {
   private readonly flowService: FlowService;
+  private readonly localeService: LocaleService;
   
   constructor() {
     this.flowService = new FlowService();
-    
+    this.localeService = new LocaleService();
   }
 
   public async getAll(req: any, res: any, next: any) {
@@ -29,7 +31,7 @@ class FlowController {
 
     await this.flowService.removeWithUserIdAndFlowId(user.id, flowId);
 
-    res.send('success');
+    res.send(this.localeService.translate('SUCCESS'));
   }
 
   public async create(req: any, res: any, next: any) {
@@ -45,7 +47,7 @@ class FlowController {
       edges: graph.filter((d: { source: any; }) => d.source)
     });
 
-    res.send('Success');
+    res.send(this.localeService.translate('SUCCESS'));
   }
 }
 

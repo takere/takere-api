@@ -24,8 +24,6 @@ const port = generalConfig.port || '3000'
 
 
 app.set('port', port);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 if (generalConfig.environment !== 'production') {
   app.use(httpExceptionFilter.successHandler);

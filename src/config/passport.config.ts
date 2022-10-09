@@ -1,3 +1,5 @@
+import LocaleService = require('../services/locale.service');
+
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const passportJWT = require("passport-jwt");
@@ -33,16 +35,17 @@ const localVerify = async (email: any, password: any, done: any) => {
   const UserServiceClass = require("../services/user.service");
   const userService = new UserServiceClass();
   const user = await userService.findByEmail(email);
+  const localeService = new LocaleService();
   
   if (user === null) {
-    return done(null, false, { message: "Usuário ou senha inválido" });
+    return done(null, false, { message: localeService.translate("INVALID_USER_PASSWORD") });
   }
   try {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       return done(null, user);
     } else {
-      return done(null, false, { message: "Usuário ou senha inválido" });
+      return done(null, false, { message: localeService.translate("INVALID_USER_PASSWORD") });
     }
   } catch (e) {
     return done(e);

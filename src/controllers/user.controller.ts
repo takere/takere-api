@@ -1,14 +1,17 @@
 import NewUserDTO = require('../dto/new-user.dto');
 import UserDTO = require('../dto/user.dto');
 import UserService = require('../services/user.service');
+import LocaleService = require('../services/locale.service');
 
 class UserController {
+  localeService: LocaleService;
   userService: UserService;
   logger: any;
 
   constructor() {
     this.userService = new UserService();
     this.logger = require('../config/logger.config');
+    this.localeService = new LocaleService();
   }
 
   public async login(req: any, res: any, next: any) {
@@ -27,7 +30,7 @@ class UserController {
   
     res.send({
       status: 200,
-      message: 'Login feito com sucesso!',
+      message: this.localeService.translate('LOGIN_SUCCESS'),
       token,
       userData
     });

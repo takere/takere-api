@@ -1,6 +1,5 @@
 import Agenda = require("agenda");
 
-
 class JobConfig {
   private static _agenda: Agenda.Agenda;
 
