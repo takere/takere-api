@@ -15,13 +15,13 @@ class AgendaRoute extends Route {
     router.get(
       '/today', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestGetTodayAgenda),
+      validation(this.validationService.validateRequestGetAgenda),
       (req: any, res: any, next: any) => this.agendaController.getToday(req, res, next)
     );
     router.get(
       '/tomorrow', 
       this.passport.authenticate('jwt'), 
-      validation(this.validationService.validateRequestGetTomorrowAgenda),
+      validation(this.validationService.validateRequestGetAgenda),
       (req: any, res: any, next: any) => this.agendaController.getTomorrow(req, res, next)
     );
     router.options('*', this.cors());
