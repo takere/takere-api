@@ -1,9 +1,9 @@
 interface Flow {
   id: string,
-  user: any,
+  author: any,
   name: string,
   description: string,
-  userEmail: string
+  patientEmail: string
 }
 
 export = Flow;

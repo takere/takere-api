@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const boardModel = require('./board.schema');
 
 const FlowSchema = new mongoose.Schema({
-    user: {
+    author: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true
@@ -15,7 +16,7 @@ const FlowSchema = new mongoose.Schema({
      type: String,
      trim: true
     },
-    userEmail: {
+    patientEmail: {
      type: String,
      trim: true
     },
@@ -30,6 +31,12 @@ FlowSchema.pre("save", function(next) {
   if (this.isNew) {
      this._doc.id = this._id;
   }
+  next();
+});
+
+FlowSchema.pre("remove", function(next) {
+  boardModel.remove({ flow: this._id });
+
   next();
 });
 

@@ -2,7 +2,9 @@ import BoardRoute = require("./api/board.route");
 import FlowsRoute = require("./api/flows.route");
 import NodesRoute = require("./api/nodes.route");
 import UsersRoute = require("./api/users.route");
+import AgendaRoute = require("./api/agenda.route");
 import RouteList = require("./route-list");
+import ProgressRoute = require("./api/progress.route");
 
 class Routes {
   express: any;
@@ -25,6 +27,8 @@ class Routes {
       { path: '/flows', module: new FlowsRoute(this.express, this.cors, this.passport) },
       { path: '/nodes', module: new NodesRoute(this.express, this.cors, this.passport) },
       { path: '/board', module: new BoardRoute(this.express, this.cors, this.passport) },
+      { path: '/agenda', module: new AgendaRoute(this.express, this.cors, this.passport) },
+      { path: '/progress', module: new ProgressRoute(this.express, this.cors, this.passport) },
     ];
   }
   

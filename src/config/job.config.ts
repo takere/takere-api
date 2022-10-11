@@ -1,15 +1,9 @@
 import Agenda = require("agenda");
-import BoardService = require("../services/board.service");
-import FlowService = require("../services/flow.service");
-import EdgeService = require('../services/edge.service');
-import NodeService = require('../services/node.service');
 
 class JobConfig {
   private static _agenda: Agenda.Agenda;
-  private readonly boardService: BoardService;
 
   constructor() {
-    this.boardService = new BoardService();
   }
 
   public run(): void {
@@ -61,6 +55,9 @@ class JobConfig {
   }
 
   private async process(node: any) {
+    const FlowService = require("../services/flow.service");
+    const EdgeService = require('../services/edge.service');
+    const NodeService = require('../services/node.service');
     const flowService = new FlowService();
     const edgeService = new EdgeService();
     const nodeService = new NodeService();
@@ -78,11 +75,13 @@ class JobConfig {
     const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
     if (sourceNode.type !== 'CONDITIONAL_NODE') {
       const flow = await flowService.findById(sourceNode.flow);
+      const BoardService = require("../services/board.service");
+      const boardService = new BoardService();
 
-      await this.boardService.insert({
+      await boardService.insert({
         name: sourceNode.data.results.name,
         description: sourceNode.data.results.description,
-        userEmail: flow.userEmail,
+        patientEmail: flow.userEmail,
         flow: flow.id,
         node: nodeId,
         finished: undefined

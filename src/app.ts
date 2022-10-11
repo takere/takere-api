@@ -3,6 +3,7 @@ import Routes = require('./routes');
 import JobConfig = require('./config/job.config');
 
 const generalConfig = require('./config/general.config');
+const passportConfig = require('./config/passport.config');
 const express = require('express');
 const path = require('path');
 const http = require('http');
@@ -16,15 +17,13 @@ repository.connect();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-require('./config/passport.config')(passport);
+//require('./config/passport.config')(passport);
 
 const app = express();
 const port = generalConfig.port || '3000'
 
 
 app.set('port', port);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 if (generalConfig.environment !== 'production') {
   app.use(httpExceptionFilter.successHandler);
@@ -36,7 +35,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(passport.initialize())
+passport.use('jwt', passportConfig.jwtStrategy);
+passport.use('local', passportConfig.localStrategy);
+passport.serializeUser((user: any, done: any) => done(null, user.id));
+passport.deserializeUser((id: any, done: any) => {
+  const UserServiceClass = require("./services/user.service");
+  const userService = new UserServiceClass();
+  return done(null, userService.findById(id));
+});
+
+
+
 
 const route = new Routes();
 const routeList = route.routeList;

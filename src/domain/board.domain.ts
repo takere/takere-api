@@ -2,7 +2,7 @@ interface Board {
   id: string,
   name: string,
   description: string,
-  userEmail: string,
+  patientEmail: string,
   flow: any,
   node: any,
   finished: any//,

@@ -12,7 +12,7 @@ const BoardSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    userEmail: {
+    patientEmail: {
       type: String,
       required: true,
       trim: true,
@@ -40,12 +40,36 @@ const BoardSchema = new mongoose.Schema(
   }
 );
 
-BoardSchema.statics.findById = async function (id) {
-  return this.model("Board").findOne({ _id: id });
+BoardSchema.statics.findAll = async function () {
+  return this.model("Board").find({})
+    .populate("node")
+    .populate("finished")
+    .populate('flow')
+    .exec();
 }
 
-BoardSchema.statics.findByUserEmail = async function (userEmail) {
-  return this.model("Board").find({ userEmail: userEmail })
+BoardSchema.statics.findById = async function (id) {
+  return this.model("Board").findOne({ _id: id })
+    .populate("node")
+    .populate("finished")
+    .exec();
+}
+
+BoardSchema.statics.findAllUnfinishedByEmail = async function (email) {
+  return this.model("Board").find({ patientEmail: email, finished: undefined })
+    .populate("node")
+    .exec();
+};
+
+BoardSchema.statics.findAllFinishedByEmail = async function (email) {
+  return this.model("Board").find({ patientEmail: email, finished: {$ne:undefined} })
+    .populate("node")
+    .populate("finished")
+    .exec();
+};
+
+BoardSchema.statics.findAllByEmail = async function (email) {
+  return this.model("Board").find({ patientEmail: email })
     .populate("node")
     .populate("finished")
     .exec();

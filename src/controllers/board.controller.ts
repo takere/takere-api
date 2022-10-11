@@ -12,15 +12,15 @@ class BoardController {
 
   public async get(req: any, res: any, next: any) {
     const searchEmail = await req?.query?.email;
-    const boards = await this.boardService.findAllByUserEmail(searchEmail);
+    const boards = await this.boardService.findAllUnfinishedByEmail(searchEmail);
 
     res.send(boards);
   }
 
   public async resolve(req: any, res: any, next: any) {
-    const {boardId, result} = req.body
+    const {boardId, answers} = req.body
 
-    let updatedBoard = await this.boardService.resolve(boardId, result);
+    let updatedBoard = await this.boardService.resolve(boardId, answers);
     
     res.send(updatedBoard);
   }

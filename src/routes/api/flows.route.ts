@@ -1,5 +1,6 @@
 import FlowController = require('../../controllers/flow.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class FlowsRoute extends Route {
   private readonly flowController: FlowController;
@@ -13,6 +14,7 @@ class FlowsRoute extends Route {
     router.post(
       '/create', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestCreateFlow),
       (req: any, res: any, next: any) => this.flowController.create(req, res, next)
     );
     router.get(
@@ -23,11 +25,13 @@ class FlowsRoute extends Route {
     router.get(
       '/mine/:uid', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.get(req, res, next)
     );
     router.delete(
       '/mine/:uid', 
       this.passport.authenticate('jwt'), 
+      validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.remove(req, res, next)
     );
     router.options('*', this.cors());

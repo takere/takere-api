@@ -1,21 +1,54 @@
 const mongoose = require('mongoose');
 
 const NodeSchema = new mongoose.Schema({
-    id: {
+    slug: {
       type: String,
       required: true,
-      trim: true
     },
-    slug: {
-      type: String
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
     },
     type: {
       type: String,
       required: true,
       trim: true
     },
-    data: {
-      type: Object,
+    color: {
+      type: String,
+      required: true,
+    },
+    icon: {
+      type: String,
+      required: true,
+    },
+    shape: {
+      type: String,
+      required: true,
+    },
+    input_list: {
+      type: Array,
+      required: true,
+    },
+    output_list: {
+      type: Array,
+      required: true
+    },
+    content_type: {
+      type: String,
+    },
+    parameters: {
+      type: Array,
+      required: true,
+    },
+    icons: {
+      type: Array,
+    },
+    arguments: {
+      type: Array,
     },
     position: {
       type: Object,

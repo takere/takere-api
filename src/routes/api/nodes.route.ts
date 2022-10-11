@@ -1,5 +1,6 @@
 import NodeController = require('../../controllers/node.controller');
 import Route = require('../route');
+import validation = require('../../middlewares/validation.middleware');
 
 class NodesRoute extends Route {
   private readonly nodeController: NodeController;

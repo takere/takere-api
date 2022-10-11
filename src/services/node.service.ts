@@ -1,21 +1,24 @@
 import Service = require('./service');
 import Node = require('../domain/node.domain');
 import NodeRepository = require('../repositories/node.repository');
+import FinishedService = require('./finished.service');
 
 class NodeService extends Service {
   private nodeRepository: NodeRepository; 
+  private finishedService: FinishedService; 
 
   constructor() {
     super();
     this.nodeRepository = this.repository.nodeRepository;
+    this.finishedService = new FinishedService();
   }
 
   getNodes(): Node[] {
-    return require('./nodes');
+    return require('../assets/nodes');
   }
 
   public getAllConnections(): Object {
-    const connections = require('./nodes/connections');
+    const connections = require('../assets/nodes/connections');
     
     return connections;
   }
@@ -33,11 +36,19 @@ class NodeService extends Service {
   }
 
   public async insert(node: Node): Promise<Node> {
-    return this.nodeRepository.save(node);
+    return this.nodeRepository.insert(node);
   }
 
   public async removeAllWithFlowId(flowId: string): Promise<Node[]> {
-    return this.nodeRepository.deleteMany({ flow: flowId });
+    const removedNodes = await this.nodeRepository.deleteMany({ flow: flowId });
+
+    removedNodes.forEach(node => {
+      if (node.id) {
+        this.finishedService.removeAllWithNodeId(node.id);
+      }
+    });
+
+    return removedNodes;
   }
 }
 

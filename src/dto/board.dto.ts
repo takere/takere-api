@@ -1,9 +1,9 @@
 interface BoardDTO {
   name: string,
   description: string,
-  userEmail: string,
+  patientEmail: string,
   flow: string,
-  node: string,
+  node?: string,
   finished: any
 }
 
