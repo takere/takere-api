@@ -21,7 +21,51 @@
 This system is a RESTful API. It is responsible for defining care plan elements logic, parsing care plan flows, and generating boards. It handles the database and also provides data for the other two Takere systems: HCP and Patient. Takere - API is built using [NodeJS](https://nodejs.org) due to its advantages compared to other server frameworks: its architecture is event-driven and non-blocking I/O. In addition, NodeJS works well with JavaScript, which is the language used in the database.
 
 ### Care plan elements
-Care plan elements are stored in [JSON](https://www.json.org/json-en.html) format and are structured as defined in Section~\ref{proposed_approach/flow/care_plan_elements}. We chose JSON because the data structure of our database uses [BSON](https://bsonspec.org). The semantics of specific parameters are defined below. 
+Care plan elements are stored in [JSON](https://www.json.org/json-en.html) format and are structured as defined in the table below. We chose JSON because the data structure of our database uses [BSON](https://bsonspec.org). The semantics of specific parameters are defined below. 
+
+#### Care plan element structure
+
+| Name        | Description                                                                                                                                                                                                                                                        |
+|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Slug         | Name that should be used in back-end systems for storing the element.                                                                                                                                                                                               |
+| Name         | Name that should be displayed in front-end systems when creating a care plan flow.                                                                                                                                                                                  |
+| Description  | Summary of what the element does.                                                                                                                                                                                                                                   |
+| Type         | Indicates if is a begin, conditional, periodic or non-periodic element.                                                                                                                                                                                             |
+| Color        | Specifies a color that should be used in front-end systems when the element is used.                                                                                                                                                                                |
+| Icon         | Specifies an icon that should be used in front-end systems when the element is used.                                                                                                                                                                                |
+| Shape        | Specifies how the element should be displayed in front-end systems when the element is used (square, diamond, among others).                                                                                                                                        |
+| Input list   | Indicates entry points of the element (useful when displaying the element in care plan flow). Should be a list of directions (left, top, among others).                                                                                                             |
+| Output list  | Indicates output points of the element (useful when displaying the element in care plan flow). Should be a list of directions (left, top, among others).                                                                                                            |
+| Content type | As care plan elements can have different parameters besides the basic ones, it is necessary to specify the type of content. The possible types include text, unordered list, ordered list, book and form.                                                           |
+| Parameters   | Specifies fields that should be provided when a new instance of the element is created (for example when a HCP puts a begin element in a care plan flow). Parameter structure is specified below. |
+
+| Name       | Description                                                            |
+|-------------|-------------------------------------------------------------------------|
+| Slug        | Name that should be used in back-end systems for storing the parameter. |
+| Name        | Name that should be displayed in front-end systems.                     |
+| Description | Summary of the parameter.                                               |
+| Required    | Specifies if parameter must be provided or not.                         |
+| Type        | Specifies parameter format (numeric, date, radio, among others).        |
+
+#### Basic parameters of care plan elements. Note that the slug field was omitted due to being used only for internal system use
+
+| Name        | Description                                                 | Type       |
+|-------------|-------------------------------------------------------------|------------|
+| Name        | Instantiated name.                                          | text       |
+| Description | Short explanation about the instantiated care plan element. | text       |
+| Severity    | How important the care plan element is.                     | It can be: very low, low, medium, critical or very critical |
+
+#### Specific parameters of care plan elements. Note that the slug field was omitted due to being used only for internal system use
+
+| Content type   | Parameters |
+|----------------|------------|
+| text           | Content    |
+| unordered list |            |
+| ordered list   |            |
+| book           | Pages      |
+| form           | Questions  |
+
+
 
 #### Specific parameters semantics
 
