@@ -158,7 +158,7 @@ Coming soon
 Coming soon
 ```
 
-## 🖼 Gallery
+## ↪️ Endpoints
 
 ```
 Coming soon
