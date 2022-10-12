@@ -21,15 +21,39 @@
 This system is a RESTful API. It is responsible for defining care plan elements logic, parsing care plan flows, and generating boards. It handles the database and also provides data for the other two Takere systems: HCP and Patient. Takere - API is built using [NodeJS](https://nodejs.org) due to its advantages compared to other server frameworks: its architecture is event-driven and non-blocking I/O. In addition, NodeJS works well with JavaScript, which is the language used in the database.
 
 ### Care plan elements
-Care plan elements are stored in JSON (Section~\ref{background/data_modeling/json}) format and are structured as defined in Section~\ref{proposed_approach/flow/care_plan_elements}. We chose JSON because the data structure of our database uses BSON (Section~\ref{background/data_modeling/bson}). The semantics of specific parameters are defined in Table~\ref{tbl:implementation/api/care_plan_elements.parameter_semantics}. Note that we chose MaterialUI~\footnote{mui.com/material-ui/material-icons} library for providing icons when necessary. Also, icons are part of the care plan structure, and not of parameters, as it is static information. We considered the parameters as the elements of the list.
+Care plan elements are stored in [JSON](https://www.json.org/json-en.html) format and are structured as defined in Section~\ref{proposed_approach/flow/care_plan_elements}. We chose JSON because the data structure of our database uses [BSON](https://bsonspec.org). The semantics of specific parameters are defined below. 
+
+#### Specific parameters semantics
+
+|Parameter name|Semantics|
+|--------------|---------|
+|Content|Any text, including numbers and symbols|
+|Pages|List of pages, where each page has a structure (HTML code) and a style (CSS code)|
+|Questions|List of questions, where each question has a label (text), a type (defined in the table below) and - optionally, a list of options, where each option has a label (name that is displayed) and a value (name that is used internally). The last should be used when type is radio or checkbox.|
+
+#### Input types
+
+|Name|Description|
+|--------------|---------|
+|Radio|Selects one option from a set.|
+|Select|Selects one option from a list (it is required to provide the options as parameter, where each option has a label - name that is displayed - and a value - name that is used internally).|
+|Checkbox|Selects multiple options from a set.|
+|Single-line text|Short text.|
+|Multi-line text|Long text.|
+|Rich text|HTML text.|
+|Book|List of pages, where each page has a structure (HTML code) and a style (CSS code).|
+|Date|Selects a date from a calendar.|
+
+Note that we chose [MaterialUI](mui.com/material-ui/material-icons) library for providing icons when necessary. Also, icons are part of the care plan structure, and not of parameters, as it is static information. We considered the parameters as the elements of the list.
 
 ### Care plan parser
-Care plan parser is implemented using DFS (Section~\ref{background/graph/dfs}) algorithm. We chose this algorithm it is more suitable to deal with the POPEP (Section~\ref{proposed_approach/care_plan_parser/periodic/popep}). When a new care plan is generated, the care plan parser traverses the tree from its root and parses each node according to its logic. Besides its logic, it is necessary to configure a scheduler if the parsed node is periodic.
+When a new care plan is generated, the care plan parser traverses the care plan flow from its root and parses each node according to its logic. Besides its logic, it is necessary to configure a scheduler if the parsed node is periodic.
 
 Periodic nodes are generated according to some frequency. For that, we use a job scheduler (explained in Section~\ref{background/job_scheduler}) and create a job for generating each periodic node according to its frequency. Each job is stored in the database, and the job scheduler is responsible for managing these jobs and running them when necessary.
 
+
 ## Database
-As care plan elements can have different contents (Section~\ref{implementation/api/care_plan_elements}), it is more suitable to use a non-relational database (explained in Section~\ref{background/non_relational_database}). We use MongoDB~\footnote{https://www.mongodb.com} because it works using JavaScript (as our server framework NodeJS). Also, it has several advantages, such as storing data using BSON (Section~\ref{background/data_modeling/bson}) - being very efficient if data is managed in JSON - and being more efficient than some relational databases.
+As care plan elements can have different contents, it is more suitable to use a non-relational database. We use [MongoDB](https://www.mongodb.com) because it works using JavaScript (as our server framework NodeJS). Also, it has several advantages, such as storing data using BSON - being very efficient if data is managed in JSON - and being more efficient than some relational databases.
 
 | Collection | Description             | Fields                         | Required |
 |------------|-------------------------|--------------------------------|----------|
@@ -75,7 +99,7 @@ As care plan elements can have different contents (Section~\ref{implementation/a
 |            |                         | email: string                  | Yes      |
 |            |                         | profileUrl: string             | No       |
 
-## Acknowledgements
+## 👥 Acknowledgements
 Special thanks to [Rodolfo Viola](https://github.com/rodolfoviolac) for starting development of the platform.
 
 ## ✔ Requirements
