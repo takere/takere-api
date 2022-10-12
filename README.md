@@ -93,7 +93,7 @@ Note that we chose [MaterialUI](mui.com/material-ui/material-icons) library for 
 ### Care plan parser
 When a new care plan is generated, the care plan parser traverses the care plan flow from its root and parses each node according to its logic. Besides its logic, it is necessary to configure a scheduler if the parsed node is periodic.
 
-Periodic nodes are generated according to some frequency. For that, we use a job scheduler (explained in Section~\ref{background/job_scheduler}) and create a job for generating each periodic node according to its frequency. Each job is stored in the database, and the job scheduler is responsible for managing these jobs and running them when necessary.
+Periodic nodes are generated according to some frequency. For that, we use a job scheduler and create a job for generating each periodic node according to its frequency. Each job is stored in the database, and the job scheduler is responsible for managing these jobs and running them when necessary.
 
 
 ## Database
