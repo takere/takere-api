@@ -2,6 +2,7 @@ import Service = require('./service');
 import Node = require('../domain/node.domain');
 import NodeRepository = require('../repositories/node.repository');
 import FinishedService = require('./finished.service');
+import NodeConnection from '../models/node-connection.model';
 
 class NodeService extends Service {
   private nodeRepository: NodeRepository; 
@@ -17,7 +18,7 @@ class NodeService extends Service {
     return require('../assets/nodes');
   }
 
-  public getAllConnections(): Object {
+  public getAllConnections(): NodeConnection[] {
     const connections = require('../assets/nodes/connections');
     
     return connections;
