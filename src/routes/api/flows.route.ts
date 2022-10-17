@@ -23,13 +23,13 @@ class FlowsRoute extends Route {
       (req: any, res: any, next: any) => this.flowController.getAll(req, res, next)
     );
     router.get(
-      '/mine/:uid', 
+      '/mines/:uid', 
       this.passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.get(req, res, next)
     );
     router.delete(
-      '/mine/:uid', 
+      '/mines/:uid', 
       this.passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestFlow),
       (req: any, res: any, next: any) => this.flowController.remove(req, res, next)
