@@ -1,3 +1,5 @@
+import Finished from "./finished.domain";
+
 interface Board {
   id: string,
   name: string,
@@ -5,8 +7,7 @@ interface Board {
   patientEmail: string,
   flow: any,
   node: any,
-  finished: any//,
-  // completed: boolean
+  finished: any
 }
 
 export = Board;
