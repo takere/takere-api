@@ -29,11 +29,11 @@ class UserService extends Service {
   }
 
   public async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ email });
+    return await this.userRepository.findOne({ email });
   }
 
   public async findById(id: string): Promise<User> {
-    return this.userRepository.findOne({ _id: id });
+    return await this.userRepository.findOne({ _id: id });
   }
 
   public async createUser(user: NewUserDTO): Promise<CreatedUserDTO> {

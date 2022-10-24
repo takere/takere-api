@@ -428,6 +428,8 @@ class BoardService extends Service {
       addedFlows.add(board.flow.id);
     }
 
+    
+
     return formattedBoards;
   }
 

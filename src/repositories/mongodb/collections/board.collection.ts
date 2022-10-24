@@ -109,9 +109,9 @@ class BoardCollection implements BoardRepository {
   
   public async findAllByAuthor(userId: string): Promise<Board[]> {
     const boards = await this._schema.findAll();
-
+    
     return boards
-      .filter((board: Board) => board.flow.author.toString() === userId);
+      .filter((board: Board) => board.flow.author.toString() == userId);
   }
 }
 
