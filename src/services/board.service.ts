@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Service = require('./service');
 import FinishedService = require('./finished.service');
 import NodeService = require('./node.service');
@@ -12,7 +19,12 @@ import Flow = require('../domain/flow.domain');
 import Node = require('../domain/node.domain');
 import Edge = require('../domain/edge.domain');
 
-class BoardService extends Service {    
+
+class BoardService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly boardRepository: BoardRepository; 
   private readonly finishedService: FinishedService; 
   private readonly edgeService: EdgeService;
@@ -20,6 +32,10 @@ class BoardService extends Service {
   private readonly jobService: JobService;
   private readonly userService: UserService;
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
     this.boardRepository = this.repository.boardRepository;
@@ -30,6 +46,10 @@ class BoardService extends Service {
     this.userService = new UserService();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllUnfinishedByEmail(email);
 
