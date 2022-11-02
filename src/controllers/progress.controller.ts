@@ -1,4 +1,4 @@
-import BoardService = require('../services/board.service');
+import BoardService from '../services/board.service';
 
 class ProgressController {
   private boardService: BoardService;
@@ -32,4 +32,4 @@ class ProgressController {
   }
 }
 
-export = ProgressController;
+export default ProgressController;

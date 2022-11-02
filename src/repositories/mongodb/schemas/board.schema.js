@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const BoardSchema = new mongoose.Schema(
   {
@@ -83,4 +83,4 @@ BoardSchema.pre("save", function (next) {
   next();
 });
 
-module.exports = new mongoose.model("Board", BoardSchema);
+export default new mongoose.model("Board", BoardSchema);

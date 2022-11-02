@@ -5,26 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Repositories = require('./repositories');
-import Routes = require('./routes');
-import JobConfig = require('./config/job.config');
+import Repositories from './repositories';
+import Routes from './routes';
+import JobConfig from'./config/job.config';
 
-const generalConfig = require('./config/general.config');
-const passportConfig = require('./config/passport.config');
-const express = require('express');
-const path = require('path');
-const http = require('http');
-const passport = require('passport');
-const httpExceptionFilter = require('./filters/http-exception.filter');
+import generalConfig from './config/general.config';
+import { jwtStrategy, localStrategy } from './config/passport.config';
+import express from 'express';
+import path from 'path';
+import http from 'http';
+import passport from 'passport';
+import { successHandler, errorHandler } from './filters/http-exception.filter';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
 const repository = new Repositories();
 
 repository.connect();
 
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-//require('./config/passport.config')(passport);
 
 const app = express();
 const port = generalConfig.port || '3000'
@@ -33,8 +32,8 @@ const port = generalConfig.port || '3000'
 app.set('port', port);
 
 if (generalConfig.environment !== 'production') {
-  app.use(httpExceptionFilter.successHandler);
-  app.use(httpExceptionFilter.errorHandler);
+  app.use(successHandler);
+  app.use(errorHandler);
 }
 
 app.use(cors());
@@ -44,8 +43,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize())
-passport.use('jwt', passportConfig.jwtStrategy);
-passport.use('local', passportConfig.localStrategy);
+passport.use('jwt', jwtStrategy);
+passport.use('local', localStrategy);
 passport.serializeUser((user: any, done: any) => done(null, user.id));
 passport.deserializeUser((id: any, done: any) => {
   const UserServiceClass = require("./services/user.service");

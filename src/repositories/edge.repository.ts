@@ -1,5 +1,5 @@
-import Edge = require('../domain/edge.domain');
-import EdgeDTO = require('../dto/edge.dto');
+import Edge from '../domain/edge.domain';
+import EdgeDTO from '../dto/edge.dto';
 
 interface EdgeRepository {
   save(edge: EdgeDTO): Promise<Edge>;
@@ -7,4 +7,4 @@ interface EdgeRepository {
   deleteMany(fields: object): Promise<Edge[]>;
 }
 
-export = EdgeRepository;
+export default EdgeRepository;

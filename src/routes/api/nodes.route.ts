@@ -1,6 +1,6 @@
-import NodeController = require('../../controllers/node.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
+import NodeController from '../../controllers/node.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
 
 class NodesRoute extends Route {
   private readonly nodeController: NodeController;
@@ -25,4 +25,4 @@ class NodesRoute extends Route {
   }
 }
 
-export = NodesRoute;
+export default NodesRoute;

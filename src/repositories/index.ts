@@ -1,3 +1,3 @@
-import MongoDbRepository = require("./mongodb/mongodb.repository");
+import MongoDbRepository from "./mongodb/mongodb.repository";
 
-export = MongoDbRepository;
+export default MongoDbRepository;

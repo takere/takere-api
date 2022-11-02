@@ -1,9 +1,9 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
+import severityType from "../types/severity.type";
 
 const localeService = new LocaleService();
-const severityType = require("../types/severity.type")
 
-module.exports = {
+export default {
     "slug": "explanation",
     "name": localeService.translate("EXPLANATION_NODE_NAME"),
     "description": localeService.translate("EXPLANATION_NODE_DESCRIPTION"),

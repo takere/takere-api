@@ -8,4 +8,4 @@ interface User {
   profileUrl: string
 }
 
-export = User;
+export default User;

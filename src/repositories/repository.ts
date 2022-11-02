@@ -1,9 +1,9 @@
-import UserRepository = require('./user.repository');
-import NodeRepository = require('./node.repository');
-import FlowRepository = require('./flow.repository');
-import FinishedRepository = require('./finished.repository');
-import BoardRepository = require('./board.repository');
-import EdgeRepository = require('./edge.repository');
+import UserRepository from './user.repository';
+import NodeRepository from './node.repository';
+import FlowRepository from './flow.repository';
+import FinishedRepository from './finished.repository';
+import BoardRepository from './board.repository';
+import EdgeRepository from './edge.repository';
 
 interface Repository {
   userRepository: UserRepository,
@@ -14,4 +14,4 @@ interface Repository {
   edgeRepository: EdgeRepository
 }
 
-export = Repository;
+export default Repository;

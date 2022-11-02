@@ -1,3 +1,5 @@
+import I18nConfig from '../config/i18n.config';
+
 class LocaleService {
   i18nProvider: any;
 
@@ -7,7 +9,7 @@ class LocaleService {
    */
 
   constructor() {
-    this.i18nProvider = require('../config/i18n.config');
+    this.i18nProvider = I18nConfig;
   }
 
   /**
@@ -66,4 +68,4 @@ class LocaleService {
   }
 }
 
-export = LocaleService
+export default LocaleService

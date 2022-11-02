@@ -20,4 +20,4 @@ interface Cron {
   dayOfWeek: string | undefined
 }
 
-export = Cron;
+export default Cron;

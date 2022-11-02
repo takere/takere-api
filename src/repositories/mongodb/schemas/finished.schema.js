@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const FinishedSchema = new mongoose.Schema({
     answers: {
@@ -30,4 +30,4 @@ FinishedSchema.pre("save", function(next) {
   next();
 });
 
-module.exports = new mongoose.model('Finished', FinishedSchema);
+export default new mongoose.model('Finished', FinishedSchema);

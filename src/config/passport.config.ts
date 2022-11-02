@@ -1,8 +1,10 @@
-import LocaleService = require('../services/locale.service');
+import LocaleService from '../services/locale.service';
+import UserService from '../services/user.service';
+import passportLocal from 'passport-local';
+import bcrypt from "bcrypt";
+import passportJWT from "passport-jwt";
 
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const passportJWT = require("passport-jwt");
+const LocalStrategy = passportLocal.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
@@ -12,8 +14,7 @@ const jwtOptions = {
 }
 
 const jwtVerify = async function (jwt_payload: any, done: any) {
-  const UserServiceClass = require("../services/user.service");
-  const userService = new UserServiceClass();
+  const userService = new UserService();
 
   try {
     const user = await userService.findById(jwt_payload.data.id);
@@ -25,15 +26,14 @@ const jwtVerify = async function (jwt_payload: any, done: any) {
   }
 }
 
-const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
+export const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
 
 const localOptions = {
   usernameField: "email"
 }
 
 const localVerify = async (email: any, password: any, done: any) => {
-  const UserServiceClass = require("../services/user.service");
-  const userService = new UserServiceClass();
+  const userService = new UserService();
   const user = await userService.findByEmail(email);
   const localeService = new LocaleService();
   
@@ -52,9 +52,4 @@ const localVerify = async (email: any, password: any, done: any) => {
   }
 }
 
-const localStrategy = new LocalStrategy(localOptions, localVerify);
-
-module.exports = {
-  jwtStrategy,
-  localStrategy
-};
+export const localStrategy = new LocalStrategy(localOptions, localVerify);

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const NodeSchema = new mongoose.Schema({
     slug: {
@@ -72,5 +72,5 @@ NodeSchema.pre("save", function(next) {
   next();
 });
 
-module.exports = new mongoose.model('Node', NodeSchema);
+export default new mongoose.model('Node', NodeSchema);
 

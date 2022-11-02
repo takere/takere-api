@@ -1,8 +1,8 @@
-import UserController = require('../../controllers/user.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
-import userCreationErrorHandler = require('../../filters/user-creation.filter');
-import logoutErrorHandler = require('../../filters/logout.filter');
+import UserController from '../../controllers/user.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
+import userCreationErrorHandler from '../../filters/user-creation.filter';
+import logoutErrorHandler from '../../filters/logout.filter';
 
 class UsersRoute extends Route {
   private readonly userController: UserController;
@@ -34,4 +34,4 @@ class UsersRoute extends Route {
   }
 }
 
-export = UsersRoute;
+export default UsersRoute;

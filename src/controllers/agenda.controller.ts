@@ -1,4 +1,4 @@
-import BoardService = require('../services/board.service');
+import BoardService from '../services/board.service';
 
 class AgendaController {
   private boardService: BoardService;
@@ -22,4 +22,4 @@ class AgendaController {
   }
 }
 
-export = AgendaController;
+export default AgendaController;

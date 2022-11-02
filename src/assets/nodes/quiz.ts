@@ -1,11 +1,11 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
+import severityType from "../types/severity.type";
+import frequencyType from "../types/frequency.type";
+import answerType from "../types/answer.type";
 
 const localeService = new LocaleService();
-const severityType = require("../types/severity.type")
-const frequencyType = require("../types/frequency.type")
-const answerType = require("../types/answer.type")
 
-module.exports = {
+export default {
     "slug": "quiz",
     "name": localeService.translate("QUIZ_NODE_NAME"),
     "description": localeService.translate("QUIZ_NODE_DESCRIPTION"),

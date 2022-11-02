@@ -1,4 +1,4 @@
-import ValidationService = require('../services/validation.service');
+import ValidationService from '../services/validation.service';
 
 abstract class Route {
   protected readonly validationService: ValidationService;
@@ -25,4 +25,4 @@ abstract class Route {
   protected abstract buildRoutes(router: any): void;
 }
 
-export = Route;
+export default Route;

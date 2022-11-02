@@ -1,4 +1,4 @@
-import NodeService = require('../services/node.service');
+import NodeService from '../services/node.service';
 
 class NodeController {
   nodeService: any;
@@ -16,4 +16,4 @@ class NodeController {
   }
 }
 
-export = NodeController;
+export default NodeController;

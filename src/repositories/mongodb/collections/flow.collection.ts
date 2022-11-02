@@ -1,12 +1,13 @@
-import FlowRepository = require('../../flow.repository');
-import Flow = require('../../../domain/flow.domain');
-import FlowDTO = require('../../../dto/flow.dto');
+import FlowRepository from '../../flow.repository';
+import Flow from '../../../domain/flow.domain';
+import FlowDTO from '../../../dto/flow.dto';
+import flowSchema from '../schemas/flow.schema';
 
 class FlowCollection implements FlowRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/flow.schema');
+    this._schema = flowSchema;
   }
 
   public async findOne(fields: object): Promise<Flow> {

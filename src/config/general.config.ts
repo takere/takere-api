@@ -7,4 +7,4 @@ const general = {
   token_secret: process.env.TOKEN_SECRET,
 };
 
-module.exports = general;
+export default general;

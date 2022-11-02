@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const boardModel = require('./board.schema');
+import mongoose from "mongoose";
+import boardModel from './board.schema';
 
 const FlowSchema = new mongoose.Schema({
     author: {
@@ -40,4 +40,4 @@ FlowSchema.pre("remove", function(next) {
   next();
 });
 
-module.exports = new mongoose.model('Flow', FlowSchema);
+export default new mongoose.model('Flow', FlowSchema);

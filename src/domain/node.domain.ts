@@ -28,4 +28,4 @@ interface Node {
   flow: any
 }
 
-export = Node;
+export default Node;

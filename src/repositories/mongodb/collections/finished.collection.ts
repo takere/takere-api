@@ -1,12 +1,13 @@
-import FinishedRepository = require('../../finished.repository');
-import Finished = require('../../../domain/finished.domain');
-import FinishedDTO = require('../../../dto/finished.dto');
+import FinishedRepository from '../../finished.repository';
+import Finished from '../../../domain/finished.domain';
+import FinishedDTO from '../../../dto/finished.dto';
+import finishedSchema from '../schemas/finished.schema';
 
 class FinishedCollection implements FinishedRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/finished.schema');
+    this._schema = finishedSchema;
   }
 
   public async save(finished: FinishedDTO): Promise<Finished> {

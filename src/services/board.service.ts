@@ -5,19 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Service = require('./service');
-import FinishedService = require('./finished.service');
-import NodeService = require('./node.service');
-import EdgeService = require('./edge.service');
-import JobService = require('./job.service');
-import UserService = require('./user.service');
-import Board = require('../domain/board.domain');
-import BoardDTO = require('../dto/board.dto');
-import BoardRepository = require('../repositories/board.repository');
-import UserBoardDTO = require('../dto/user-board.dto');
-import Flow = require('../domain/flow.domain');
-import Node = require('../domain/node.domain');
-import Edge = require('../domain/edge.domain');
+import Service from './service';
+import FinishedService from './finished.service';
+import NodeService from './node.service';
+import EdgeService from './edge.service';
+import JobService from './job.service';
+import UserService from './user.service';
+import Board from '../domain/board.domain';
+import BoardDTO from '../dto/board.dto';
+import BoardRepository from '../repositories/board.repository';
+import UserBoardDTO from '../dto/user-board.dto';
+import Flow from '../domain/flow.domain';
+import Node from '../domain/node.domain';
+import Edge from '../domain/edge.domain';
 
 
 class BoardService extends Service {

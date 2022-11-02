@@ -10,4 +10,4 @@ interface FlowDTO {
   edges: Edge[]
 }
 
-export = FlowDTO;
+export default FlowDTO;

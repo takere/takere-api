@@ -1,5 +1,5 @@
-import Board = require('../domain/board.domain');
-import BoardDTO = require('../dto/board.dto');
+import Board from '../domain/board.domain';
+import BoardDTO from '../dto/board.dto';
 
 interface BoardRepository {
   findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]>;
@@ -15,4 +15,4 @@ interface BoardRepository {
   removeAllWithFlowId(id: any): Promise<Board[]>;
 }
 
-export = BoardRepository;
+export default BoardRepository;

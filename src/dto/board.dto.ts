@@ -7,4 +7,4 @@ interface BoardDTO {
   finished: any
 }
 
-export = BoardDTO;
+export default BoardDTO;

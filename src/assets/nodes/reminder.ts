@@ -1,11 +1,11 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
+import notificationType from "../types/notification.type";
+import severityType from "../types/severity.type";
+import frequencyType from "../types/frequency.type";
 
 const localeService = new LocaleService();
-const notificationType = require("../types/notification.type")
-const severityType = require("../types/severity.type")
-const frequencyType = require("../types/frequency.type")
 
-module.exports = {
+export default {
     "slug": "reminder",
     "name": localeService.translate("REMINDER_NODE_NAME"),
     "description": localeService.translate("REMINDER_NODE_DESCRIPTION"),

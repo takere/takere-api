@@ -7,4 +7,4 @@ interface NewUserDTO {
   profileUrl: string
 }
 
-export = NewUserDTO;
+export default NewUserDTO;

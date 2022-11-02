@@ -1,4 +1,4 @@
-const winston = require('winston');
+import winston from 'winston';
 const colorizer = winston.format.colorize();
 
 const options = {
@@ -59,4 +59,4 @@ loggerConfig.stream = {
   },
 };
 
-module.exports = loggerConfig;
+export default loggerConfig;

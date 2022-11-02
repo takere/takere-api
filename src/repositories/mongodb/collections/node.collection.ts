@@ -1,11 +1,12 @@
-import NodeRepository = require('../../node.repository');
-import Node = require('../../../domain/node.domain');
+import NodeRepository from '../../node.repository';
+import Node from '../../../domain/node.domain';
+import nodeSchema from '../schemas/node.schema';
 
 class NodeCollection implements NodeRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/node.schema');
+    this._schema = nodeSchema;
   }
 
   public async findOne(fields: object): Promise<Node> {

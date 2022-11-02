@@ -7,4 +7,4 @@ const logoutErrorHandler = (err: any, req: any, res: any, next: any) => {
   }
 }
 
-export = logoutErrorHandler;
+export default logoutErrorHandler;

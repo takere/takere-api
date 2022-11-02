@@ -1,14 +1,13 @@
-import Service = require('./service');
-import NodeService = require('./node.service');
-import EdgeService = require('./edge.service');
-import Flow = require('../domain/flow.domain');
-import Node = require('../domain/node.domain');
-import Edge = require('../domain/edge.domain');
-import FlowDTO = require('../dto/flow.dto');
-import UserFlowDTO = require('../dto/user-flow.dto');
-import FlowRepository = require('../repositories/flow.repository');
-import BoardService = require('./board.service');
-import BoardDTO = require('../dto/board.dto');
+import Service from './service';
+import NodeService from './node.service';
+import EdgeService from './edge.service';
+import Flow from '../domain/flow.domain';
+import Node from '../domain/node.domain';
+import Edge from '../domain/edge.domain';
+import FlowDTO from '../dto/flow.dto';
+import UserFlowDTO from '../dto/user-flow.dto';
+import FlowRepository from '../repositories/flow.repository';
+import BoardService from './board.service';
 
 class FlowService extends Service {
   private readonly flowRepository: FlowRepository;
@@ -126,4 +125,4 @@ class FlowService extends Service {
   }
 }
 
-export = FlowService;
+export default FlowService;

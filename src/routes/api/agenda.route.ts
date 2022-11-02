@@ -1,6 +1,6 @@
-import AgendaController = require('../../controllers/agenda.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
+import AgendaController from '../../controllers/agenda.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
 
 class AgendaRoute extends Route {
   private readonly agendaController: AgendaController;
@@ -28,4 +28,4 @@ class AgendaRoute extends Route {
   }
 }
 
-export = AgendaRoute;
+export default AgendaRoute;

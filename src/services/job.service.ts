@@ -1,28 +1,28 @@
-import Agenda = require("agenda");
-import JobConfig = require('../config/job.config');
-import Service = require('./service');
-import Job = require('../models/job.model');
-import Cron = require('../models/cron.model');
-import CronService = require("./cron.service");
-import Edge = require("../domain/edge.domain");
-import Node = require("../domain/node.domain");
-import Flow = require('../domain/flow.domain');
+import Agenda from "agenda";
+import JobConfig from '../config/job.config';
+import Service from './service';
+import Job from '../models/job.model';
+import Cron from '../models/cron.model';
+import CronService from "./cron.service";
+import Node from "../domain/node.domain";
+import Flow from '../domain/flow.domain';
+import isBefore from 'date-fns/isBefore';
 
 class JobService extends Service {
-  private readonly agenda: Agenda.Agenda;
+  private readonly agenda: Agenda;
   private readonly cronService: CronService;
   
   private readonly isBefore: any;
 
   constructor() {
     super();
-    this.isBefore = require('date-fns/isBefore');
+    this.isBefore = isBefore;
     this.cronService = new CronService();
     
     this.agenda = this.buildAgenda();
   }
 
-  private buildAgenda(): Agenda.Agenda {
+  private buildAgenda(): Agenda {
     const jobConfig = new JobConfig();
 
     return jobConfig.agenda;
@@ -115,4 +115,4 @@ class JobService extends Service {
   }
 }
 
-export = JobService;
+export default JobService;

@@ -1,5 +1,5 @@
-import Flow = require('../domain/flow.domain');
-import FlowDTO = require('../dto/flow.dto');
+import Flow from '../domain/flow.domain';
+import FlowDTO from '../dto/flow.dto';
 
 interface FlowRepository {
   findOne(fields: object): Promise<Flow>;
@@ -8,4 +8,4 @@ interface FlowRepository {
   save(flow: FlowDTO): Promise<Flow>;
 }
 
-export = FlowRepository;
+export default FlowRepository;

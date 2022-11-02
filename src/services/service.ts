@@ -1,4 +1,4 @@
-import Repositories = require('../repositories');
+import Repositories from '../repositories';
 
 abstract class Service {
   protected readonly repository;
@@ -8,4 +8,4 @@ abstract class Service {
   }
 }
 
-export = Service;
+export default Service;

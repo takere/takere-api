@@ -1,8 +1,9 @@
-import Service = require('./service');
-import Node = require('../domain/node.domain');
-import NodeRepository = require('../repositories/node.repository');
-import FinishedService = require('./finished.service');
+import Service from './service';
+import Node from '../domain/node.domain';
+import NodeRepository from '../repositories/node.repository';
+import FinishedService from './finished.service';
 import NodeConnection from '../models/node-connection.model';
+import connections from '../assets/nodes/connections';
 
 class NodeService extends Service {
   private nodeRepository: NodeRepository; 
@@ -19,7 +20,6 @@ class NodeService extends Service {
   }
 
   public getAllConnections(): NodeConnection[] {
-    const connections = require('../assets/nodes/connections');
     
     return connections;
   }
@@ -53,4 +53,4 @@ class NodeService extends Service {
   }
 }
 
-export = NodeService;
+export default NodeService;

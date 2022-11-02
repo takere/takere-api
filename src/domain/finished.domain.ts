@@ -5,4 +5,4 @@ interface Finished {
   createdAt?: string
 }
 
-export = Finished;
+export default Finished;

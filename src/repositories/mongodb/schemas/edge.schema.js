@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const EdgeSchema = new mongoose.Schema({
     source: {
@@ -36,4 +36,4 @@ EdgeSchema.pre("save", function(next) {
 });
 
 
-module.exports = new mongoose.model('Edge', EdgeSchema);
+export default new mongoose.model('Edge', EdgeSchema);

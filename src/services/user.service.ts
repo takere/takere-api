@@ -1,9 +1,9 @@
-import Service = require('./service');
-import User = require('../domain/user.domain');
-import NewUserDTO = require('../dto/new-user.dto');
-import UserDTO = require('../dto/user.dto');
-import UserRepository = require('../repositories/user.repository');
-import CreatedUserDTO = require('../dto/created-user.dto');
+import Service from './service';
+import User from '../domain/user.domain';
+import NewUserDTO from '../dto/new-user.dto';
+import UserDTO from '../dto/user.dto';
+import UserRepository from '../repositories/user.repository';
+import CreatedUserDTO from '../dto/created-user.dto';
 
 class UserService extends Service {
   private userRepository: UserRepository;
@@ -69,4 +69,4 @@ class UserService extends Service {
   }
 }
 
-export = UserService;
+export default UserService;

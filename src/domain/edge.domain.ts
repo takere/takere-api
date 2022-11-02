@@ -6,4 +6,4 @@ interface Edge {
   flow: any
 }
 
-export = Edge;
+export default Edge;

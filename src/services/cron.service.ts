@@ -1,5 +1,5 @@
-import Cron = require('../models/cron.model');
-import Service = require('./service');
+import Cron from '../models/cron.model';
+import Service from './service';
 
 class CronService extends Service {
 
@@ -29,4 +29,4 @@ class CronService extends Service {
   }
 }
 
-export = CronService;
+export default CronService;

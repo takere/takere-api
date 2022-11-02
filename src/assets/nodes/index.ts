@@ -8,4 +8,4 @@ const nodes = [
   require ('./medication-control'),
 ];
 
-module.exports = nodes;
+export default nodes;

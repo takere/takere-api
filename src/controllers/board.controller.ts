@@ -1,5 +1,5 @@
-import BoardService = require('../services/board.service');
-import FinishedService = require('../services/finished.service');
+import BoardService from '../services/board.service';
+import FinishedService from '../services/finished.service';
 
 class BoardController {
   boardService: BoardService;
@@ -26,4 +26,4 @@ class BoardController {
   }
 }
 
-export = BoardController;
+export default BoardController;
