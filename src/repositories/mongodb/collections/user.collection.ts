@@ -1,13 +1,14 @@
+import mongoose from "mongoose";
 import UserRepository from '../../user.repository';
 import User from '../../../domain/user.domain';
 import NewUserDTO from '../../../dto/new-user.dto';
-import userSchema from '../schemas/user.schema';
+import UserSchema from '../schemas/user.schema';
 
 class UserCollection implements UserRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = userSchema;
+    this._schema = mongoose.model<User>("User", UserSchema);
   }
 
   public async findOne(fields: object): Promise<User> {

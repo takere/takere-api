@@ -5,7 +5,7 @@ import frequencyType from "../types/frequency.type";
 
 const localeService = new LocaleService();
 
-export default {
+const ReminderNode = {
     "slug": "reminder",
     "name": localeService.translate("REMINDER_NODE_NAME"),
     "description": localeService.translate("REMINDER_NODE_DESCRIPTION"),
@@ -78,3 +78,5 @@ export default {
         }
     ]
 }
+
+export default ReminderNode;

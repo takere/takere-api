@@ -4,6 +4,8 @@ import NodeRepository from '../repositories/node.repository';
 import FinishedService from './finished.service';
 import NodeConnection from '../models/node-connection.model';
 import connections from '../assets/nodes/connections.json';
+import nodes from '../assets/nodes';
+import NodeDTO from '../dto/node.dto';
 
 class NodeService extends Service {
   private nodeRepository: NodeRepository; 
@@ -15,8 +17,8 @@ class NodeService extends Service {
     this.finishedService = new FinishedService();
   }
 
-  getNodes(): Node[] {
-    return require('../assets/nodes');
+  getNodes(): NodeDTO[] {
+    return nodes;
   }
 
   public getAllConnections(): NodeConnection[] {

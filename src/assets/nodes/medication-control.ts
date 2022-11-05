@@ -4,7 +4,7 @@ import frequencyType from "../types/frequency.type";
 
 const localeService = new LocaleService();
 
-export default {
+const MedicationControlNode = {
     "slug": "medication_control",
     "name": localeService.translate("MEDICATION_CONTROL_NODE_NAME"),
     "description": localeService.translate("MEDICATION_CONTROL_NODE_DESCRIPTION"),
@@ -92,3 +92,5 @@ export default {
         "stop"
     ]
 }
+
+export default MedicationControlNode;

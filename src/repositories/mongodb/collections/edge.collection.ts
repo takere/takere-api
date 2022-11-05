@@ -1,13 +1,14 @@
+import mongoose from "mongoose";
 import EdgeRepository from '../../edge.repository';
 import Edge from '../../../domain/edge.domain';
 import EdgeDTO from '../../../dto/edge.dto';
-import edgeSchema from '../schemas/edge.schema';
+import EdgeSchema from "../schemas/edge.schema";
 
 class EdgeCollection implements EdgeRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = edgeSchema;
+    this._schema = mongoose.model<Edge>("Edge", EdgeSchema);
   }
 
   public async findOne(fields: object): Promise<Edge> {

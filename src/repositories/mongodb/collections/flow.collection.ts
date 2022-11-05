@@ -1,13 +1,14 @@
+import mongoose from "mongoose";
 import FlowRepository from '../../flow.repository';
 import Flow from '../../../domain/flow.domain';
 import FlowDTO from '../../../dto/flow.dto';
-import flowSchema from '../schemas/flow.schema';
+import FlowSchema from "../schemas/flow.schema";
 
 class FlowCollection implements FlowRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = flowSchema;
+    this._schema = mongoose.model<Flow>("Flow", FlowSchema);
   }
 
   public async findOne(fields: object): Promise<Flow> {

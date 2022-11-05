@@ -5,7 +5,7 @@ import answerType from "../types/answer.type";
 
 const localeService = new LocaleService();
 
-export default {
+const QuizNode = {
     "slug": "quiz",
     "name": localeService.translate("QUIZ_NODE_NAME"),
     "description": localeService.translate("QUIZ_NODE_DESCRIPTION"),
@@ -71,3 +71,5 @@ export default {
         }
     ]
 }
+
+export default QuizNode;

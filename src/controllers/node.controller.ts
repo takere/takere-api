@@ -1,7 +1,7 @@
 import NodeService from '../services/node.service';
 
 class NodeController {
-  nodeService: any;
+  nodeService: NodeService;
 
   constructor() {
     this.nodeService = new NodeService();

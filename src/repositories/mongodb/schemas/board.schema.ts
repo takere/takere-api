@@ -80,7 +80,6 @@ BoardSchema.statics.findAllByEmail = async function (email) {
     .exec();
 };
 
-
 BoardSchema.pre("save", function (next) {
   if (this.isNew) {
     this._doc.id = this._id;

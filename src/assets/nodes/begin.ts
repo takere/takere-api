@@ -2,7 +2,7 @@ import LocaleService from '../../services/locale.service';
 
 const localeService = new LocaleService();
 
-export default {
+const BeginNode = {
     "slug": "begin",
     "name": localeService.translate("BEGIN_NODE_NAME"),
     "description": localeService.translate("BEGIN_NODE_DESCRIPTION"),
@@ -30,3 +30,5 @@ export default {
         }
     ]
 }
+
+export default BeginNode;

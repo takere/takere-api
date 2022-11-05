@@ -1,13 +1,14 @@
+import mongoose from "mongoose";
 import BoardRepository from '../../board.repository';
 import Board from '../../../domain/board.domain';
 import BoardDTO from '../../../dto/board.dto';
-import boardSchema from '../schemas/board.schema';
+import BoardSchema from '../schemas/board.schema';
 
 class BoardCollection implements BoardRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = boardSchema;
+    this._schema = mongoose.model<Board>("Board", BoardSchema);
   }
   
   public async findAll(email: string): Promise<Board[]> {

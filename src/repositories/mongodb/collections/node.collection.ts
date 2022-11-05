@@ -1,12 +1,13 @@
+import mongoose from "mongoose";
 import NodeRepository from '../../node.repository';
 import Node from '../../../domain/node.domain';
-import nodeSchema from '../schemas/node.schema';
+import NodeSchema from '../schemas/node.schema';
 
 class NodeCollection implements NodeRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = nodeSchema;
+    this._schema = mongoose.model<Node>("Node", NodeSchema);
   }
 
   public async findOne(fields: object): Promise<Node> {

@@ -1,3 +1,6 @@
 import App from './app';
 
-module.exports = { run: () => App };
+
+const app = new App();
+
+module.exports = { run: app.run() };

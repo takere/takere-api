@@ -3,7 +3,7 @@ import severityType from "../types/severity.type";
 
 const localeService = new LocaleService();
 
-export default {
+const ExplanationNode = {
     "slug": "explanation",
     "name": localeService.translate("EXPLANATION_NODE_NAME"),
     "description": localeService.translate("EXPLANATION_NODE_DESCRIPTION"),
@@ -46,3 +46,5 @@ export default {
         }
     ]
 }
+
+export default ExplanationNode;

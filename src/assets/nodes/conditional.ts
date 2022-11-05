@@ -2,7 +2,7 @@ import LocaleService from '../../services/locale.service';
 
 const localeService = new LocaleService();
 
-export default {
+const ConditionalNode = {
     "slug": "conditional",
     "name": localeService.translate("CONDITIONAL_NODE_NAME"),
     "description": localeService.translate("CONDITIONAL_NODE_DESCRIPTION"),
@@ -37,3 +37,5 @@ export default {
         }
     ]
 }
+
+export default ConditionalNode;
