@@ -37,4 +37,4 @@ class NodeCollection implements NodeRepository {
   }
 }
 
-export = NodeCollection;
+export default NodeCollection;

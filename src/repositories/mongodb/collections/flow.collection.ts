@@ -34,4 +34,4 @@ class FlowCollection implements FlowRepository {
   }
 }
 
-export = FlowCollection;
+export default FlowCollection;

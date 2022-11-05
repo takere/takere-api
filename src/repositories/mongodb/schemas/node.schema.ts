@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
+import Node from "../../../domain/node.domain";
+import DocumentResult from "../document-result";
 
-const NodeSchema = new mongoose.Schema({
+
+interface NodeDocument extends DocumentResult<Node> {}
+
+const NodeSchema = new mongoose.Schema<NodeDocument>({
     slug: {
       type: String,
       required: true,
@@ -54,7 +59,7 @@ const NodeSchema = new mongoose.Schema({
       type: Object,
     },
     flow: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Flow',
       required: true
     },
@@ -72,5 +77,4 @@ NodeSchema.pre("save", function(next) {
   next();
 });
 
-export default new mongoose.model('Node', NodeSchema);
-
+export default NodeSchema;

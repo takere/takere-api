@@ -69,6 +69,4 @@ const server = http.createServer(app);
 
 server.listen(port);
 
-module.exports = {
-  run: () => app
-};
+export default app;

@@ -21,4 +21,4 @@ class FinishedCollection implements FinishedRepository {
   }
 }
 
-export = FinishedCollection;
+export default FinishedCollection;

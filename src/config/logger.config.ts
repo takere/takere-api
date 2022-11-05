@@ -15,48 +15,48 @@ const options = {
 
 const loggerConfig = winston.createLogger({
   transports: [
-    // new winston.transports.File(options.file),
     new winston.transports.Console(),
   ],
   exitOnError: false,
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  loggerConfig.add(
-    new winston.transports.Console({
-      level: 'debug',
-      format: winston.format.combine(
-        winston.format.simple(),
-        winston.format.printf((msg: { level: any; message: any; }) =>
-          colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
-        )
-      ),
-    }),
-    new winston.transports.Console({
-      level: 'info',
-      format: winston.format.combine(
-        winston.format.simple(),
-        winston.format.printf((msg: { level: any; message: any; }) =>
-          colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
-        )
-      ),
-    }),
-    new winston.transports.Console({
-      level: 'error',
-      format: winston.format.combine(
-        winston.format.simple(),
-        winston.format.printf((msg: { level: any; message: any; }) =>
-          colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
-        )
-      ),
-    }),
-  );
+  loggerConfig.add(buildDebugTransporter());
+  loggerConfig.add(buildInfoTransporter());
+  loggerConfig.add(buildErrorTransporter());
 }
 
-loggerConfig.stream = {
-  write: function(message: any, encoding: any) {
-    loggerConfig.info(message);
-  },
-};
+function buildDebugTransporter(): winston.transport {
+  return new winston.transports.Console({
+    level: 'debug',
+    format: winston.format.combine(
+      winston.format.simple(),
+      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      )
+    ),
+  });
+}
+
+function buildInfoTransporter(): any {
+  return new winston.transports.Console({
+    level: 'info',
+    format: winston.format.combine(
+      winston.format.simple(),
+      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      )
+    ),
+  });
+}
+
+function buildErrorTransporter(): any {
+  return new winston.transports.Console({
+    level: 'error',
+    format: winston.format.combine(
+      winston.format.simple(),
+      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      )
+    ),
+  });
+}
 
 export default loggerConfig;

@@ -507,4 +507,4 @@ class BoardService extends Service {
   }
 }
 
-export = BoardService;
+export default BoardService;

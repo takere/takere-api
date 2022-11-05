@@ -53,6 +53,10 @@ class MongoDbRepository implements Repository {
   private buildUri(): string {
     const uri: string[] = [];
 
+    if (!dbConfig.user || !dbConfig.password || !dbConfig.host || !dbConfig.database) {
+      throw new Error('Database config has missing fields');
+    }
+
     uri.push('mongodb+srv://');
     uri.push(dbConfig.user);
     uri.push(':');

@@ -32,4 +32,4 @@ class EdgeCollection implements EdgeRepository {
   }
 }
 
-export = EdgeCollection;
+export default EdgeCollection;

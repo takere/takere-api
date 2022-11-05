@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
+import User from "../../../domain/user.domain";
+import DocumentResult from "../document-result";
 
-const UserSchema = new mongoose.Schema(
+
+interface UserDocument extends DocumentResult<User> {}
+
+const UserSchema = new mongoose.Schema<UserDocument>(
   {
     firstName: {
       type: String,
@@ -46,4 +51,4 @@ UserSchema.pre("save", function (next) {
   next();
 });
 
-export default new mongoose.model("User", UserSchema);
+export default UserSchema;

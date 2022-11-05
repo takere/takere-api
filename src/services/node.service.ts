@@ -3,7 +3,7 @@ import Node from '../domain/node.domain';
 import NodeRepository from '../repositories/node.repository';
 import FinishedService from './finished.service';
 import NodeConnection from '../models/node-connection.model';
-import connections from '../assets/nodes/connections';
+import connections from '../assets/nodes/connections.json';
 
 class NodeService extends Service {
   private nodeRepository: NodeRepository; 

@@ -1,3 +1,3 @@
-const App = require('./app');
+import App from './app';
 
-module.exports = App;
+module.exports = { run: () => App };

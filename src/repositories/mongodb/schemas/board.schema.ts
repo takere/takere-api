@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
+import Board from '../../../domain/board.domain';
+import DocumentResult from "../document-result";
 
-const BoardSchema = new mongoose.Schema(
+
+interface BoardDocument extends DocumentResult<Board> {}
+
+const BoardSchema = new mongoose.Schema<BoardDocument>(
   {
     name: {
       type: String,
@@ -18,17 +23,17 @@ const BoardSchema = new mongoose.Schema(
       trim: true,
     },
     flow: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Flow",
     },
     node: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "Node",
     },
     finished: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: false,
       ref: "Finished",
     }
@@ -41,7 +46,7 @@ const BoardSchema = new mongoose.Schema(
 );
 
 BoardSchema.statics.findAll = async function () {
-  return this.model("Board").find({})
+  return this.find({})
     .populate("node")
     .populate("finished")
     .populate('flow')
@@ -49,27 +54,27 @@ BoardSchema.statics.findAll = async function () {
 }
 
 BoardSchema.statics.findById = async function (id) {
-  return this.model("Board").findOne({ _id: id })
+  return this.findOne({ _id: id })
     .populate("node")
     .populate("finished")
     .exec();
 }
 
 BoardSchema.statics.findAllUnfinishedByEmail = async function (email) {
-  return this.model("Board").find({ patientEmail: email, finished: undefined })
+  return this.find({ patientEmail: email, finished: undefined })
     .populate("node")
     .exec();
 };
 
 BoardSchema.statics.findAllFinishedByEmail = async function (email) {
-  return this.model("Board").find({ patientEmail: email, finished: {$ne:undefined} })
+  return this.find({ patientEmail: email, finished: {$ne:undefined} })
     .populate("node")
     .populate("finished")
     .exec();
 };
 
 BoardSchema.statics.findAllByEmail = async function (email) {
-  return this.model("Board").find({ patientEmail: email })
+  return this.find({ patientEmail: email })
     .populate("node")
     .populate("finished")
     .exec();
@@ -83,4 +88,4 @@ BoardSchema.pre("save", function (next) {
   next();
 });
 
-export default new mongoose.model("Board", BoardSchema);
+export default BoardSchema;

@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
+import Finished from "../../../domain/finished.domain";
+import DocumentResult from "../document-result";
 
-const FinishedSchema = new mongoose.Schema({
+
+interface FinishedDocument extends DocumentResult<Finished> {}
+
+const FinishedSchema = new mongoose.Schema<FinishedDocument>({
     answers: {
       type: Array,
       required: false,
     },
     node: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Node',
     },
@@ -18,7 +23,7 @@ const FinishedSchema = new mongoose.Schema({
   })
 
 FinishedSchema.statics.create = async function (answers, node) {
-    const Finished = this.model('Finished')
+    const Finished = this;
     const finishedInstance = new Finished({answers, node})
     return await finishedInstance.save()
 }
@@ -30,4 +35,4 @@ FinishedSchema.pre("save", function(next) {
   next();
 });
 
-export default new mongoose.model('Finished', FinishedSchema);
+export default FinishedSchema;

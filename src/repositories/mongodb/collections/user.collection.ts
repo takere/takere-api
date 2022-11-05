@@ -28,4 +28,4 @@ class UserCollection implements UserRepository {
   }
 }
 
-export = UserCollection;
+export default UserCollection;
