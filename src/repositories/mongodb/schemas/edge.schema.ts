@@ -1,13 +1,18 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+import Edge from "../../../domain/edge.domain";
+import DocumentResult from "../document-result";
 
-const EdgeSchema = new mongoose.Schema({
+
+interface EdgeDocument extends DocumentResult<Edge> {}
+
+const EdgeSchema = new mongoose.Schema<EdgeDocument>({
     source: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Node',
     },
     target: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: false,
       ref: 'Node',
     },
@@ -17,7 +22,7 @@ const EdgeSchema = new mongoose.Schema({
       default: true
     },
     flow: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Flow',
       required: true
     },
@@ -35,5 +40,4 @@ EdgeSchema.pre("save", function(next) {
   next();
 });
 
-
-module.exports = new mongoose.model('Edge', EdgeSchema);
+export default EdgeSchema;

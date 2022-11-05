@@ -1,7 +1,7 @@
-import Service = require('./service');
-import Edge = require('../domain/edge.domain');
-import EdgeDTO = require('../dto/edge.dto');
-import EdgeRepository = require('../repositories/edge.repository');
+import Service from './service';
+import Edge from '../domain/edge.domain';
+import EdgeDTO from '../dto/edge.dto';
+import EdgeRepository from '../repositories/edge.repository';
 
 class EdgeService extends Service {
   private edgeRepository: EdgeRepository; 
@@ -32,4 +32,4 @@ class EdgeService extends Service {
   }
 }
 
-export = EdgeService;
+export default EdgeService;

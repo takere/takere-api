@@ -1,7 +1,8 @@
-import NewUserDTO = require('../dto/new-user.dto');
-import UserDTO = require('../dto/user.dto');
-import UserService = require('../services/user.service');
-import LocaleService = require('../services/locale.service');
+import NewUserDTO from '../dto/new-user.dto';
+import UserDTO from '../dto/user.dto';
+import UserService from '../services/user.service';
+import LocaleService from '../services/locale.service';
+import loggerConfig from '../config/logger.config';
 
 class UserController {
   localeService: LocaleService;
@@ -10,7 +11,7 @@ class UserController {
 
   constructor() {
     this.userService = new UserService();
-    this.logger = require('../config/logger.config');
+    this.logger = loggerConfig;
     this.localeService = new LocaleService();
   }
 
@@ -64,4 +65,4 @@ class UserController {
   }
 }
 
-export = UserController;
+export default UserController;

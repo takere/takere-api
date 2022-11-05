@@ -1,7 +1,12 @@
-import Agenda = require("agenda");
+import Agenda from "agenda";
+import isBefore from 'date-fns/isBefore';
+import FlowService from "../services/flow.service";
+import EdgeService from '../services/edge.service';
+import NodeService from '../services/node.service';
+import BoardService from "../services/board.service";
 
 class JobConfig {
-  private static _agenda: Agenda.Agenda;
+  private static _agenda: Agenda;
 
   constructor() {
   }
@@ -11,7 +16,7 @@ class JobConfig {
   }
 
   private buildAgenda() {
-    JobConfig._agenda = new Agenda.Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
+    JobConfig._agenda = new Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
     JobConfig._agenda.start();
 
     JobConfig._agenda.define("CHECK_CONDITIONALS", async (job: any) => {
@@ -38,8 +43,6 @@ class JobConfig {
   }
 
   public async runJob(job: any) {
-    const isBefore = require('date-fns/isBefore')
-
     try{
       const finishDateIsBeforeToday = isBefore(new Date(), new Date(job.attrs.endDate));
       if(finishDateIsBeforeToday || job.attrs.endDate === undefined) {
@@ -55,9 +58,6 @@ class JobConfig {
   }
 
   private async process(node: any) {
-    const FlowService = require("../services/flow.service");
-    const EdgeService = require('../services/edge.service');
-    const NodeService = require('../services/node.service');
     const flowService = new FlowService();
     const edgeService = new EdgeService();
     const nodeService = new NodeService();
@@ -75,7 +75,6 @@ class JobConfig {
     const edges = await edgeService.findAllBySourceId(sourceNode.id ?? '');
     if (sourceNode.type !== 'CONDITIONAL_NODE') {
       const flow = await flowService.findById(sourceNode.flow);
-      const BoardService = require("../services/board.service");
       const boardService = new BoardService();
 
       await boardService.insert({
@@ -92,7 +91,7 @@ class JobConfig {
     }
   }
   
-  get agenda(): Agenda.Agenda {
+  get agenda(): Agenda {
     if (!JobConfig._agenda) {
       this.buildAgenda();
     }
@@ -101,4 +100,4 @@ class JobConfig {
   }
 }
 
-export = JobConfig;
+export default JobConfig;

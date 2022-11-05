@@ -1,12 +1,14 @@
-import BoardRepository = require('../../board.repository');
-import Board = require('../../../domain/board.domain');
-import BoardDTO = require('../../../dto/board.dto');
+import mongoose from "mongoose";
+import BoardRepository from '../../board.repository';
+import Board from '../../../domain/board.domain';
+import BoardDTO from '../../../dto/board.dto';
+import BoardSchema from '../schemas/board.schema';
 
 class BoardCollection implements BoardRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/board.schema');
+    this._schema = mongoose.model<Board>("Board", BoardSchema);
   }
   
   public async findAll(email: string): Promise<Board[]> {
@@ -115,4 +117,4 @@ class BoardCollection implements BoardRepository {
   }
 }
 
-export = BoardCollection;
+export default BoardCollection;

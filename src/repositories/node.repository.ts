@@ -1,4 +1,4 @@
-import Node = require('../domain/node.domain');
+import Node from '../domain/node.domain';
 
 interface NodeRepository {
   insert(node: Node): Promise<Node>;
@@ -7,4 +7,4 @@ interface NodeRepository {
   deleteMany(fields: object): Promise<Node[]>;
 }
 
-export = NodeRepository;
+export default NodeRepository;

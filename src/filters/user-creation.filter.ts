@@ -1,4 +1,4 @@
-import LocaleService = require('../services/locale.service');
+import LocaleService from '../services/locale.service';
 
 const userCreationErrorHandler = (err: any, req: any, res: any, next: any) => {
   const localeService = new LocaleService();
@@ -13,4 +13,4 @@ const userCreationErrorHandler = (err: any, req: any, res: any, next: any) => {
   }
 }
 
-export = userCreationErrorHandler;
+export default userCreationErrorHandler;

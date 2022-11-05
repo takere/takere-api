@@ -8,5 +8,5 @@ interface UserBoardDTO {
   finished: any,
 }
 
-export = UserBoardDTO;
+export default UserBoardDTO;
 

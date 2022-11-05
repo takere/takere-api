@@ -5,4 +5,4 @@ interface EdgeDTO {
   flow: any
 }
 
-export = EdgeDTO;
+export default EdgeDTO;

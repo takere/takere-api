@@ -6,5 +6,5 @@ interface UserFlowDTO {
   graph: any[]
 }
 
-export = UserFlowDTO;
+export default UserFlowDTO;
 

@@ -1,5 +1,5 @@
-import FlowService = require('../services/flow.service');
-import LocaleService = require('../services/locale.service');
+import FlowService from '../services/flow.service';
+import LocaleService from '../services/locale.service';
 
 class FlowController {
   private readonly flowService: FlowService;
@@ -51,4 +51,4 @@ class FlowController {
   }
 }
 
-export = FlowController;
+export default FlowController;

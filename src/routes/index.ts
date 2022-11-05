@@ -1,10 +1,13 @@
-import BoardRoute = require("./api/board.route");
-import FlowsRoute = require("./api/flows.route");
-import NodesRoute = require("./api/nodes.route");
-import UsersRoute = require("./api/users.route");
-import AgendaRoute = require("./api/agenda.route");
-import RouteList = require("./route-list");
-import ProgressRoute = require("./api/progress.route");
+import express from 'express';
+import cors from 'cors';
+import passport from 'passport';
+import BoardRoute from "./api/board.route";
+import FlowsRoute from "./api/flows.route";
+import NodesRoute from "./api/nodes.route";
+import UsersRoute from "./api/users.route";
+import AgendaRoute from "./api/agenda.route";
+import RouteList from "./route-list";
+import ProgressRoute from "./api/progress.route";
 
 class Routes {
   express: any;
@@ -13,9 +16,9 @@ class Routes {
   _routeList: RouteList[];
 
   constructor() {
-    this.express = require('express');
-    this.cors = require('cors');
-    this.passport = require('passport');
+    this.express = express;
+    this.cors = cors;
+    this.passport = passport;
     this._routeList = [];
 
     this.buildRoutes();
@@ -37,4 +40,4 @@ class Routes {
   }
 }
 
-export = Routes;
+export default Routes;

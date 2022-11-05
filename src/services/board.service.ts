@@ -1,18 +1,30 @@
-import Service = require('./service');
-import FinishedService = require('./finished.service');
-import NodeService = require('./node.service');
-import EdgeService = require('./edge.service');
-import JobService = require('./job.service');
-import UserService = require('./user.service');
-import Board = require('../domain/board.domain');
-import BoardDTO = require('../dto/board.dto');
-import BoardRepository = require('../repositories/board.repository');
-import UserBoardDTO = require('../dto/user-board.dto');
-import Flow = require('../domain/flow.domain');
-import Node = require('../domain/node.domain');
-import Edge = require('../domain/edge.domain');
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-class BoardService extends Service {    
+import Service from './service';
+import FinishedService from './finished.service';
+import NodeService from './node.service';
+import EdgeService from './edge.service';
+import JobService from './job.service';
+import UserService from './user.service';
+import Board from '../domain/board.domain';
+import BoardDTO from '../dto/board.dto';
+import BoardRepository from '../repositories/board.repository';
+import UserBoardDTO from '../dto/user-board.dto';
+import Flow from '../domain/flow.domain';
+import Node from '../domain/node.domain';
+import Edge from '../domain/edge.domain';
+
+
+class BoardService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly boardRepository: BoardRepository; 
   private readonly finishedService: FinishedService; 
   private readonly edgeService: EdgeService;
@@ -20,6 +32,10 @@ class BoardService extends Service {
   private readonly jobService: JobService;
   private readonly userService: UserService;
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
     this.boardRepository = this.repository.boardRepository;
@@ -30,6 +46,10 @@ class BoardService extends Service {
     this.userService = new UserService();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllUnfinishedByEmail(email);
 
@@ -487,4 +507,4 @@ class BoardService extends Service {
   }
 }
 
-export = BoardService;
+export default BoardService;

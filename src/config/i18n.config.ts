@@ -15,4 +15,4 @@ i18n.configure({
 
 });
 
-module.exports = i18n;
+export default i18n;

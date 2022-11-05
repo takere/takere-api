@@ -3,4 +3,4 @@ interface FinishedDTO {
   node: any
 }
 
-export = FinishedDTO;
+export default FinishedDTO;

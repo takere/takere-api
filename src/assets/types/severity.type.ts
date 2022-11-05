@@ -1,8 +1,8 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
 
 const localeService = new LocaleService();
 
-module.exports = [
+export default [
   {
     "value": "1",
     "label": localeService.translate("VERY_LOW")

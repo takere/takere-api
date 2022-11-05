@@ -1,6 +1,6 @@
-import FlowController = require('../../controllers/flow.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
+import FlowController from '../../controllers/flow.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
 
 class FlowsRoute extends Route {
   private readonly flowController: FlowController;
@@ -38,4 +38,4 @@ class FlowsRoute extends Route {
   }
 }
 
-export = FlowsRoute;
+export default FlowsRoute;

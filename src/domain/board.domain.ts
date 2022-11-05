@@ -10,4 +10,4 @@ interface Board {
   finished: any
 }
 
-export = Board;
+export default Board;

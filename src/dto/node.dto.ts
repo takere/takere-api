@@ -1,4 +1,4 @@
-interface Node {
+interface NodeDTO {
   slug: string,
   id?: string,
   name: string,
@@ -16,16 +16,13 @@ interface Node {
     description: string,
     required: boolean,
     type: string | string[],
-    options: {
+    options?: {
       value: string,
       label: string,
       request_input?: string
     }[]
   }[],
-  icons?: string[],
-  arguments?: any[],
-  position: any,
-  flow: any
+  icons?: string[]
 }
 
-export default Node;
+export default NodeDTO;

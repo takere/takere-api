@@ -1,11 +1,13 @@
-import NodeRepository = require('../../node.repository');
-import Node = require('../../../domain/node.domain');
+import mongoose from "mongoose";
+import NodeRepository from '../../node.repository';
+import Node from '../../../domain/node.domain';
+import NodeSchema from '../schemas/node.schema';
 
 class NodeCollection implements NodeRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/node.schema');
+    this._schema = mongoose.model<Node>("Node", NodeSchema);
   }
 
   public async findOne(fields: object): Promise<Node> {
@@ -36,4 +38,4 @@ class NodeCollection implements NodeRepository {
   }
 }
 
-export = NodeCollection;
+export default NodeCollection;

@@ -6,4 +6,4 @@ interface Flow {
   patientEmail: string
 }
 
-export = Flow;
+export default Flow;

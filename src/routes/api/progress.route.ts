@@ -1,6 +1,6 @@
-import ProgressController = require('../../controllers/progress.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
+import ProgressController from '../../controllers/progress.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
 
 class ProgressRoute extends Route {
   private readonly progressController: ProgressController;
@@ -33,4 +33,4 @@ class ProgressRoute extends Route {
   }
 }
 
-export = ProgressRoute;
+export default ProgressRoute;

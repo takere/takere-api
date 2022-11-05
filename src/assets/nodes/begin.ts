@@ -1,8 +1,8 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
 
 const localeService = new LocaleService();
 
-module.exports = {
+const BeginNode = {
     "slug": "begin",
     "name": localeService.translate("BEGIN_NODE_NAME"),
     "description": localeService.translate("BEGIN_NODE_DESCRIPTION"),
@@ -30,3 +30,5 @@ module.exports = {
         }
     ]
 }
+
+export default BeginNode;

@@ -1,12 +1,14 @@
-import FlowRepository = require('../../flow.repository');
-import Flow = require('../../../domain/flow.domain');
-import FlowDTO = require('../../../dto/flow.dto');
+import mongoose from "mongoose";
+import FlowRepository from '../../flow.repository';
+import Flow from '../../../domain/flow.domain';
+import FlowDTO from '../../../dto/flow.dto';
+import FlowSchema from "../schemas/flow.schema";
 
 class FlowCollection implements FlowRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/flow.schema');
+    this._schema = mongoose.model<Flow>("Flow", FlowSchema);
   }
 
   public async findOne(fields: object): Promise<Flow> {
@@ -33,4 +35,4 @@ class FlowCollection implements FlowRepository {
   }
 }
 
-export = FlowCollection;
+export default FlowCollection;

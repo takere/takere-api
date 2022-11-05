@@ -8,4 +8,4 @@ interface UserDTO {
   updatedAt: string
 }
 
-export = UserDTO;
+export default UserDTO;

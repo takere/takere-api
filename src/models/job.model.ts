@@ -4,4 +4,4 @@ interface Job {
   data: any
 }
 
-export = Job;
+export default Job;

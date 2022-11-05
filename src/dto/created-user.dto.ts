@@ -7,4 +7,4 @@ interface CreatedUserDTO {
   token: string
 }
 
-export = CreatedUserDTO;
+export default CreatedUserDTO;

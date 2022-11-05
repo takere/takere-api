@@ -1,6 +1,6 @@
-import BoardController = require('../../controllers/board.controller');
-import Route = require('../route');
-import validation = require('../../middlewares/validation.middleware');
+import BoardController from '../../controllers/board.controller';
+import Route from '../route';
+import validation from '../../middlewares/validation.middleware';
 
 class BoardRoute extends Route {
   private readonly boardController: BoardController;
@@ -28,4 +28,4 @@ class BoardRoute extends Route {
   }
 }
 
-export = BoardRoute;
+export default BoardRoute;

@@ -1,7 +1,7 @@
-import Service = require('./service');
-import Finished = require('../domain/finished.domain');
-import FinishedDTO = require('../dto/finished.dto');
-import FinishedRepository = require('../repositories/finished.repository');
+import Service from './service';
+import Finished from '../domain/finished.domain';
+import FinishedDTO from '../dto/finished.dto';
+import FinishedRepository from '../repositories/finished.repository';
 
 class FinishedService extends Service {
   private finishedRepository: FinishedRepository; 
@@ -20,4 +20,4 @@ class FinishedService extends Service {
   }
 }
 
-export = FinishedService;
+export default FinishedService;

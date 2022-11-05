@@ -1,12 +1,14 @@
-import UserRepository = require('../../user.repository');
-import User = require('../../../domain/user.domain');
-import NewUserDTO = require('../../../dto/new-user.dto');
+import mongoose from "mongoose";
+import UserRepository from '../../user.repository';
+import User from '../../../domain/user.domain';
+import NewUserDTO from '../../../dto/new-user.dto';
+import UserSchema from '../schemas/user.schema';
 
 class UserCollection implements UserRepository {
   private _schema: any;
 
   constructor() {
-    this._schema = require('../schemas/user.schema');
+    this._schema = mongoose.model<User>("User", UserSchema);
   }
 
   public async findOne(fields: object): Promise<User> {
@@ -27,4 +29,4 @@ class UserCollection implements UserRepository {
   }
 }
 
-export = UserCollection;
+export default UserCollection;

@@ -1,20 +1,20 @@
-import Repository = require('../repository');
-import UserRepository = require('../user.repository');
-import NodeRepository = require('../node.repository');
-import FlowRepository = require('../flow.repository');
-import FinishedRepository = require('../finished.repository');
-import BoardRepository = require('../board.repository');
-import EdgeRepository = require('../edge.repository');
-import BoardCollection = require('./collections/board.collection');
-import EdgeCollection = require('./collections/edge.collection');
-import FinishedCollection = require('./collections/finished.collection');
-import FlowCollection = require('./collections/flow.collection');
-import NodeCollection = require('./collections/node.collection');
-import UserCollection = require('./collections/user.collection');
+import Repository from '../repository';
+import UserRepository from '../user.repository';
+import NodeRepository from '../node.repository';
+import FlowRepository from '../flow.repository';
+import FinishedRepository from '../finished.repository';
+import BoardRepository from '../board.repository';
+import EdgeRepository from '../edge.repository';
+import BoardCollection from './collections/board.collection';
+import EdgeCollection from './collections/edge.collection';
+import FinishedCollection from './collections/finished.collection';
+import FlowCollection from './collections/flow.collection';
+import NodeCollection from './collections/node.collection';
+import UserCollection from './collections/user.collection';
 
-const mongoose = require('mongoose');
-const dbConfig = require('../../config/db.config');
-const logger = require('../../config/logger.config');
+import mongoose from 'mongoose';
+import dbConfig from '../../config/db.config';
+import logger from '../../config/logger.config';
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -53,6 +53,10 @@ class MongoDbRepository implements Repository {
   private buildUri(): string {
     const uri: string[] = [];
 
+    if (!dbConfig.user || !dbConfig.password || !dbConfig.host || !dbConfig.database) {
+      throw new Error('Database config has missing fields');
+    }
+
     uri.push('mongodb+srv://');
     uri.push(dbConfig.user);
     uri.push(':');
@@ -90,4 +94,4 @@ class MongoDbRepository implements Repository {
   }
 }
 
-export = MongoDbRepository;
+export default MongoDbRepository;

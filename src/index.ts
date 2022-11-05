@@ -1,3 +1,6 @@
-const App = require('./app');
+import App from './app';
 
-module.exports = App;
+
+const app = new App();
+
+module.exports = { run: app.run() };

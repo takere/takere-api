@@ -1,8 +1,8 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
 
 const localeService = new LocaleService();
 
-module.exports = {
+const ConditionalNode = {
     "slug": "conditional",
     "name": localeService.translate("CONDITIONAL_NODE_NAME"),
     "description": localeService.translate("CONDITIONAL_NODE_DESCRIPTION"),
@@ -37,3 +37,5 @@ module.exports = {
         }
     ]
 }
+
+export default ConditionalNode;

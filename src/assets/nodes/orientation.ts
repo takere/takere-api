@@ -1,9 +1,9 @@
-import LocaleService = require('../../services/locale.service');
+import LocaleService from '../../services/locale.service';
+import severityType from "../types/severity.type";
 
 const localeService = new LocaleService();
-const severityType = require("../types/severity.type")
 
-module.exports = {
+const OrientationNode = {
     "slug": "orientation",
     "name": localeService.translate("ORIENTATION_NODE_NAME"),
     "description": localeService.translate("ORIENTATION_NODE_DESCRIPTION"),
@@ -46,3 +46,5 @@ module.exports = {
         }
     ]
 }
+
+export default OrientationNode;

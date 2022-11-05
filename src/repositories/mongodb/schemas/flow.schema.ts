@@ -1,9 +1,13 @@
-const mongoose = require('mongoose');
-const boardModel = require('./board.schema');
+import mongoose from "mongoose";
+import Flow from "../../../domain/flow.domain";
+import DocumentResult from "../document-result";
 
-const FlowSchema = new mongoose.Schema({
+
+interface FlowDocument extends DocumentResult<Flow> {}
+
+const FlowSchema = new mongoose.Schema<FlowDocument>({
     author: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
@@ -35,9 +39,9 @@ FlowSchema.pre("save", function(next) {
 });
 
 FlowSchema.pre("remove", function(next) {
-  boardModel.remove({ flow: this._id });
+  this.model('Flow').remove({ flow: this._id });
 
   next();
 });
 
-module.exports = new mongoose.model('Flow', FlowSchema);
+export default FlowSchema;

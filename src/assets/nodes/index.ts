@@ -1,11 +1,21 @@
-const nodes = [
-  require ('./begin'),
-  require ('./conditional'),
-  require ('./explanation'),
-  require ('./orientation'),
-  require ('./quiz'),
-  require ('./reminder'),
-  require ('./medication-control'),
+import NodeDTO from "../../dto/node.dto";
+import BeginNode from "./begin";
+import ConditionalNode from "./conditional";
+import ExplanationNode from "./explanation";
+import MedicationControlNode from "./medication-control";
+import OrientationNode from "./orientation";
+import QuizNode from "./quiz";
+import ReminderNode from "./reminder";
+
+
+const nodes: NodeDTO[] = [
+  BeginNode,
+  ConditionalNode,
+  ExplanationNode,
+  OrientationNode,
+  QuizNode,
+  ReminderNode,
+  MedicationControlNode
 ];
 
-module.exports = nodes;
+export default nodes;

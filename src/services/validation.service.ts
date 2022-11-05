@@ -1,5 +1,5 @@
-const Joi = require('joi');
-import Service = require('./service');
+import Joi from 'joi';
+import Service from './service';
 
 class ValidationService extends Service {
   
@@ -130,4 +130,4 @@ class ValidationService extends Service {
   };
 }
 
-export = ValidationService;
+export default ValidationService;
