@@ -11,20 +11,24 @@ class FlowCollection implements FlowRepository {
     this._schema = mongoose.model<Flow>("Flow", FlowSchema);
   }
 
-  public async findOne(fields: object): Promise<Flow> {
-    const storedFlow = await this._schema.findOne(fields);
+  public async findByAuthorAndFlow(authorId: string, flowId: string): Promise<Flow> {
+    const storedFlow = await this._schema.findOne({ author: authorId, _id: flowId });
 
     return { ...storedFlow._doc, id: storedFlow._doc._id };
   }
 
-  public async findOneAndRemove(fields: object): Promise<Flow> {
-    const storedFlow = await this._schema.findOneAndRemove(fields);
+  public async removeByAuthorAndFlow(authorId: string, flowId: string): Promise<Flow> {
+    const storedFlow = await this._schema.findOneAndRemove({ author: authorId, _id: flowId });
 
     return { ...storedFlow._doc, id: storedFlow._doc._id };
   }
 
-  public async find(fields: object): Promise<Flow[]> {
-    return this._schema.find(fields);
+  public async findById(id: string): Promise<Flow> {
+    return this._schema.findOne({ _id: id });
+  }
+
+  public async findAllByAuthor(authorId: string): Promise<Flow[]> {
+    return this._schema.find({ author: authorId });
   }
 
   public async save(flow: FlowDTO): Promise<Flow> {

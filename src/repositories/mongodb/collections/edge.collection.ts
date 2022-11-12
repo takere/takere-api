@@ -17,12 +17,20 @@ class EdgeCollection implements EdgeRepository {
     return { ...storedEdge._doc, id: storedEdge._doc._id };
   }
 
-  public async deleteMany(fields: object): Promise<Edge[]> {
-    return this._schema.deleteMany(fields);
+  public async removeAllWithFlowId(id: string): Promise<Edge[]> {
+    return this._schema.deleteMany({ flow: id });
   }
 
-  public async find(fields: object): Promise<Edge[]> {
-    return this._schema.find(fields);
+  public async findAllBySourceId(id: string): Promise<Edge[]> {
+    return this._schema.find({ source: id });
+  }
+
+  public async findAllByUserId(id: string): Promise<Edge[]> {
+    return this._schema.find({ user: id });
+  }
+
+  public async findAllByFlowId(id: string): Promise<Edge[]> {
+    return this._schema.find({ flow: id });
   }
 
   public async save(edge: EdgeDTO): Promise<Edge> {

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Service from './service';
 import User from '../domain/user.domain';
 import NewUserDTO from '../dto/new-user.dto';
@@ -8,35 +15,48 @@ import bcrypt from 'bcrypt';
 import generalConfig from '../config/general.config';
 import jwt from 'jsonwebtoken';
 
+
+/**
+ * Responsible for providing user and authentication services.
+ */
 class UserService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private userRepository: UserRepository;
   private bcrypt: any;
   private generalConfig: any;
-  private jwt: any;
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
     this.userRepository = this.repository.userRepository;
     this.bcrypt = bcrypt;
     this.generalConfig = generalConfig;
-    this.jwt = jwt;
   }
 
-  public async login(userData: UserDTO) {
-    return this.jwt.sign({
-      data: userData
-    }, 
-    this.generalConfig.token_secret, {
-      expiresIn: '2y'
-    });
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
+  public async login(userData: User | UserDTO): Promise<string> {
+    return jwt.sign(
+      { data: userData }, 
+      this.generalConfig.token_secret, 
+      { expiresIn: '2y' }
+    );
   }
 
   public async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({ email });
+    return this.userRepository.findByEmail(email);
   }
 
   public async findById(id: string): Promise<User> {
-    return await this.userRepository.findOne({ _id: id });
+    return this.userRepository.findById(id);
   }
 
   public async createUser(user: NewUserDTO): Promise<CreatedUserDTO> {
@@ -48,17 +68,8 @@ class UserService extends Service {
       throw new Error('Password is too small');
     }
 
-    const salt = await this.bcrypt.genSaltSync(parseInt(this.generalConfig.BCRYPT_SALT));
-    const hashedPassword = await this.bcrypt.hashSync(user.password, salt);
-    const newUser: NewUserDTO = { ...user, password: hashedPassword, role: 'user' };
-    const createdUser = await this.userRepository.save(newUser);
-
-    const token = this.jwt.sign({
-      data: createdUser
-    }, 
-    this.generalConfig.token_secret, {
-      expiresIn: '2y'
-    });
+    const createdUser = await this.storeUser(user);
+    const token = await this.login(createdUser);
 
     return {
       ...createdUser,
@@ -67,8 +78,27 @@ class UserService extends Service {
   }
 
   private validateEmail(email: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
     return re.test(String(email).toLowerCase());
+  }
+
+  private async storeUser(user: NewUserDTO) {
+    const hashedPassword = await this.encryptUserPassword(user);
+    const newUser: NewUserDTO = { 
+      ...user, 
+      password: hashedPassword, 
+      role: 'user' 
+    };
+    
+    return this.userRepository.save(newUser);
+  }
+
+  private async encryptUserPassword(user: NewUserDTO) {
+    const salt = await this.bcrypt.genSaltSync(
+      parseInt(this.generalConfig.BCRYPT_SALT)
+    );
+    
+    return this.bcrypt.hashSync(user.password, salt);
   }
 }
 

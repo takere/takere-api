@@ -1,12 +1,30 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Joi from 'joi';
 import Service from './service';
 
+
+/**
+ * Responsible for providing validation services.
+ */
 class ValidationService extends Service {
   
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public validateRequestCreateUser() {
     return {
       body: Joi.object().keys({
@@ -28,26 +46,6 @@ class ValidationService extends Service {
       }),
     }
   }
-  
-  // public validateRequestGetUsers() {
-  //   return {
-  //     query: Joi.object().keys({
-  //       name: Joi.string(),
-  //       role: Joi.string(),
-  //       sortBy: Joi.string(),
-  //       limit: Joi.number().integer(),
-  //       page: Joi.number().integer(),
-  //     }),
-  //   }
-  // }
-  
-  // public validateRequestGetUser() {
-  //   return {
-  //     params: Joi.object().keys({
-  //       userId: Joi.string().custom(this.objectId),
-  //     }),
-  //   }
-  // }
 
   public validateRequestGetAgenda() {
     return {
@@ -110,14 +108,13 @@ class ValidationService extends Service {
     }
   }
 
-  
-
   public objectId(value: any, helpers: any) {
     if (!value.match(/^[0-9a-fA-F]{24}$/)) {
       return helpers.message('"{{#label}}" must be a valid mongo id');
     }
+    
     return value;
-  };
+  }
   
   public password(value: any, helpers: any) {
     if (value.length < 8) {
@@ -127,7 +124,7 @@ class ValidationService extends Service {
       return helpers.message('password must contain at least 1 letter and 1 number');
     }
     return value;
-  };
+  }
 }
 
 export default ValidationService;

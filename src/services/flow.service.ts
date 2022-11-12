@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Service from './service';
 import NodeService from './node.service';
 import EdgeService from './edge.service';
@@ -9,12 +16,24 @@ import UserFlowDTO from '../dto/user-flow.dto';
 import FlowRepository from '../repositories/flow.repository';
 import BoardService from './board.service';
 
+
+/**
+ * Responsible for providing flow services.
+ */
 class FlowService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly flowRepository: FlowRepository;
   private readonly edgeService: EdgeService;
   private readonly nodeService: NodeService;
   private readonly boardService: BoardService;
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
     this.flowRepository = this.repository.flowRepository;
@@ -23,8 +42,12 @@ class FlowService extends Service {
     this.boardService = new BoardService();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async findByUserIdAndFlowId(userId: string, flowId: string): Promise<UserFlowDTO> {
-    const flow = await this.flowRepository.findOne({ author: userId, _id: flowId });
+    const flow = await this.flowRepository.findByAuthorAndFlow(userId, flowId);
     const nodes = await this.nodeService.findAllByFlowId(flowId);
     const edges = await this.edgeService.findAllByFlowId(flowId);
     
@@ -41,15 +64,15 @@ class FlowService extends Service {
   }
 
   public async findAllByUserId(id: string): Promise<Flow[]> {
-    return this.flowRepository.find({ author: id });
+    return this.flowRepository.findAllByAuthor(id);
   }
 
   public async findById(id: string): Promise<Flow> {
-    return this.flowRepository.findOne({ _id: id });
+    return this.flowRepository.findById(id);
   }
 
   public async removeWithUserIdAndFlowId(userId: string, flowId: string): Promise<Flow> {
-    const flow = await this.flowRepository.findOneAndRemove({author: userId, _id: flowId});
+    const flow = await this.flowRepository.removeByAuthorAndFlow(userId, flowId);
 
     await this.nodeService.removeAllWithFlowId(flowId);
     await this.edgeService.removeAllWithFlowId(flowId);
@@ -83,14 +106,11 @@ class FlowService extends Service {
   }
 
   private async storeNode(n: any, flow: any, nodes: Node[], edges: Edge[]) {
-    console.log('STORING NODE', n.id);
     let data = { ...n?.data, position: n?.position, flow: flow.id }
 
     const storedNode = await this.nodeService.insert(data);
 
-    console.log('OK')
-
-    edges.map((e: { target: any; source: any; }) => {
+    edges.forEach((e: { target: any; source: any; }) => {
       if (e?.target === n.id) {
         e.target = storedNode.id;
       }
@@ -103,11 +123,15 @@ class FlowService extends Service {
   }
 
   private async storeEdges(edges: any, storedFlow: any) {
-    console.log('STORING EDGES');
     const storedEdges = [];
 
-    for (let e of edges) {
-      let storedEdge = await this.edgeService.insert({ source: e.source, target: e?.target, flow: storedFlow.id, animated: e.animated });
+    for (let edge of edges) {
+      let storedEdge = await this.edgeService.insert({ 
+        source: edge.source, 
+        target: edge?.target, 
+        flow: storedFlow.id, 
+        animated: edge.animated 
+      });
 
       storedEdges.push(storedEdge);
     }

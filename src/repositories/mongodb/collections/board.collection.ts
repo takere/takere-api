@@ -59,14 +59,10 @@ class BoardCollection implements BoardRepository {
     return formattedBoards;
   }
     
-  public async findOne(fields: object): Promise<Board> {
-    const storedBoard = await this._schema.findOne(fields);
+  public async findById(id: string): Promise<Board> {
+    const storedBoard = await this._schema.findOne({ _id: id });
 
     return { ...storedBoard._doc, id: storedBoard._doc._id };
-  }
-
-  public async find(fields: object): Promise<Board[]> {
-    return this._schema.find(fields);
   }
 
   public async findAllUnfinishedByEmail(email: string): Promise<Board[]> {

@@ -11,8 +11,18 @@ class UserCollection implements UserRepository {
     this._schema = mongoose.model<User>("User", UserSchema);
   }
 
-  public async findOne(fields: object): Promise<User> {
-    const user = await this._schema.findOne(fields);
+  public async findByEmail(email: string): Promise<User> {
+    const user = await this._schema.findOne({ email });
+
+    if (user._doc) {
+      return { ...user._doc, id: user._doc._id };
+    }
+
+    return { ...user, id: user._id };
+  }
+
+  public async findById(id: string): Promise<User> {
+    const user = await this._schema.findOne({ _id: id });
 
     if (user._doc) {
       return { ...user._doc, id: user._doc._id };

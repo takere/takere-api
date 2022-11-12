@@ -10,18 +10,18 @@ class NodeCollection implements NodeRepository {
     this._schema = mongoose.model<Node>("Node", NodeSchema);
   }
 
-  public async findOne(fields: object): Promise<Node> {
-    const storedNode = await this._schema.findOne(fields);
+  public async findById(id: string): Promise<Node> {
+    const storedNode = await this._schema.findOne({ _id: id });
 
     return storedNode ? { ...storedNode._doc, id: storedNode._doc._id } : null;
   }
 
-  public async find(fields: object): Promise<Node[]> {
-    return this._schema.find(fields);
+  public async findAllByFlowId(id: string): Promise<Node[]> {
+    return this._schema.find({ flow: id });
   }
 
-  public async deleteMany(fields: object): Promise<Node[]> {
-    let nodes = this._schema.deleteMany(fields);
+  public async removeAllWithFlowID(flowId: string): Promise<Node[]> {
+    let nodes = this._schema.deleteMany({ flow: flowId });
 
     if (!Array.isArray(nodes)) {
       nodes = [nodes];
