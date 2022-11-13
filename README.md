@@ -14,6 +14,11 @@
 	<a href="https://github.com/takere/takere-api/releases"><img src="https://img.shields.io/github/v/release/takere/takere-api" alt="Release"></a>
 </p>
 
+<p align="center">
+	<a href='https://takere-api.onrender.com/'><img alt='Deploy to Render' src='https://render.com/images/deploy-to-render-button.svg' width=200/></a>
+</p>
+
+
 <hr />
 
 ## ❇ Introduction
@@ -23,6 +28,9 @@ This system is a RESTful API. It is responsible for defining care plan elements 
 | Email| Password |
 |------- | ----- |
 | william@email.com |123|
+
+### ⚠ Warning
+The hosting service may have a certain delay (~ 2 min) for uploading the application so the loading of the website may have a certain delay. 
 
 ### Care plan elements
 Care plan elements are stored in [JSON](https://www.json.org/json-en.html) format and are structured as defined in the table below. We chose JSON because the data structure of our database uses [BSON](https://bsonspec.org). The semantics of specific parameters are defined below. 
