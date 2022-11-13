@@ -1,30 +1,51 @@
-import BoardController from '../../controllers/board.controller';
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
+import BoardController from '../../controllers/board.controller';
 import validation from '../../middlewares/validation.middleware';
 
+
 class BoardRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly boardController: BoardController;
 
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
 
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.boardController = new BoardController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.get(
       '/me', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestGetBoard),
-      (req: any, res: any, next: any) => this.boardController.get(req, res, next)
+      this.boardController.get
     );
     router.post(
       '/resolve', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestResolveBoard),
-      (req: any, res: any, next: any) => this.boardController.resolve(req, res, next)
+      this.boardController.resolve
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

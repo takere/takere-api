@@ -1,29 +1,41 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import winston from 'winston';
+import generalConfig from './general.config';
+
+
+// ----------------------------------------------------------------------------
+//         Constants
+// ----------------------------------------------------------------------------
 const colorizer = winston.format.colorize();
+const loggerConfig = buildLogger();
 
-const options = {
-  file: {
-    level: 'debug',
-    filename: `../logs/app.log`,
-    handleExceptions: true,
-    json: true,
-    maxsize: 5242880, // 5MB
-    maxFiles: 5,
-    colorize: false,
+export default loggerConfig;
+
+
+// ----------------------------------------------------------------------------
+//         Functions
+// ----------------------------------------------------------------------------
+function buildLogger(): winston.Logger {
+  const logger = winston.createLogger({
+    transports: [
+      new winston.transports.Console(),
+    ],
+    exitOnError: false,
+  });
+  
+  if (generalConfig.environment !== 'production') {
+    logger.add(buildDebugTransporter());
+    logger.add(buildInfoTransporter());
+    logger.add(buildErrorTransporter());
   }
-};
 
-const loggerConfig = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-  ],
-  exitOnError: false,
-});
-
-if (process.env.NODE_ENV !== 'production') {
-  loggerConfig.add(buildDebugTransporter());
-  loggerConfig.add(buildInfoTransporter());
-  loggerConfig.add(buildErrorTransporter());
+  return logger;
 }
 
 function buildDebugTransporter(): winston.transport {
@@ -31,7 +43,8 @@ function buildDebugTransporter(): winston.transport {
     level: 'debug',
     format: winston.format.combine(
       winston.format.simple(),
-      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      winston.format.printf(msg => 
+        colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
       )
     ),
   });
@@ -42,7 +55,8 @@ function buildInfoTransporter(): any {
     level: 'info',
     format: winston.format.combine(
       winston.format.simple(),
-      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      winston.format.printf(msg => 
+        colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
       )
     ),
   });
@@ -53,10 +67,9 @@ function buildErrorTransporter(): any {
     level: 'error',
     format: winston.format.combine(
       winston.format.simple(),
-      winston.format.printf((msg: { level: any; message: any; }) => colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
+      winston.format.printf(msg =>
+        colorizer.colorize(msg.level, `${msg.level} - ${msg.message}`)
       )
     ),
   });
 }
-
-export default loggerConfig;

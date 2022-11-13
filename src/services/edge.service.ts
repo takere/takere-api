@@ -38,10 +38,6 @@ class EdgeService extends Service {
     return this.edgeRepository.findAllBySourceId(id);
   }
 
-  async findAllByUserId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.findAllByUserId(id);
-  }
-
   async findAllByFlowId(id: string): Promise<Edge[]> {
     return this.edgeRepository.findAllByFlowId(id);
   }

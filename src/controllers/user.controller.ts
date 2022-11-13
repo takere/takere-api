@@ -1,20 +1,37 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import NewUserDTO from '../dto/new-user.dto';
 import UserDTO from '../dto/user.dto';
 import UserService from '../services/user.service';
 import LocaleService from '../services/locale.service';
-import loggerConfig from '../config/logger.config';
+
 
 class UserController {
-  localeService: LocaleService;
-  userService: UserService;
-  logger: any;
 
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
+  private readonly localeService: LocaleService;
+  private readonly userService: UserService;
+
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     this.userService = new UserService();
-    this.logger = loggerConfig;
     this.localeService = new LocaleService();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async login(req: any, res: any, next: any) {
     const user = await req.user;
   

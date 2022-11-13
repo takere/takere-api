@@ -1,27 +1,48 @@
-import NodeController from '../../controllers/node.controller';
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
-import validation from '../../middlewares/validation.middleware';
+import NodeController from '../../controllers/node.controller';
+
 
 class NodesRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly nodeController: NodeController;
 
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.nodeController = new NodeController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.get(
       '/me', 
-      this.passport.authenticate('jwt'), 
-      (req: any, res: any, next: any) => this.nodeController.get(req, res, next)
+      passport.authenticate('jwt'), 
+      this.nodeController.get
     );
     router.get(
       '/connections', 
-      this.passport.authenticate('jwt'), 
-      (req: any, res: any, next: any) => this.nodeController.getAllConnections(req, res, next)
+      passport.authenticate('jwt'), 
+      this.nodeController.getAllConnections
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

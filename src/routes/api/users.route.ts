@@ -1,36 +1,58 @@
-import UserController from '../../controllers/user.controller';
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
+import UserController from '../../controllers/user.controller';
 import validation from '../../middlewares/validation.middleware';
 import userCreationErrorHandler from '../../filters/user-creation.filter';
 import logoutErrorHandler from '../../filters/logout.filter';
 
+
 class UsersRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly userController: UserController;
   
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.userController = new UserController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.post(
       '/create', 
       validation(this.validationService.validateRequestCreateUser),
-      (req: any, res: any, next: any) => this.userController.createUser(req, res, next),
-      (err: any, req: any, res: any, next: any) => userCreationErrorHandler(err, req, res, next),
+      this.userController.createUser,
+      userCreationErrorHandler
     );
     router.post(
       '/login', 
       validation(this.validationService.validateRequestLogin),
-      this.passport.authenticate('local'),
-      (req: any, res: any, next: any) => this.userController.login(req, res, next)
+      passport.authenticate('local'),
+      this.userController.login
     );
     router.get(
       '/logout',
-      (req: any, res: any, next: any) => this.userController.logout(req, res, next),
-      (err: any, req: any, res: any, next: any) => logoutErrorHandler(err, req, res, next),
+      this.userController.logout,
+      logoutErrorHandler,
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

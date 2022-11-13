@@ -1,40 +1,36 @@
-import express from 'express';
-import cors from 'cors';
-import passport from 'passport';
-import BoardRoute from "./api/board.route";
-import FlowsRoute from "./api/flows.route";
-import NodesRoute from "./api/nodes.route";
-import UsersRoute from "./api/users.route";
-import AgendaRoute from "./api/agenda.route";
-import RouteList from "./route-list";
-import ProgressRoute from "./api/progress.route";
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
+import RouteList from "../models/route-list.model";
+import apiRoutes from './api';
+
+
+/**
+ * Responsible for providing application routes.
+ */
 class Routes {
-  express: any;
-  cors: any;
-  passport: any;
-  _routeList: RouteList[];
+  
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
+  private readonly _routeList: RouteList[];
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
-    this.express = express;
-    this.cors = cors;
-    this.passport = passport;
-    this._routeList = [];
-
-    this.buildRoutes();
-  }
-
-  private buildRoutes() {
-    this._routeList = [
-      { path: '/users', module: new UsersRoute(this.express, this.cors, this.passport) },
-      { path: '/flows', module: new FlowsRoute(this.express, this.cors, this.passport) },
-      { path: '/nodes', module: new NodesRoute(this.express, this.cors, this.passport) },
-      { path: '/board', module: new BoardRoute(this.express, this.cors, this.passport) },
-      { path: '/agenda', module: new AgendaRoute(this.express, this.cors, this.passport) },
-      { path: '/progress', module: new ProgressRoute(this.express, this.cors, this.passport) },
-    ];
+    this._routeList = apiRoutes;
   }
   
+
+  // --------------------------------------------------------------------------
+  //         Getters
+  // --------------------------------------------------------------------------
   get routeList(): RouteList[] {
     return this._routeList;
   }

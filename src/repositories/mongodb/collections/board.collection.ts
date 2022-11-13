@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import mongoose from "mongoose";
 import BoardRepository from '../../board.repository';
 import Board from '../../../domain/board.domain';
@@ -5,15 +12,27 @@ import BoardDTO from '../../../dto/board.dto';
 import BoardSchema from '../schemas/board.schema';
 
 class BoardCollection implements BoardRepository {
-  private _schema: any;
 
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
+  private readonly schema: any;
+
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
-    this._schema = mongoose.model<Board>("Board", BoardSchema);
+    this.schema = mongoose.model<Board>("Board", BoardSchema);
   }
   
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async findAll(email: string): Promise<Board[]> {
     const formattedBoards: any[] = [];
-    const boards = await this._schema.findAll();
+    const boards = await this.schema.findAll();
 
     boards.forEach((board: any, index: number) => {
       formattedBoards.push({
@@ -37,7 +56,7 @@ class BoardCollection implements BoardRepository {
   }
   
   public async findAllFinishedByEmail(email: string): Promise<any[]> {
-    const boards = await this._schema.findAllFinishedByEmail(email);
+    const boards = await this.schema.findAllFinishedByEmail(email);
 
     return this.formatBoards(boards);
   }
@@ -60,24 +79,24 @@ class BoardCollection implements BoardRepository {
   }
     
   public async findById(id: string): Promise<Board> {
-    const storedBoard = await this._schema.findOne({ _id: id });
+    const storedBoard = await this.schema.findOne({ _id: id });
 
     return { ...storedBoard._doc, id: storedBoard._doc._id };
   }
 
   public async findAllUnfinishedByEmail(email: string): Promise<Board[]> {
-    return this._schema.findAllUnfinishedByEmail(email);
+    return this.schema.findAllUnfinishedByEmail(email);
   }
 
   public async save(board: BoardDTO): Promise<Board> {
-    const targetBoard = new this._schema({ ...board, completed: false });
+    const targetBoard = new this.schema({ ...board, completed: false });
     const storedBoard = await targetBoard.save();
 
     return { ...storedBoard._doc };
   }
 
   public async update(board: Board): Promise<Board> {
-    const targetBoard = await this._schema.findById(board.id);
+    const targetBoard = await this.schema.findById(board.id);
     
     targetBoard.description = board.description;
     targetBoard.name = board.name;
@@ -90,15 +109,15 @@ class BoardCollection implements BoardRepository {
   }
 
   public async removeAllWithFlowId(id: any): Promise<Board[]> {
-    return this._schema.deleteMany({ flow: id });
+    return this.schema.deleteMany({ flow: id });
   }
 
   public async findBoard(nodeId: string, flowId: string): Promise<Board> {
-    return this._schema.find({ node: nodeId, flow: flowId });
+    return this.schema.find({ node: nodeId, flow: flowId });
   }
 
   public async findAllByFlowAndPatient(flowId: string, patientEmail: string): Promise<Board[]> {
-    const boards = await this._schema.findAll();
+    const boards = await this.schema.findAll();
     
     return this.formatBoards(boards)
       .filter((board: Board) => board.flow.id.toString() === flowId)
@@ -106,7 +125,7 @@ class BoardCollection implements BoardRepository {
   }
   
   public async findAllByAuthor(userId: string): Promise<Board[]> {
-    const boards = await this._schema.findAll();
+    const boards = await this.schema.findAll();
     
     return boards
       .filter((board: Board) => board.flow.author.toString() == userId);
