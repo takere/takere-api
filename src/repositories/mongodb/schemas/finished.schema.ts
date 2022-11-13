@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import mongoose from "mongoose";
 import Finished from "../../../domain/finished.domain";
 import DocumentResult from "../document-result";
@@ -5,7 +12,8 @@ import DocumentResult from "../document-result";
 
 interface FinishedDocument extends DocumentResult<Finished> {}
 
-const FinishedSchema = new mongoose.Schema<FinishedDocument>({
+const FinishedSchema = new mongoose.Schema<FinishedDocument>(
+  {
     answers: {
       type: Array,
       required: false,
@@ -25,7 +33,8 @@ const FinishedSchema = new mongoose.Schema<FinishedDocument>({
 FinishedSchema.statics.create = async function (answers, node) {
     const Finished = this;
     const finishedInstance = new Finished({answers, node})
-    return await finishedInstance.save()
+    
+    return finishedInstance.save()
 }
 
 FinishedSchema.pre("save", function(next) {

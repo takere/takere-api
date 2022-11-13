@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import mongoose from "mongoose";
 import Flow from "../../../domain/flow.domain";
 import DocumentResult from "../document-result";
@@ -5,7 +12,8 @@ import DocumentResult from "../document-result";
 
 interface FlowDocument extends DocumentResult<Flow> {}
 
-const FlowSchema = new mongoose.Schema<FlowDocument>({
+const FlowSchema = new mongoose.Schema<FlowDocument>(
+  {
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

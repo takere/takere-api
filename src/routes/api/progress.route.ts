@@ -1,35 +1,56 @@
-import ProgressController from '../../controllers/progress.controller';
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
+import ProgressController from '../../controllers/progress.controller';
 import validation from '../../middlewares/validation.middleware';
 
+
 class ProgressRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly progressController: ProgressController;
 
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
 
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.progressController = new ProgressController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.get(
       '/', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestProgress),
-      (req: any, res: any, next: any) => this.progressController.getProgress(req, res, next)
+      this.progressController.getProgress
     );
     router.get(
       '/patients', 
-      this.passport.authenticate('jwt'), 
-      (req: any, res: any, next: any) => this.progressController.getPatientsProgress(req, res, next)
+      passport.authenticate('jwt'), 
+      this.progressController.getPatientsProgress
     );
     router.get(
       '/patients/:patientId/:flowId', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestPatientProgress),
-      (req: any, res: any, next: any) => this.progressController.getPatientProgress(req, res, next)
+      this.progressController.getPatientProgress
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

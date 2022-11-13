@@ -1,22 +1,38 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Agenda from "agenda";
 import isBefore from 'date-fns/isBefore';
 import FlowService from "../services/flow.service";
 import EdgeService from '../services/edge.service';
 import NodeService from '../services/node.service';
 import BoardService from "../services/board.service";
+import databaseConfig from "./database.config";
+
 
 class JobConfig {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private static _agenda: Agenda;
 
-  constructor() {
-  }
 
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public run(): void {
     this.buildAgenda();
   }
 
   private buildAgenda() {
-    JobConfig._agenda = new Agenda({ db: { address: process.env.MONGODB_URI ?? '', collection: 'jobs' } });
+    JobConfig._agenda = new Agenda({ 
+      db: { address: databaseConfig.url ?? '', collection: 'jobs' } 
+    });
     JobConfig._agenda.start();
 
     JobConfig._agenda.define("CHECK_CONDITIONALS", async (job: any) => {

@@ -1,30 +1,49 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Service from './service';
 import Edge from '../domain/edge.domain';
 import EdgeDTO from '../dto/edge.dto';
 import EdgeRepository from '../repositories/edge.repository';
 
+
+/**
+ * Responsible for providing edge services.
+ */
 class EdgeService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private edgeRepository: EdgeRepository; 
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
     this.edgeRepository = this.repository.edgeRepository;
   }
 
-  async findAllBySourceId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.find({ source: id });
-  }
 
-  async findAllByUserId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.find({ user: id });
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
+  async findAllBySourceId(id: string): Promise<Edge[]> {
+    return this.edgeRepository.findAllBySourceId(id);
   }
 
   async findAllByFlowId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.find({ flow: id });
+    return this.edgeRepository.findAllByFlowId(id);
   }
 
   async removeAllWithFlowId(id: string): Promise<Edge[]> {
-    return this.edgeRepository.deleteMany({ flow: id });
+    return this.edgeRepository.removeAllWithFlowId(id);
   }
 
   async insert(edge: EdgeDTO): Promise<Edge> {

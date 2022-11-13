@@ -20,6 +20,9 @@ import Node from '../domain/node.domain';
 import Edge from '../domain/edge.domain';
 
 
+/**
+ * Responsible for manage boards along with card creation.
+ */
 class BoardService extends Service {
 
   // --------------------------------------------------------------------------
@@ -52,38 +55,23 @@ class BoardService extends Service {
   // --------------------------------------------------------------------------
   public async findAllUnfinishedByEmail(email: string): Promise<UserBoardDTO[]> {
     const boards = await this.boardRepository.findAllUnfinishedByEmail(email);
+    const convertedBoards = this.convertBoardsToUserBoards(boards);
+    this.sortBoardsBySeverity(convertedBoards);
 
-    console.log(boards);
-    
-    const formattedBoards = [];
-
-    for(const board of boards) {
-      formattedBoards.push(this.formatBoard(board));
-    }
-
-    formattedBoards.sort((board1, board2) => {
-      if (!board1.node.arguments) {
-        return -1;
-      }
-
-      if (!board2.node.arguments) {
-        return 1;
-      }
-
-      const board1SeverityIdx: number = board1.node.parameters.findIndex(parameter => parameter.slug === 'severity');
-      const board2SeverityIdx: number = board2.node.parameters.findIndex(parameter => parameter.slug === 'severity');
-      const board1Options = board1.node.parameters[board1SeverityIdx].options;
-      const board2Options = board2.node.parameters[board2SeverityIdx].options;
-      const board1Selection = board1.node.arguments[board1SeverityIdx];
-      const board2Selection = board2.node.arguments[board2SeverityIdx];
-
-      return parseInt(board2Options[board2Selection].value) - parseInt(board1Options[board1Selection].value);
-    });
-
-    return formattedBoards;
+    return convertedBoards;
   }
   
-  private formatBoard(board: Board): UserBoardDTO {
+  private convertBoardsToUserBoards(boards: Board[]): UserBoardDTO[] {
+    const convertedBoards: UserBoardDTO[] = [];
+
+    for (const board of boards) {
+      convertedBoards.push(this.convertBoardToUserBoards(board));
+    }
+
+    return convertedBoards;
+  }
+
+  private convertBoardToUserBoards(board: Board): UserBoardDTO {
     return {
       id: board.id,
       name: board.name,
@@ -97,32 +85,68 @@ class BoardService extends Service {
     }
   }
 
-  public async resolve(boardId: string, answers: any): Promise<Board> {
-    // salva_finished(nodo, arguments)
-    // para cada filho F do nodo:
-    //   gera_board_para_nodo(F)
+  private sortBoardsBySeverity(boards: UserBoardDTO[]) {
+    boards.sort((board1, board2) => {
+      if (!board1.node.arguments) {
+        return -1;
+      }
 
+      if (!board2.node.arguments) {
+        return 1;
+      }
+
+      return (this.extractSeverityOf(board2) - this.extractSeverityOf(board1));
+    });
+  }
+
+  private extractSeverityOf(board: UserBoardDTO): number {
+    if (!board.node.arguments) {
+      return 0;
+    }
+
+    const severityIdx: number = this.extractIndexOfSeverityParameter(board);
+    const options = board.node.parameters[severityIdx].options;
+    const selection = board.node.arguments[severityIdx];
+
+    return parseInt(options[selection].value);
+  }
+
+  private extractIndexOfSeverityParameter(board: UserBoardDTO): number {
+    return board.node.parameters.findIndex(
+      parameter => parameter.slug === 'severity'
+    );
+  }
+
+  public async resolve(boardId: string, answers: any): Promise<Board> {
     let board = await this.findById(boardId);
 
     if(!board.finished) {
-       const finished = await this.finishedService.insert({
-          answers,
-          node: board.node
-       });
-      
-       board.finished = finished.id;
+       await this.markBoardAsFinished(answers, board);
     }
 
     this.update(board);
+    await this.generateCards(board);
 
+    return board;
+  }
+
+  private async markBoardAsFinished(answers: any, board: Board) {
+    const finished = await this.finishedService.insert({
+      answers,
+      node: board.node
+    });
+
+    board.finished = finished.id;
+  }
+
+  private async generateCards(board: Board) {
     const nodes = await this.nodeService.findAllByFlowId(board.node.flow);
     const edges = await this.edgeService.findAllByFlowId(board.node.flow);
     const children = this.findAllChildrenOf(board.node, nodes, edges);
-    children.forEach(async (child: Node) => {
-        await this.insertNodeOnTheBoard(child, child.flow, nodes, edges);
-    });
 
-    return board;
+    children.forEach(async (child: Node) => {
+      await this.insertNodeOnTheBoard(child, child.flow, nodes, edges);
+    });
   }
 
   private findAllChildrenOf(node: Node, nodes: Node[], edges: Edge[]) {
@@ -133,23 +157,24 @@ class BoardService extends Service {
     return nodes.filter(node => childrenId.includes(node.id ?? ''));
   }
 
-  public async insertNodeOnTheBoard(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
-    if (n.type === 'CONDITIONAL') {
-      this.parseConditionalNode(n, flow, nodes, edges);
+  public async insertNodeOnTheBoard(node: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
+    if (node.type === 'CONDITIONAL') {
+      this.parseConditionalNode(node, flow, nodes, edges);
     }
-    else if (n.type === 'PERIODIC') {
-      this.parsePeriodicNode(n, flow);
+    else if (node.type === 'PERIODIC') {
+      this.parsePeriodicNode(node, flow);
     }
     else {
-      this.parseNonPeriodicNode(n, flow);
+      this.parseNonPeriodicNode(node, flow);
     }
   }
 
-  private async parseConditionalNode(n: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
-    const parent = this.getParent(n, nodes, edges);
+  // TODO: fetch true and false flow
+  private async parseConditionalNode(node: Node, flow: Flow, nodes: Node[], edges: Edge[]) {
+    const parent = this.getParent(node, nodes, edges);
     const trueFlow: Node[] = [];
     const falseFlow: Node[] = [];
-    const condition = await this.evaluateCondition(n, parent, flow);
+    const condition = await this.evaluateCondition(node, parent, flow);
 
     if (condition) {
       trueFlow.forEach(node => {
@@ -185,73 +210,104 @@ class BoardService extends Service {
         return parent.arguments[leftOperand].contains(rightOperand);
       case '==':
         if (parent.arguments[leftOperand] === 'medication') {
-          return await this.isNodeFinished(parent, flow);
+          return this.isNodeFinished(parent, flow);
         }
 
-        return parent.arguments[leftOperand] === rightOperand;
+        return (parent.arguments[leftOperand] === rightOperand);
       case '!=':
         if (parent.arguments[leftOperand] === 'medication') {
-          return await !this.isNodeFinished(parent, flow);
+          return !this.isNodeFinished(parent, flow);
         }
 
-        return parent.arguments[leftOperand] !== rightOperand;
+        return (parent.arguments[leftOperand] !== rightOperand);
       case '>=':
-        return parent.arguments[leftOperand] >= rightOperand;
+        return (parent.arguments[leftOperand] >= rightOperand);
       case '>':
-        return parent.arguments[leftOperand] > rightOperand;
+        return (parent.arguments[leftOperand] > rightOperand);
       case '<=':
-        return parent.arguments[leftOperand] <= rightOperand;
+        return (parent.arguments[leftOperand] <= rightOperand);
       case '<':
-        return parent.arguments[leftOperand] < rightOperand;
+        return (parent.arguments[leftOperand] < rightOperand);
       default:
         return false;
     }
   }
 
-  private async isNodeFinished(n: Node, flow: Flow) {
-    return await this.isFinished(n, flow);
+  private async isNodeFinished(node: Node, flow: Flow) {
+    return this.isFinished(node, flow);
   }
 
-  private async parsePeriodicNode(n: Node, flow: Flow) {
-    const frequencyIndex = n.parameters.findIndex(parameter => parameter.slug === 'frequency');
-    const frequencyValue = n.arguments ? n.arguments[frequencyIndex] : { select: 'onlyOnce', number: 0 };
+  private async parsePeriodicNode(node: Node, flow: Flow) {
+    const frequency = this.extractFrequencyArgument(node);
 
-    switch (frequencyValue.select) {
+    switch (frequency.select) {
       case 'daily':
-        this.jobService.createDailyJobForNode(n, flow);
-        if (this.hasBeginDate(n) && this.isBeginDateBeforeNow(n) && !this.isEndDateBeforeNow(n)) {
-          this.createBoard(n, flow);
+        this.jobService.createDailyJobForNode(node, flow);
+        
+        if (this.hasBeginDate(node) && this.isNowBetweenBeginAndEndDate(node)) {
+          this.createBoard(node, flow);
         }
+
         break;
       case 'everyHours':
-        this.jobService.createEveryHoursJobForNode(frequencyValue.number, n, flow);
+        this.jobService.createEveryHoursJobForNode(frequency.number, node, flow);
         break;
       case 'everyDays':
-        this.jobService.createEveryDaysJobForNode(frequencyValue.number, n, flow);
+        this.jobService.createEveryDaysJobForNode(frequency.number, node, flow);
         break;
       default:
-        this.createBoard(n, flow);
+        this.createBoard(node, flow);
         break;
     }
   }
 
-  private async parseNonPeriodicNode(n: Node, flow: Flow) {
-    if (this.hasBeginDate(n) && this.isEndDateBeforeNow(n)) {
-      return;
+  private extractFrequencyArgument(node: Node): any {
+    if (!node.arguments) {
+      return { select: 'onlyOnce', number: 0 };
     }
 
-    this.createBoard(n, flow);
+    const frequencyIndex = this.extractIndexOfFrequencyParameter(node);
+
+    return node.arguments[frequencyIndex];
+  }
+
+  private extractIndexOfFrequencyParameter(node: Node): number {
+    return node.parameters.findIndex(parameter => parameter.slug === 'frequency')
+  }
+
+  private isNowBetweenBeginAndEndDate(node: Node): boolean {
+    return  this.isBeginDateBeforeNow(node) 
+            && !this.isEndDateBeforeNow(node);
   }
 
   private hasBeginDate(node: Node) {
-    return (node.parameters.find(parameter => parameter.slug === 'begin_date') !== undefined);
+    const beginDate = node.parameters.find(
+      parameter => parameter.slug === 'begin_date'
+    );
+
+    return (beginDate !== undefined);
   }
 
   private isBeginDateBeforeNow(node: Node) {
-    const indexBeginDate = node.parameters.findIndex(parameter => parameter.slug === 'begin_date');
-    const beginDate = node.arguments ? node.arguments[indexBeginDate] : null;
+    const beginDate = this.extractBeginDateArgument(node);
 
-    return new Date(beginDate).getTime() < new Date().getTime();
+    return (new Date(beginDate).getTime() < new Date().getTime());
+  }
+
+  private extractBeginDateArgument(node: Node) {
+    if (!node.arguments) {
+      return null;
+    }
+
+    const indexBeginDate = this.extractIndexOfBeginDateParameter(node);
+    
+    return node.arguments[indexBeginDate];
+  }
+
+  private extractIndexOfBeginDateParameter(node: Node) {
+    return node.parameters.findIndex(
+      parameter => parameter.slug === 'begin_date'
+    );
   }
 
   private isEndDateBeforeNow(node: Node) {
@@ -259,10 +315,25 @@ class BoardService extends Service {
       return false;
     }
 
-    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = node.arguments ? node.arguments[indexEndDate] : null;
+    const endDate = this.extractEndDateArgument(node);
 
-    return new Date(endDate).getTime() < new Date().getTime();
+    return (new Date(endDate).getTime() < new Date().getTime());
+  }
+
+  private extractEndDateArgument(node: Node) {
+    if (!node.arguments) {
+      return null;
+    }
+
+    const indexEndDate = this.extractIndexOfEndDateParameter(node);
+    
+    return node.arguments[indexEndDate];
+  }
+
+  private extractIndexOfEndDateParameter(node: Node) {
+    return node.parameters.findIndex(
+      parameter => parameter.slug === 'end_date'
+    );
   }
 
   private async createBoard(n: Node, flow: Flow) {
@@ -278,8 +349,16 @@ class BoardService extends Service {
     this.insert(board);
   }
 
+  private async parseNonPeriodicNode(n: Node, flow: Flow) {
+    if (this.hasBeginDate(n) && this.isEndDateBeforeNow(n)) {
+      return;
+    }
+
+    this.createBoard(n, flow);
+  }
+
   public async findById(id: string): Promise<Board> {
-    return this.boardRepository.findOne({ _id: id });
+    return this.boardRepository.findById(id);
   }
 
   public async insert(board: BoardDTO): Promise<Board> {
@@ -294,8 +373,8 @@ class BoardService extends Service {
     return this.boardRepository.removeAllWithFlowId(id);
   }
 
-  public async isFinished(n: Node, flow: Flow) {
-    const referencedBoard = await this.boardRepository.findBoard(n.id ?? '', flow.id);
+  public async isFinished(node: Node, flow: Flow) {
+    const referencedBoard = await this.boardRepository.findBoard(node.id ?? '', flow.id);
 
     return referencedBoard && (referencedBoard.finished !== undefined);
   }
@@ -308,7 +387,11 @@ class BoardService extends Service {
   }
 
   private hasEndDate(node: Node) {
-    return (node.parameters.find((parameter: any) => parameter.slug === 'end_date') !== undefined)
+    const endDate = node.parameters.find(
+      (parameter: any) => parameter.slug === 'end_date'
+    );
+
+    return (endDate !== undefined)
   }
 
   private hasDeadlineForToday(node: Node): boolean {
@@ -316,8 +399,7 @@ class BoardService extends Service {
       return false;
     }
 
-    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = new Date(node.arguments[idxEndDate]);
+    const endDate = new Date(this.extractEndDateArgument(node));
 
     return (endDate.getDate() === new Date().getDate());
   }
@@ -334,8 +416,7 @@ class BoardService extends Service {
       return false;
     }
 
-    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = new Date(node.arguments[idxEndDate]);
+    const endDate = new Date(this.extractEndDateArgument(node));
 
     return (endDate.getDate() === this.getTomorrowDate().getDate());
   }
@@ -354,24 +435,20 @@ class BoardService extends Service {
     return this.groupByFlow(boards);
   }
 
-  public async findAllFinishedByEmail(email: string): Promise<UserBoardDTO[]> {
-    const boards = await this.boardRepository.findAllFinishedByEmail(email);
-
-    return boards;
-  }
-
   private groupByFlow(boards: Board[]) {
     const formattedGroups: any[] = [];
     const groups = new Map();
 
     boards.forEach(board => {
+      const nodesJoinFinished = { ...board.node, finished: board.finished };
+
       if (groups.has(board.flow.id)) {
         const nodes = groups.get(board.flow.id);
 
-        groups.set(board.flow.id, [ ...nodes, { ...board.node, finished: board.finished } ]);
+        groups.set(board.flow.id, [ ...nodes, nodesJoinFinished ]);
       }
       else {
-        groups.set(board.flow.id, [{ ...board.node, finished: board.finished }]);
+        groups.set(board.flow.id, [nodesJoinFinished]);
       }
     });
 
@@ -407,7 +484,9 @@ class BoardService extends Service {
     });
 
     groups.forEach((nodeInstances, nodeSlug) => {
-      const totalCompleted = nodeInstances.filter((node: any) => node.finished !== undefined).length
+      const totalCompleted = nodeInstances.filter(
+        (node: any) => node.finished !== undefined
+      );
 
       formattedGroups.push({
         node: { 
@@ -416,12 +495,18 @@ class BoardService extends Service {
           icon: nodeInstances[0].icon,
           name: nodeInstances[0].name
         },
-        completed: totalCompleted,
+        completed: totalCompleted.length,
         total: nodeInstances.length
       });
     });
 
     return formattedGroups;
+  }
+
+  public async findAllFinishedByEmail(email: string): Promise<UserBoardDTO[]> {
+    const boards = await this.boardRepository.findAllFinishedByEmail(email);
+
+    return boards;
   }
 
   public async findAllProgressWithFlowCreatedBy(userId: string) {
@@ -448,15 +533,13 @@ class BoardService extends Service {
       addedFlows.add(board.flow.id);
     }
 
-    
-
     return formattedBoards;
   }
 
   public async findProgressByFlowAndPatient(flowId: string, patientId: string) {
     const user = await this.userService.findById(patientId);
     const boards = await this.boardRepository.findAllByFlowAndPatient(flowId, user.email);
-    const flow = boards.length > 0 ? boards[0].flow : { id: -1, name: '', description: '' };
+    const flow = (boards.length > 0) ? boards[0].flow : { id: -1, name: '', description: '' };
 
     return {
       patient: user,
@@ -488,9 +571,9 @@ class BoardService extends Service {
       return null;
     }
     
-    const idxEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
+    const idxEndDate = this.extractIndexOfEndDateParameter(node);
     
-    return idxEndDate === -1 ? null : new Date(node.arguments[idxEndDate]);
+    return (idxEndDate === -1) ? null : new Date(node.arguments[idxEndDate]);
   }
 
   private extractUnfinishedBoardsFrom(boards: Board[]): Board[] {

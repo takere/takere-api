@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import mongoose from "mongoose";
 import Node from "../../../domain/node.domain";
 import DocumentResult from "../document-result";
@@ -5,7 +12,8 @@ import DocumentResult from "../document-result";
 
 interface NodeDocument extends DocumentResult<Node> {}
 
-const NodeSchema = new mongoose.Schema<NodeDocument>({
+const NodeSchema = new mongoose.Schema<NodeDocument>(
+  {
     slug: {
       type: String,
       required: true,

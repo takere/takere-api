@@ -3,7 +3,8 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "agenda": "^4.2.1",

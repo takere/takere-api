@@ -1,30 +1,51 @@
-import AgendaController from '../../controllers/agenda.controller';
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
+import AgendaController from '../../controllers/agenda.controller';
 import validation from '../../middlewares/validation.middleware';
 
+
 class AgendaRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly agendaController: AgendaController;
 
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
 
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.agendaController = new AgendaController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.get(
       '/today', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestGetAgenda),
-      (req: any, res: any, next: any) => this.agendaController.getToday(req, res, next)
+      this.agendaController.getToday
     );
     router.get(
       '/tomorrow', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestGetAgenda),
-      (req: any, res: any, next: any) => this.agendaController.getTomorrow(req, res, next)
+      this.agendaController.getTomorrow
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

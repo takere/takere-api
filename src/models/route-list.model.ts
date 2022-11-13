@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-interface Edge {
-  id: string,
-  source: string,
-  target: string,
-  animated: boolean,
-  flow: any
+import Route from '../routes/route';
+
+
+interface RouteList {
+  path: string,
+  module: Route
 }
 
-export default Edge;
+export default RouteList;

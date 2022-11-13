@@ -1,9 +1,76 @@
 [
-  { "slug": "begin", "connections": ["explanation", "medication_control", "orientation", "quiz", "reminder"] },
-  { "slug": "conditional", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
-  { "slug": "explanation", "connections": ["explanation", "medication_control", "orientation", "quiz"] },
-  { "slug": "medication_control", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
-  { "slug": "orientation", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
-  { "slug": "quiz", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] },
-  { "slug": "reminder", "connections": ["conditional", "explanation", "medication_control", "orientation", "quiz", "reminder"] }
+  { 
+    "slug": "begin", 
+    "connections": [
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  },
+  { 
+    "slug": "conditional", 
+    "connections": [
+      "conditional", 
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  },
+  { 
+    "slug": "explanation", 
+    "connections": [
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz"
+    ]
+  },
+  { 
+    "slug": "medication_control", 
+    "connections": [
+      "conditional", 
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  },
+  { 
+    "slug": "orientation", 
+    "connections": [
+      "conditional", 
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  },
+  { 
+    "slug": "quiz", 
+    "connections": [
+      "conditional", 
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  },
+  { 
+    "slug": "reminder", 
+    "connections": [
+      "conditional", 
+      "explanation", 
+      "medication_control", 
+      "orientation", 
+      "quiz", 
+      "reminder"
+    ] 
+  }
 ]

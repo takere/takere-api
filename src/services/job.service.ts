@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import Agenda from "agenda";
 import JobConfig from '../config/job.config';
 import Service from './service';
@@ -8,20 +15,32 @@ import Node from "../domain/node.domain";
 import Flow from '../domain/flow.domain';
 import isBefore from 'date-fns/isBefore';
 
+
+/**
+ * Responsible for providing worker services.
+ */
 class JobService extends Service {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly agenda: Agenda;
   private readonly cronService: CronService;
-  
-  private readonly isBefore: any;
 
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     super();
-    this.isBefore = isBefore;
     this.cronService = new CronService();
-    
     this.agenda = this.buildAgenda();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   private buildAgenda(): Agenda {
     const jobConfig = new JobConfig();
 
@@ -29,15 +48,7 @@ class JobService extends Service {
   }
 
   public createDailyJobForNode(node: Node, flow: Flow) {
-    const indexBeginDate = node.parameters.findIndex(parameter => parameter.slug === 'begin_date');
-    const beginDate = node.arguments ? node.arguments[indexBeginDate] : undefined;
-    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = node.arguments ? node.arguments[indexEndDate] : undefined;
-    const job: Job = {
-      beginDate: beginDate,
-      endDate: endDate ?? undefined,
-      data: node
-    };
+    const job: Job = this.buildJob(node);
     const repeatInterval: Cron = {
       seconds: '59',
       minute: '59',
@@ -50,16 +61,51 @@ class JobService extends Service {
     this.createRepeatedEvent(job, repeatInterval);
   }
 
-  public createEveryHoursJobForNode(interval: number, node: Node, flow: Flow) {
-    const indexBeginDate = node.parameters.findIndex(parameter => parameter.slug === 'begin_date');
-    const beginDate = node.arguments ? node.arguments[indexBeginDate] : undefined;
-    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = node.arguments ? node.arguments[indexEndDate] : undefined;
-    const job: Job = {
+  private buildJob(node: Node): Job {
+    const beginDate = this.extractBeginDateArgument(node);
+    const endDate = this.extractEndDateArgument(node);
+
+    return {
       beginDate: beginDate,
-      endDate: endDate,
+      endDate: endDate ?? undefined,
       data: node
     };
+  }
+
+  private extractBeginDateArgument(node: Node) {
+    if (!node.arguments) {
+      return null;
+    }
+
+    const indexBeginDate = this.extractIndexOfBeginDateParameter(node);
+    
+    return node.arguments[indexBeginDate];
+  }
+
+  private extractIndexOfBeginDateParameter(node: Node) {
+    return node.parameters.findIndex(
+      parameter => parameter.slug === 'begin_date'
+    );
+  }
+
+  private extractEndDateArgument(node: Node) {
+    if (!node.arguments) {
+      return null;
+    }
+
+    const indexEndDate = this.extractIndexOfEndDateParameter(node);
+    
+    return node.arguments[indexEndDate];
+  }
+
+  private extractIndexOfEndDateParameter(node: Node) {
+    return node.parameters.findIndex(
+      parameter => parameter.slug === 'end_date'
+    );
+  }
+
+  public createEveryHoursJobForNode(interval: number, node: Node, flow: Flow) {
+    const job: Job = this.buildJob(node);
     const repeatInterval: Cron = {
       seconds: '0',
       minute: `0`,
@@ -73,15 +119,7 @@ class JobService extends Service {
   }
 
   public createEveryDaysJobForNode(interval: number, node: Node, flow: Flow) {
-    const indexBeginDate = node.parameters.findIndex(parameter => parameter.slug === 'begin_date');
-    const beginDate = node.arguments ? node.arguments[indexBeginDate] : undefined;
-    const indexEndDate = node.parameters.findIndex(parameter => parameter.slug === 'end_date');
-    const endDate = node.arguments ? node.arguments[indexEndDate] : undefined;
-    const job: Job = {
-      beginDate: beginDate,
-      endDate: endDate,
-      data: node
-    };
+    const job: Job = this.buildJob(node);
     const repeatInterval: Cron = {
       seconds: '0',
       minute: `0`,

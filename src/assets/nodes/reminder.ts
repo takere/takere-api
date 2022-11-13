@@ -1,7 +1,15 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import LocaleService from '../../services/locale.service';
 import notificationType from "../types/notification.type";
 import severityType from "../types/severity.type";
 import frequencyType from "../types/frequency.type";
+
 
 const localeService = new LocaleService();
 

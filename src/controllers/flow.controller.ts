@@ -1,15 +1,35 @@
+/*
+ * Copyright (c) William Niemiec.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import FlowService from '../services/flow.service';
 import LocaleService from '../services/locale.service';
 
+
 class FlowController {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly flowService: FlowService;
   private readonly localeService: LocaleService;
   
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
   constructor() {
     this.flowService = new FlowService();
     this.localeService = new LocaleService();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   public async getAll(req: any, res: any, next: any) {
     const user = await req.user;
     const flows = await this.flowService.findAllByUserId(user.id);

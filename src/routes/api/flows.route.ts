@@ -1,40 +1,62 @@
-import FlowController from '../../controllers/flow.controller';
+/*
+* Copyright (c) William Niemiec.
+*
+* This source code is licensed under the MIT license found in the
+* LICENSE file in the root directory of this source tree.
+*/
+
+import passport from 'passport';
+import cors from 'cors';
 import Route from '../route';
+import FlowController from '../../controllers/flow.controller';
 import validation from '../../middlewares/validation.middleware';
 
+
 class FlowsRoute extends Route {
+
+  // --------------------------------------------------------------------------
+  //         Attributes
+  // --------------------------------------------------------------------------
   private readonly flowController: FlowController;
 
-  constructor(express: any, cors: any, passport: any) {
-    super(express, cors, passport);
+
+  // --------------------------------------------------------------------------
+  //         Constructor
+  // --------------------------------------------------------------------------
+  constructor() {
+    super();
     this.flowController = new FlowController();
   }
 
+
+  // --------------------------------------------------------------------------
+  //         Methods
+  // --------------------------------------------------------------------------
   protected buildRoutes(router: any) {
     router.post(
       '/create', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestCreateFlow),
-      (req: any, res: any, next: any) => this.flowController.create(req, res, next)
+      this.flowController.create
     );
     router.get(
       '/mines', 
-      this.passport.authenticate('jwt'), 
-      (req: any, res: any, next: any) => this.flowController.getAll(req, res, next)
+      passport.authenticate('jwt'), 
+      this.flowController.getAll
     );
     router.get(
       '/mines/:uid', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestFlow),
-      (req: any, res: any, next: any) => this.flowController.get(req, res, next)
+      this.flowController.get
     );
     router.delete(
       '/mines/:uid', 
-      this.passport.authenticate('jwt'), 
+      passport.authenticate('jwt'), 
       validation(this.validationService.validateRequestFlow),
-      (req: any, res: any, next: any) => this.flowController.remove(req, res, next)
+      this.flowController.remove
     );
-    router.options('*', this.cors());
+    router.options('*', cors());
   }
 }
 

@@ -10,7 +10,6 @@
 	<a href="https://github.com/takere/takere-api/actions/workflows/macos.yml"><img src="https://github.com/takere/takere-api/actions/workflows/macos.yml/badge.svg" alt=""></a>
 	<a href="https://github.com/takere/takere-api/actions/workflows/ubuntu.yml"><img src="https://github.com/takere/takere-api/actions/workflows/ubuntu.yml/badge.svg" alt=""></a>
 	<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NodeJS -14.0+-D0008F.svg" alt="NodeJS"></a>
-	<a href="https://mongodb.com/"><img src="https://img.shields.io/badge/MongoDB -5.0+-D0008F.svg" alt="MongoDB"></a>
 	<a href="https://github.com/takere/takere-api/blob/master/LICENSE"><img src="https://img.shields.io/github/license/takere/takere-api" alt="License"></a>
 	<a href="https://github.com/takere/takere-api/releases"><img src="https://img.shields.io/github/v/release/takere/takere-api" alt="Release"></a>
 </p>
@@ -19,6 +18,11 @@
 
 ## ❇ Introduction
 This system is a RESTful API. It is responsible for defining care plan elements logic, parsing care plan flows, and generating boards. It handles the database and also provides data for the other two Takere systems: HCP and Patient. Takere - API is built using [NodeJS](https://nodejs.org) due to its advantages compared to other server frameworks: its architecture is event-driven and non-blocking I/O. In addition, NodeJS works well with JavaScript, which is the language used in the database.
+
+### Login information
+| Email| Password |
+|------- | ----- |
+| william@email.com |123|
 
 ### Care plan elements
 Care plan elements are stored in [JSON](https://www.json.org/json-en.html) format and are structured as defined in the table below. We chose JSON because the data structure of our database uses [BSON](https://bsonspec.org). The semantics of specific parameters are defined below. 
@@ -148,21 +152,67 @@ Special thanks to [Rodolfo Viola](https://github.com/rodolfoviolac) for starting
 
 ## ✔ Requirements
 
-```
-Coming soon
-```
+- [NodeJS](https://nodejs.org);
+- [MongoDB](https://www.mongodb.com).
 
 ## ℹ How to run
 
-```
-Coming soon
-```
+1. Create a collection in the database. You can choose whatever name you want;
+
+2. Create a file called `.env` in the project root;
+
+3. Copy all content of `.env.example` and paste it in `.env` file;
+
+4. Change the values of the keys related to database and type your database configuration;
+
+5. Open a terminal in the project root and run the following command: `npm install --legacy-peer-deps`;
+
+6. Run the following command: `npm start`;
+
+7. Now open your browser and go to http://localhost:3002 (must be the port you defined in the `.env` file).
 
 ## ↪️ Endpoints
 
-```
-Coming soon
-```
+#### /agenda
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /today  | Gets cards of the signed user with deadline for today  | - |
+| `GET` | /tomorrow  | Gets cards of the signed user with deadline for tomorrow  | - |
+
+#### /board
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /me  | Gets all boards that belongs to the signed user | - |
+| `POST` | /resolve  | Creates or updates a board | { boardId: string, answers: array(any) } |
+
+#### /flows
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /mines  | Gets all created flows by the signed user | - |
+| `GET` | /mines/`:id`  | Gets a flow by identifier | `id`: Flow identifier |
+| `POST` | /create  | Creates a new flow | { name: string, description: string, patientEmail: string, graph: array({ nodes: array([Node](https://github.com/takere/takere-api/blob/main/src/domain/node.domain.ts)), edges: array([Edge](https://github.com/takere/takere-api/blob/main/src/domain/edge.domain.ts)) }) } |
+| `DELETE` | /mines/`:id`  | Removes a flow | `id`: Flow identifier |
+
+#### /nodes
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /me  | Gets all available nodes for the signed user | - |
+| `GET` | /connections  | Gets all possible node connections | - |
+
+#### /progress
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /  | Gets progress of signed user | - |
+| `GET` | /patients  | Gets all patients of the signed user | - |
+| `GET` | /patients/`:patientId`/`:flowId`  | Gets progress about a patient | `patientId`: Patient identifier \| `flowId`: Care plan flow identifier that the patient belongs to |
+
+#### /users
+|HTTP method| URL | Description     | Parameters |
+|----------|------------|-----------|-------------|
+| `GET` | /logout  | Sign out |  |
+| `POST` | /create  | Creates a new user | { firstName: string, lastName: string, password: string, email: string, role: 'user' \| 'admin', profileUrl: string \| undefined } |
+| `POST` | /login  | Sign in | { email: string, password: string } |
+
 
 ## 🚩 Changelog
 Details about each version are documented in the [releases section](https://github.com/takere/takere-api/releases).
