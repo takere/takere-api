@@ -14,12 +14,12 @@ import ProgressRoute from './progress.route';
 
 
 const apiRoutes = [
-  { path: '/users', module: new UsersRoute() },
+  { path: '/agenda', module: new AgendaRoute() },
+  { path: '/board', module: new BoardRoute() },
   { path: '/flows', module: new FlowsRoute() },
   { path: '/nodes', module: new NodesRoute() },
-  { path: '/board', module: new BoardRoute() },
-  { path: '/agenda', module: new AgendaRoute() },
   { path: '/progress', module: new ProgressRoute() },
+  { path: '/users', module: new UsersRoute() },
 ];
 
 export default apiRoutes;
