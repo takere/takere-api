@@ -5,8 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 
 const databaseConfig = {
   host: process.env.DB_HOST,

@@ -10,7 +10,7 @@ import Node from '../domain/node.domain';
 import NodeRepository from '../repositories/node.repository';
 import FinishedService from './finished.service';
 import NodeConnection from '../models/node-connection.model';
-import connections from '../assets/nodes/connections.json';
+import connections from '../assets/nodes/connections';
 import nodes from '../assets/nodes';
 import NodeDTO from '../dto/node.dto';
 

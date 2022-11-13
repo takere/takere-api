@@ -2,6 +2,7 @@
   "name": "takere-api",
   "version": "1.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "build": "tsc"

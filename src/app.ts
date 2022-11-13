@@ -11,6 +11,7 @@ import path from 'path';
 import http from 'http';
 import passport from 'passport';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import JobConfig from'./config/job.config';
@@ -98,6 +99,9 @@ class App {
   }
   
   private setUpPublicDirectory() {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    
     this.instance.use(express.static(path.join(__dirname, 'public')));
   }
 
